@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MyJetpack"
 include(":app")
+include(":core:commonUtils:myutils")
