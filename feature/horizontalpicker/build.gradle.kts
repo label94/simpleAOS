@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
@@ -7,28 +7,35 @@ plugins {
 }
 
 android {
-    namespace = "co.aos.myjetpack"
+    namespace = "co.aos.horizontalpicker"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "co.aos.myjetpack"
         minSdk = 28
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+
+            // AGP 9에서는 BuildConfig가 deprecated 가 됨으로, 대응 코드 추가
+            resValue("string", "BUILD_TYPE", "debug")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            // AGP 9에서는 BuildConfig가 deprecated 가 됨으로, 대응 코드 추가
+            resValue("string", "BUILD_TYPE", "release")
         }
     }
+
     buildFeatures {
         compose = true
     }
@@ -70,18 +77,12 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.test)
 
-    // hilt
+    // hilt 설정
     implementation(libs.hilt.android)
     implementation(libs.hilt.ext.work)
-    implementation(libs.androidx.hilt.navigation.compose)
     ksp((libs.hilt.compiler))
-
-    // 빌드 런타임 오류 방지
-    implementation(libs.androidx.work.runtime.ktx)
 
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))
-    implementation(project(":core:network"))
-    implementation(project(":feature:horizontalpicker"))
     implementation(project(":feature:common"))
 }

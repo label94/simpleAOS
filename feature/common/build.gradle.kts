@@ -1,34 +1,39 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "co.aos.myjetpack"
+    namespace = "co.aos.common"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "co.aos.myjetpack"
         minSdk = 28
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+
+            // AGP 9에서는 BuildConfig가 deprecated 가 됨으로, 대응 코드 추가
+            resValue("string", "BUILD_TYPE", "debug")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            // AGP 9에서는 BuildConfig가 deprecated 가 됨으로, 대응 코드 추가
+            resValue("string", "BUILD_TYPE", "release")
         }
     }
+
     buildFeatures {
         compose = true
     }
@@ -57,31 +62,4 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-
-    //LifeCycle
-    implementation(libs.androidx.lifecycle.common)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.lifecycle.viewModelCompose)
-
-    // coroutines
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.coroutines.test)
-
-    // hilt
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.ext.work)
-    implementation(libs.androidx.hilt.navigation.compose)
-    ksp((libs.hilt.compiler))
-
-    // 빌드 런타임 오류 방지
-    implementation(libs.androidx.work.runtime.ktx)
-
-    // 모듈 추가
-    implementation(project(":core:commonUtils:myutils"))
-    implementation(project(":core:network"))
-    implementation(project(":feature:horizontalpicker"))
-    implementation(project(":feature:common"))
 }
