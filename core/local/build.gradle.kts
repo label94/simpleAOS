@@ -1,36 +1,38 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "co.aos.myjetpack"
+    namespace = "co.aos.local"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "co.aos.myjetpack"
         minSdk = 28
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+
+            // AGP 9에서는 BuildConfig가 deprecated 가 됨으로, 대응 코드 추가
+            resValue("string", "BUILD_TYPE", "debug")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            // AGP 9에서는 BuildConfig가 deprecated 가 됨으로, 대응 코드 추가
+            resValue("string", "BUILD_TYPE", "release")
         }
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
@@ -43,33 +45,19 @@ kotlin {
 }
 
 dependencies {
-    // androidx
+    // androidx 관련
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 
-    // hilt
+    // hilt 설정
     implementation(libs.hilt.android)
     implementation(libs.hilt.ext.work)
-    implementation(libs.androidx.hilt.navigation.compose)
     ksp((libs.hilt.compiler))
-
-    // 빌드 런타임 오류 방지
-    implementation(libs.androidx.work.runtime.ktx)
 
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))
-    implementation(project(":core:network"))
 }

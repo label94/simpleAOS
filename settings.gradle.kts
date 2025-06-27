@@ -23,3 +23,4 @@ rootProject.name = "MyJetpack"
 include(":app")
 include(":core:commonUtils:myutils")
 include(":core:network")
+include(":core:local")

@@ -1,9 +1,12 @@
 package co.aos.network.di
 
+import android.content.Context
 import co.aos.network.ApiManager
+import co.aos.network.check.NetworkStatusManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
@@ -64,5 +67,14 @@ object ApiModule {
             // logging
             addInterceptor(loggingInterceptor)
         }
+    }
+
+    // NetworkManager 의존성 제공
+    @Provides
+    @Singleton
+    fun provideNetworkManager(
+        @ApplicationContext context: Context
+    ): NetworkStatusManager {
+        return NetworkStatusManager(context)
     }
 }
