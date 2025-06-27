@@ -68,4 +68,8 @@ dependencies {
 
     // 빌드 런타임 오류 방지
     implementation(libs.androidx.work.runtime.ktx)
+
+    // 모듈 추가
+    implementation(project(":core:commonUtils"))
+    implementation(project(":core:network"))
 }
