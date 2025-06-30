@@ -26,9 +26,16 @@ dependencies {
 // 입력하는 id는 libs.version.toml 파일에 작성한 id와 반드시 동일해야 함!
 gradlePlugin {
     plugins {
+        // 기본 android application 관련 plugin 등록
         register("androidApplication") {
-            id = "co.aos.multi.module.android.application"
+            id = "multi.module.android.application"
             implementationClass = "co.aos.convention.AndroidApplicationConventionPlugin"
+        }
+
+        // 기본 + compose 관련 plugin 등록
+        register("androidApplicationCompose") {
+            id = "multi.module.android.application.compose"
+            implementationClass = "co.aos.convention.AndroidApplicationComposeConventionPlugin"
         }
     }
 }

@@ -44,6 +44,10 @@ internal fun Project.configureKotlinAndroid(
         dependencies {
             // Android 26 버전이 필요한 API를 21 버전에서도 사용할 수 있게 하기 위해 적용.
             "coreLibraryDesugaring"(libs.findLibrary("desugar.jdk.libs").get())
+
+            // 기본 androidx 관련 의존성 추가
+            add("implementation", libs.findLibrary("androidx.core.ktx").get())
+            add("implementation", libs.findLibrary("androidx.lifecycle.runtime.ktx").get())
         }
     }
 }

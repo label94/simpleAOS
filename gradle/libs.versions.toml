@@ -116,7 +116,8 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
 # Custom Convention Plugin
-co-aos-multi-module-android-application = { id = "co.aos.multi.module.android.application", version = "unspecified"}
+multi-module-android-application = { id = "multi.module.android.application", version = "unspecified"}
+multi-module-android-application-compose = { id = "multi.module.android.application.compose", version = "unspecified" }
 
 
 
