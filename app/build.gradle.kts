@@ -11,19 +11,23 @@ android {
     defaultConfig {
         applicationId = "co.aos.myjetpack"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+        // android 21 미만에서 drawlabe/vector 사용 시 문제가 되기 때문에, 호환성 추가
+        vectorDrawables {
+            useSupportLibrary = true
         }
     }
+
+    // 컴포즈 사용을 위한 옵션 설정
     buildFeatures {
         compose = true
+    }
+
+    // 패키지 충돌 방지
+    // AL2.0 : Apache License 2.0 문서 파일들(자동으로 생성)
+    // LGPL2.1 : GNU Lesser General Public License 2.1(자동으로 생성)
+    androidResources {
+        noCompress += listOf("AL2.0", "LGPL2.1")
     }
 }
 
