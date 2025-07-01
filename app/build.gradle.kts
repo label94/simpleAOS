@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.multi.module.android.application.compose) // 컴포즈 관련 빌드 옵션 Plugin 추가
-    alias(libs.plugins.multi.module.ui) // 컴포즈 UI 관련 Plugin 추가
+    alias(libs.plugins.multi.module.ui) // UI 관련 Plugin 추가
     alias(libs.plugins.multi.module.hilt) // hilt 관련 Plugin 추가
 }
 
