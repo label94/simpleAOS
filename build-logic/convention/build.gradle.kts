@@ -20,6 +20,7 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.compose.compiler.gradle.plugin)
+    compileOnly(libs.room.gradlePlugin)
 }
 
 // custom convention 등록
@@ -54,6 +55,12 @@ gradlePlugin {
         register("androidUI") {
             id = "multi.module.ui"
             implementationClass = "co.aos.convention.AndroidUIConventionPlugin"
+        }
+
+        // Room 관련 plugin 등록
+        register("androidRoom") {
+            id = "multi.module.android.room"
+            implementationClass = "co.aos.convention.AndroidRoomConventionPlugin"
         }
     }
 }

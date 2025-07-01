@@ -46,6 +46,11 @@ gson = "2.11.0"
 adapterRx2 = "2.9.0"
 jetbrainsKotlinJvm = "2.0.21"
 
+# room
+room = "2.7.1"
+roomCompiler = "2.7.1"
+roomGradlePlugin = "2.7.2"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -107,6 +112,12 @@ compose-compiler-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compil
 # desugar
 desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 
+# room
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
+
 [bundles]
 compose = [
     "androidx-activity-compose",
@@ -132,6 +143,7 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "comGoogleDaggerHi
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+room = { id = "androidx.room", version.ref = "room" }
 
 # Custom Convention Plugin
 multi-module-android-application = { id = "multi.module.android.application", version = "unspecified"}
@@ -139,6 +151,7 @@ multi-module-android-application-compose = { id = "multi.module.android.applicat
 multi-module-android-library = { id = "multi.module.android.library", version = "unspecified" }
 multi-module-android-library-compose = { id = "multi.module.android.library.compose", version = "unspecified" }
 multi-module-ui = { id = "multi.module.ui", version = "unspecified" }
+multi-module-android-room = { id = "multi.module.android.room", version = "unspecified" }
 
 
 
