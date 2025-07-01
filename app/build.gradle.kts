@@ -1,5 +1,6 @@
 plugins {
-    alias(libs.plugins.multi.module.android.application.compose)
+    alias(libs.plugins.multi.module.android.application.compose) // 컴포즈 관련 빌드 옵션 Plugin 추가
+    alias(libs.plugins.multi.module.ui) // 컴포즈 UI 관련 Plugin 추가
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 }
@@ -11,7 +12,7 @@ android {
         applicationId = "co.aos.myjetpack"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // android 21 미만에서 drawlabe/vector 사용 시 문제가 되기 때문에, 호환성 추가
+        // android 21 미만에서 drawable/vector 사용 시 문제가 되기 때문에, 호환성 추가
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -30,16 +31,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
-    // compose
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.material3)
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-
-    // test
+    // test 관련 부분은 해당 모듈에 정의!
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

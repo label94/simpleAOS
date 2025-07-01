@@ -49,6 +49,12 @@ gradlePlugin {
             id = "multi.module.android.library.compose"
             implementationClass = "co.aos.convention.AndroidLibraryComposeConventionPlugin"
         }
+
+        // UI 관련 plugin 등록
+        register("androidUI") {
+            id = "multi.module.ui"
+            implementationClass = "co.aos.convention.AndroidUIConventionPlugin"
+        }
     }
 }
 
