@@ -3,6 +3,7 @@ package co.aos.convention.convention
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
@@ -29,11 +30,7 @@ internal fun Project.configureKotlinAndroid(
         }
 
         // kotlin ToolChain 설정
-        project.plugins.withId("org.jetbrains.kotlin.android") {
-            project.extensions.configure<KotlinProjectExtension> {
-                jvmToolchain(17)
-            }
-        }
+        configureKotlinJvm()
 
         // 어떤 API가 deprecated 되었는지 확인
         tasks.withType<JavaCompile>().configureEach {
@@ -44,6 +41,17 @@ internal fun Project.configureKotlinAndroid(
         dependencies {
             // Android 26 버전이 필요한 API를 21 버전에서도 사용할 수 있게 하기 위해 적용.
             "coreLibraryDesugaring"(libs.findLibrary("desugar.jdk.libs").get())
+        }
+    }
+}
+
+/**
+ * JVM 관련 공통 함수
+ * */
+internal fun Project.configureKotlinJvm() {
+    project.plugins.withId("org.jetbrains.kotlin.android") {
+        project.extensions.configure<KotlinProjectExtension> {
+            jvmToolchain(17)
         }
     }
 }
