@@ -1,7 +1,9 @@
 package co.aos.myutils.log
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
+import co.aos.myutils.BuildConfig
 import co.aos.myutils.R
 
 /**
@@ -28,12 +30,12 @@ object LogUtil {
 
     /**
      * AGP 9 부터는 BuildConfig가 deprecated 되어, 대응하기 위해 코드 추가
-     * 현재 build Type이 debug 인지 확인하는 용도
-     * @param context : 컨텍스트
+     * - 현재 build Type이 debug 인지 확인하는 용도
+     *
      * @return : true(debug), false(release)
      * */
-    fun isDevMode(context: Context): Boolean {
-        val mode = context.getString(R.string.BUILD_TYPE)
+    fun isDevMode(): Boolean {
+        val mode = BuildConfig.BUILD_TYPE
         isEnabled = mode == BUILD_TYPE_DEBUG
         return isEnabled
     }

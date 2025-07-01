@@ -37,6 +37,12 @@ gradlePlugin {
             id = "multi.module.android.application.compose"
             implementationClass = "co.aos.convention.AndroidApplicationComposeConventionPlugin"
         }
+
+        // 기본 Library 관련 plugin 등록
+        register("androidLibrary") {
+            id = "multi.module.android.library"
+            implementationClass = "co.aos.convention.AndroidLibraryConventionPlugin"
+        }
     }
 }
 

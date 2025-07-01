@@ -3,6 +3,7 @@ package co.aos.convention.convention
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
@@ -44,19 +45,13 @@ internal  fun Project.configureBuildTypes(
             }
             ExtensionType.LIBRARY -> {
                 // keystore 관련 정의 부분
-                extensions.configure<ApplicationExtension> {
+                extensions.configure<LibraryExtension> {
                     buildTypes {
                         debug {
-                            // debug 활성화
-                            isDebuggable = true
-
                             // configure debug build types
                             configureDebugBuildType()
                         }
                         release {
-                            // debug 비활성화
-                            isDebuggable = false
-
                             // configure release build types
                             configureReleaseBuildType(commonExtension)
                         }
