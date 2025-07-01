@@ -60,6 +60,12 @@ gradlePlugin {
             id = "multi.module.jvm.library"
             implementationClass = "co.aos.convention.JvmLibraryConventionPlugin"
         }
+
+        // hilt 관련 plugin 등록
+        register("androidHilt") {
+            id = "multi.module.hilt"
+            implementationClass = "co.aos.convention.AndroidHiltConventionPlugin"
+        }
     }
 }
 

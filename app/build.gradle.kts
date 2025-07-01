@@ -1,8 +1,7 @@
 plugins {
     alias(libs.plugins.multi.module.android.application.compose) // 컴포즈 관련 빌드 옵션 Plugin 추가
     alias(libs.plugins.multi.module.ui) // 컴포즈 UI 관련 Plugin 추가
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.multi.module.hilt) // hilt 관련 Plugin 추가
 }
 
 android {
@@ -45,12 +44,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.test)
-
-    // hilt
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.ext.work)
-    implementation(libs.androidx.hilt.navigation.compose)
-    ksp((libs.hilt.compiler))
 
     // 빌드 런타임 오류 방지
     implementation(libs.androidx.work.runtime.ktx)
