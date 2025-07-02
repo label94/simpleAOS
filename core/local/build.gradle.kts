@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.multi.module.android.library)  // library plugin 추가
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.multi.module.hilt) // hilt 관련 plugin 추가
 }
 
 android {
@@ -16,11 +15,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    // hilt 설정
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.ext.work)
-    ksp((libs.hilt.compiler))
 
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))

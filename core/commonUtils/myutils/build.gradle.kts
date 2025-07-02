@@ -1,8 +1,7 @@
 plugins {
     alias(libs.plugins.multi.module.android.library)  // library plugin 추가
+    alias(libs.plugins.multi.module.hilt) // hilt 관련 plugin 추가
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
 }
 
 android {
@@ -20,9 +19,4 @@ dependencies {
 
     // kotlinx-serialize 설정
     implementation(libs.kotlinx.serialization.json)
-
-    // hilt 설정
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.ext.work)
-    ksp((libs.hilt.compiler))
 }
