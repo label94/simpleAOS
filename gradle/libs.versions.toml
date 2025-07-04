@@ -28,7 +28,7 @@ kotlinxCoroutines = "1.10.2"
 comGoogleDaggerHilt = "2.56.2"
 androixHiltCompiler = "1.2.0"
 androidxHiltExt = "1.2.0"
-androidxWorkRuntimeKtx = "2.9.1"
+androidxWorkRuntimeKtx = "2.10.2"
 appcompat = "1.7.1"
 material = "1.12.0"
 
