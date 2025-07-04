@@ -1,6 +1,6 @@
 [versions]
-agp = "8.10.1"
-kotlin = "2.0.21"
+agp = "8.11.0"
+kotlin = "2.2.0"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -8,7 +8,7 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
 composeBom = "2025.06.01"
-ksp = "2.0.21-1.0.27"
+ksp = "2.2.0-2.0.2"
 
 # Project versions
 projectVersionName = "1.0.0"
@@ -21,11 +21,11 @@ projectCompileSdkVersion = "35"
 desugarJdkLibs = "2.1.5"
 
 # kotlinx
-kotlinxSerializationJson = "1.7.3"
-kotlinxCoroutines = "1.9.0"
+kotlinxSerializationJson = "1.9.0"
+kotlinxCoroutines = "1.10.2"
 
 # hilt
-comGoogleDaggerHilt = "2.51"
+comGoogleDaggerHilt = "2.56.2"
 androixHiltCompiler = "1.2.0"
 androidxHiltExt = "1.2.0"
 androidxWorkRuntimeKtx = "2.9.1"
@@ -33,22 +33,21 @@ appcompat = "1.7.1"
 material = "1.12.0"
 
 # network
-okhttpBom = "4.11.0"
-retrofit = "2.9.0"
+okhttpBom = "4.12.0"
+retrofit = "3.0.0"
 okhttpProfiler = "1.0.8"
 retrofitKotlinxSerializationJson = "1.0.0"
 mock = "4.12.0"
 
 # gson
-gson = "2.11.0"
+gson = "2.13.1"
 
 # adapter
-adapterRx2 = "2.9.0"
-jetbrainsKotlinJvm = "2.0.21"
+adapterRx2 = "3.0.0"
 
 # room
-room = "2.7.1"
-roomCompiler = "2.7.1"
+room = "2.7.2"
+roomCompiler = "2.7.2"
 roomGradlePlugin = "2.7.2"
 
 [libraries]
@@ -142,7 +141,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "comGoogleDaggerHilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 room = { id = "androidx.room", version.ref = "room" }
 
 # Custom Convention Plugin
