@@ -3,7 +3,6 @@ package co.aos.convention.convention
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
@@ -12,6 +11,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 
 /**
  * 다른 convention 에서도 사용하기 위해 유틸로 생성
+ *
+ * - compilerSdk, minSdk, jvm tool chain 정의
  * */
 internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>
@@ -25,8 +26,8 @@ internal fun Project.configureKotlinAndroid(
             isCoreLibraryDesugaringEnabled = true
 
             // toolchain 적용하면 해당 부분 없어도 되지만, 호환성을 위해 명시
-            sourceCompatibility = JavaVersion.VERSION_17
-            targetCompatibility = JavaVersion.VERSION_17
+            sourceCompatibility = JavaVersion.VERSION_21
+            targetCompatibility = JavaVersion.VERSION_21
         }
 
         // kotlin ToolChain 설정
@@ -51,7 +52,7 @@ internal fun Project.configureKotlinAndroid(
 internal fun Project.configureKotlinJvm() {
     project.plugins.withId("org.jetbrains.kotlin.android") {
         project.extensions.configure<KotlinProjectExtension> {
-            jvmToolchain(17)
+            jvmToolchain(21)
         }
     }
 }
