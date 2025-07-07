@@ -10,6 +10,9 @@ activityCompose = "1.10.1"
 composeBom = "2025.06.01"
 ksp = "2.2.0-2.0.2"
 
+# androidx ui
+androidxSwiperefreshlayout = "1.1.0"
+
 # Project versions
 projectVersionName = "1.0.0"
 projectVersionCode = "1"
@@ -59,6 +62,9 @@ androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecyc
 androidx-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "lifecycleRuntimeKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# androidx ui
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "androidxSwiperefreshlayout" }
 
 # compose
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
