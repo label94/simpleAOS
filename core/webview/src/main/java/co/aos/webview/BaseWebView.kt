@@ -7,6 +7,7 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.webkit.ConsoleMessage
 import android.webkit.CookieManager
+import android.webkit.RenderProcessGoneDetail
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
@@ -102,9 +103,33 @@ class BaseWebView(
                 request: WebResourceRequest?,
                 error: WebResourceError?
             ) {
-                LogUtil.e(LogUtil.WEB_VIEW_LOG_TAG, "onReceivedError() : $error")
+                LogUtil.e(LogUtil.WEB_VIEW_LOG_TAG, "onReceivedError() : ${error?.errorCode} desc : ${error?.description}")
                 super.onReceivedError(view, request, error)
                 webViewClientInterface?.onReceivedError(view, request, error)
+            }
+
+            /**
+             * 웹뷰 내부 프로세스가 비정상 종료 될 때 호출
+             *
+             * - 주로 메모리 문제 및 하드웨어 가속/무거운 페이지 일 때 발생
+             * - Android 8.0(API 26) 부터 WebView 내 Crash 발생 시 앱도 Crash 됨으로 해당 함수 구현하여 강제 종료 막아야 한다.
+             * */
+            override fun onRenderProcessGone(
+                view: WebView?,
+                detail: RenderProcessGoneDetail?
+            ): Boolean {
+                LogUtil.e(LogUtil.WEB_VIEW_LOG_TAG, "onRenderProcessGone() : $detail")
+
+                // 여기서 true 를 반환하면
+                // WebView 내부 상태를 앱이 책임지고 정리하겠다고 명시 -> 앱은 죽지 않음(대신 WebView는 비워짐)
+                // false 반환 시 앱 전체가 crash 날 수 있음(절대 false 주지 말 것!)
+                // 대부분 true 반환 후 webView를 정리 -> 안전
+
+                // WebView 내부 상태 정리
+                view?.destroy()
+                // 필요 시 webView 새로 띄우거나 Activity 재 시작 가능
+
+                return true
             }
         }
 

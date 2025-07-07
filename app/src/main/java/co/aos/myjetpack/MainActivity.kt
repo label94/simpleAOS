@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import co.aos.horizontalpicker.HorizontalPicker
 import co.aos.horizontalpicker.data.PickerData
 import co.aos.horizontalpicker.data.UiInfoData
+import co.aos.myjetpack.ui.SampleWebScreen
 import co.aos.myjetpack.ui.theme.MyJetpackTheme
-import co.aos.myutils.log.LogUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

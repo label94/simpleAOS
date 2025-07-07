@@ -53,4 +53,5 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":feature:horizontalpicker"))
     implementation(project(":feature:common"))
+    implementation(project(":core:webview"))
 }
