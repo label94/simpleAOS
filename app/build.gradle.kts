@@ -54,4 +54,5 @@ dependencies {
     implementation(project(":feature:horizontalpicker"))
     implementation(project(":feature:common"))
     implementation(project(":core:webview"))
+    implementation(project(":feature:permission"))
 }
