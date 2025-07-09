@@ -28,5 +28,5 @@ dependencies {
 
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))
-    implementation(project(":feature:common"))
+    implementation(project(":common-ui:common"))
 }

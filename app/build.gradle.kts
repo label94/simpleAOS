@@ -51,7 +51,7 @@ dependencies {
     implementation(project(":core:commonUtils:myutils"))
     implementation(project(":core:network"))
     implementation(project(":feature:horizontalpicker"))
-    implementation(project(":feature:common"))
     implementation(project(":feature:permission"))
     implementation(project(":common-ui:webview"))
+    implementation(project(":common-ui:common"))
 }
