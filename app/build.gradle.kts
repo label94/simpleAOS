@@ -37,7 +37,6 @@ dependencies {
 
     //LifeCycle
     implementation(libs.androidx.lifecycle.common)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewModelCompose)
 
     // coroutines
