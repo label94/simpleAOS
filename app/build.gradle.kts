@@ -50,8 +50,8 @@ dependencies {
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))
     implementation(project(":core:network"))
-    implementation(project(":feature:permission"))
     implementation(project(":common-ui:webview"))
     implementation(project(":common-ui:common"))
     implementation(project(":common-ui:horizontalpicker"))
+    implementation(project(":common-ui:permission"))
 }
