@@ -29,6 +29,7 @@ dependencies {
     // androidx
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.appcompat)
 
     // test 관련 부분은 해당 모듈에 정의!
     testImplementation(libs.junit)
@@ -48,6 +49,7 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
 
     // 모듈 추가
+    implementation(project(":core:base"))
     implementation(project(":core:commonUtils:myutils"))
     implementation(project(":core:network"))
     implementation(project(":feature:webview-feature"))

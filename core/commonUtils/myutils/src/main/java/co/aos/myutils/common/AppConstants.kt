@@ -13,4 +13,7 @@ object AppConstants {
         SERVER_DEV("https://www.ost.co.kr/", "개발서버"),
         SERVER_PRD("https://m.naver.com/", "운영서버") // https://[도메인]
     }
+
+    /** 웹뷰 프래그먼트에 url 정보를 전달하는 key */
+    const val WEB_LOAD_URL_KEY = "url"
 }
