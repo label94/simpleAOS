@@ -54,7 +54,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.MyJetpack">
+            android:theme="@style/Theme.MyJetpack"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|uiMode">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

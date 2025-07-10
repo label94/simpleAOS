@@ -11,6 +11,6 @@ object AppConstants {
     /** 서버 도메인 정의 */
     enum class AppServerType(var url: String, name: String) {
         SERVER_DEV("https://www.ost.co.kr/", "개발서버"),
-        SERVER_PRD("https://www.ost.co.kr/", "운영서버") // https://[도메인]
+        SERVER_PRD("https://m.naver.com/", "운영서버") // https://[도메인]
     }
 }

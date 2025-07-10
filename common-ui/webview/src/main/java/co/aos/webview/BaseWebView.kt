@@ -136,7 +136,7 @@ class BaseWebView(
         /** WebView Chrome Client 설정 */
         webChromeClient = object : WebChromeClient() {
             override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-                LogUtil.d(LogUtil.WEB_VIEW_LOG_TAG, consoleMessage.toString())
+                LogUtil.d(LogUtil.WEB_VIEW_LOG_TAG, "${consoleMessage?.message()}")
                 return super.onConsoleMessage(consoleMessage)
             }
 

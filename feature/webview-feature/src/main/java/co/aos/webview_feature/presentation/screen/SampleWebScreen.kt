@@ -1,6 +1,7 @@
 package co.aos.webview_feature.presentation.screen
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,6 +25,7 @@ fun SampleWebScreen(
     val context = LocalContext.current
     val baseWebView = remember { BaseWebView(context) }
     val uiState by viewModel.uiState.collectAsState()
+    val activity = LocalActivity.current
 
     AndroidView(
         modifier = modifier,
@@ -51,6 +53,8 @@ fun SampleWebScreen(
     BackHandler{
         if (baseWebView.canGoBack()) {
             baseWebView.goBack()
+        } else {
+          activity?.finish()
         }
     }
 }
