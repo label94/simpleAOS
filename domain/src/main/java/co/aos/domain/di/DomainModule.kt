@@ -8,6 +8,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * Domain Di 모듈
+ * */
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class DomainModule {
