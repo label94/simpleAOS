@@ -1,4 +1,4 @@
-package co.aos.myjetpack.ui.screen
+package co.aos.webview_feature.presentation.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement

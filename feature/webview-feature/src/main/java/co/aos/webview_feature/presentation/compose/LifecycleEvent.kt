@@ -1,4 +1,4 @@
-package co.aos.myjetpack.compose
+package co.aos.webview_feature.presentation.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect

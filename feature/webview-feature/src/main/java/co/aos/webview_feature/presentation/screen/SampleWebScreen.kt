@@ -1,13 +1,17 @@
-package co.aos.myjetpack.ui.screen
+package co.aos.webview_feature.presentation.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
-import co.aos.myjetpack.compose.LifecycleEventListener
+import androidx.hilt.navigation.compose.hiltViewModel
 import co.aos.webview.BaseWebView
+import co.aos.webview_feature.presentation.compose.LifecycleEventListener
+import co.aos.webview_feature.presentation.viewmodel.WebViewModel
 
 /**
  * 샘플 용 웹뷰 화면
@@ -15,21 +19,18 @@ import co.aos.webview.BaseWebView
 @Composable
 fun SampleWebScreen(
     modifier: Modifier = Modifier,
-    url: String,
+    viewModel: WebViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val baseWebView = remember { BaseWebView(context) }
+    val uiState by viewModel.uiState.collectAsState()
 
     AndroidView(
         modifier = modifier,
         factory = {
             baseWebView.apply {
-                loadWebViewUrl(url)
+                loadWebViewUrl(uiState.webViewConfig.url)
             }
-        },
-        update = { webView ->
-            // url 변경 시 갱신
-            webView.loadWebViewUrl(url)
         }
     )
 

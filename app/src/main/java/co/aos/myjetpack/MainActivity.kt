@@ -18,11 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import co.aos.horizontalpicker.HorizontalPicker
-import co.aos.horizontalpicker.data.PickerData
-import co.aos.horizontalpicker.data.UiInfoData
 import co.aos.myjetpack.ui.theme.MyJetpackTheme
+import co.aos.webview_feature.presentation.screen.SampleWebScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -39,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     Box(
                         modifier = Modifier.padding(innerPadding)
                     ) {
-
+                        SampleWebScreen()
                     }
                 }
             }
