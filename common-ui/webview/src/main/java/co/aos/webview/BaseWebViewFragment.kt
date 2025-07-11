@@ -2,7 +2,6 @@ package co.aos.webview
 
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,6 @@ import co.aos.myutils.common.AppConstants
 import co.aos.myutils.log.LogUtil
 import co.aos.webview.utils.BaseWebChromeClient
 import co.aos.webview.utils.BaseWebClient
-import java.util.LinkedHashMap
 
 /**
  * 웹뷰 상태 관리를 위한 웹뷰 프래그먼트
@@ -38,18 +36,28 @@ class BaseWebViewFragment: Fragment(), BaseWebChromeClient, BaseWebClient {
     ): View? {
         // 웹뷰 로드 설정
         webView = BaseWebView(requireContext()).apply {
+            // userAgent 설정
             arguments?.getString(AppConstants.WEB_LOAD_UA_KEY)?.let {
                 setCustomUserAgent(it)
             }
+            // 초기 로드 URL 설정
             arguments?.getString(AppConstants.WEB_LOAD_URL_KEY)?.let {
                 loadWebViewUrl(it)
             }
         }
         LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "webView Full UA : ${webView.settings.userAgentString}")
 
-        // 웹뷰 관련 리스너 설정
+        // 웹뷰 관련 Client 리스너 설정
         webView.setWebViewClientInterface(this)
         webView.setWebViewChromeClientInterface(this)
+
+        // 디버그 타입일 때, 웹뷰 디버깅 가능하도록 설정
+        if (BuildConfig.DEBUG) {
+            webView.setWebViewDebugMode(true)
+        }
+
+        // 파일 관련 허용
+        webView.setWebFileAllowAccess(true)
 
         return webView
     }
@@ -67,22 +75,6 @@ class BaseWebViewFragment: Fragment(), BaseWebChromeClient, BaseWebClient {
     /** 현재 웹뷰 객체 반환 */
     fun getCurrentWebView(): BaseWebView {
         return webView
-    }
-
-    override fun onResume() {
-        super.onResume()
-        webView.onResume()
-    }
-
-    override fun onPause() {
-        webView.onPause()
-        super.onPause()
-    }
-
-    override fun onDestroyView() {
-        // 웹뷰 메모리 해제
-        webView.destroy()
-        super.onDestroyView()
     }
 
     override fun onShowFileChooser(
@@ -115,4 +107,20 @@ class BaseWebViewFragment: Fragment(), BaseWebChromeClient, BaseWebClient {
         request: WebResourceRequest?,
         error: WebResourceError?
     ) {}
+
+    override fun onResume() {
+        super.onResume()
+        webView.onResume()
+    }
+
+    override fun onPause() {
+        webView.onPause()
+        super.onPause()
+    }
+
+    override fun onDestroyView() {
+        // 웹뷰 메모리 해제
+        webView.destroy()
+        super.onDestroyView()
+    }
 }
