@@ -20,7 +20,7 @@ class WebViewContract {
     data class State(
         val webViewConfig: WebViewConfigModel = WebViewConfigModel(
             url = "",
-            userAgent = LinkedHashMap()
+            userAgent = ""
         ),
     ): UiState
 

@@ -16,4 +16,5 @@ object AppConstants {
 
     /** 웹뷰 프래그먼트에 url 정보를 전달하는 key */
     const val WEB_LOAD_URL_KEY = "url"
+    const val WEB_LOAD_UA_KEY = "ua"
 }

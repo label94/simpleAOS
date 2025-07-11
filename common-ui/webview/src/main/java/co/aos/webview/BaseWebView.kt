@@ -146,8 +146,11 @@ class BaseWebView(
                 filePathCallback: ValueCallback<Array<out Uri?>?>?,
                 fileChooserParams: FileChooserParams?
             ): Boolean {
-                return webViewChromeClientInterface?.onShowFileChooser(webView, filePathCallback, fileChooserParams)
-                    ?: super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
+                return webViewChromeClientInterface?.onShowFileChooser(
+                    webView,
+                    filePathCallback,
+                    fileChooserParams
+                ) ?: super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
             }
         }
 
@@ -221,27 +224,13 @@ class BaseWebView(
     /**
      * 웹뷰 UserAgent 설정
      * */
-    fun setCustomUserAgent(linkedHashMap: LinkedHashMap<String, String>) {
+    fun setCustomUserAgent(customUa: String) {
         var userAgentString = settings.userAgentString
         if(userAgentString.lastIndexOf(";") < 0) {
             userAgentString += ";"
         }
 
-        if(linkedHashMap.isNotEmpty()) {
-            val sb = StringBuilder()
-            val keys = linkedHashMap.keys.iterator()
-
-            while (keys.hasNext()) {
-                val key = keys.next()
-                sb.append(key).append("=").append(linkedHashMap[key])
-
-                if (keys.hasNext()) {
-                    sb.append(";")
-                }
-            }
-
-            // 웹뷰에 ua 설정
-            settings.userAgentString = "$userAgentString$sb;"
-        }
+        // 웹뷰에 ua 설정
+        settings.userAgentString = "$userAgentString; $customUa;"
     }
 }

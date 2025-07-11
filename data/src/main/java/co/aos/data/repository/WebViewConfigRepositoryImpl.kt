@@ -15,13 +15,28 @@ class WebViewConfigRepositoryImpl @Inject constructor(
 ): WebViewConfigRepository {
 
     /** userAgent 생성 */
-    private fun createUserAgent(): LinkedHashMap<String, String> {
+    private fun createUserAgent(): String {
         val userAgent = LinkedHashMap<String, String>().apply {
             put("APP", "Y")
             put("DTYPE", "A")
         }
         LogUtil.d(LogUtil.DEFAULT_TAG, "userAgent => $userAgent")
-        return userAgent
+
+        if(userAgent.isNotEmpty()) {
+            val sb = StringBuilder()
+            val keys = userAgent.keys.iterator()
+
+            while (keys.hasNext()) {
+                val key = keys.next()
+                sb.append(key).append("=").append(userAgent[key])
+
+                if (keys.hasNext()) {
+                    sb.append(";")
+                }
+            }
+            return sb.toString()
+        }
+        return "APP=Y;DTYPE=A"
     }
 
     override suspend fun getWebViewConfig(): WebViewConfig {

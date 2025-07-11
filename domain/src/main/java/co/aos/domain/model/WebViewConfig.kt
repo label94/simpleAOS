@@ -5,5 +5,5 @@ package co.aos.domain.model
  * */
 data class WebViewConfig(
     val url: String,
-    val userAgent: LinkedHashMap<String, String>
+    val userAgent: String
 )

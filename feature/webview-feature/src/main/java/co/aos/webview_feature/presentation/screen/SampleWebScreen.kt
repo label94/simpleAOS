@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import co.aos.myutils.common.AppConstants
 import co.aos.webview.BaseWebViewFragment
+import co.aos.webview.utils.BaseWebChromeClient
 import co.aos.webview_feature.presentation.viewmodel.WebViewModel
 
 /**
@@ -46,7 +47,10 @@ fun SampleWebScreen(
                 val fm = (context as FragmentActivity).supportFragmentManager
                 if (fm.findFragmentByTag("BaseWebViewFragment") == null) {
                     fm.beginTransaction().replace(containerId, BaseWebViewFragment().apply {
-                        arguments = bundleOf(AppConstants.WEB_LOAD_URL_KEY to uiState.webViewConfig.url)
+                        arguments = bundleOf(
+                            AppConstants.WEB_LOAD_URL_KEY to uiState.webViewConfig.url,
+                            AppConstants.WEB_LOAD_UA_KEY to uiState.webViewConfig.userAgent
+                        )
                     }, "BaseWebViewFragment").commit()
                 }
             }

@@ -7,7 +7,7 @@ import co.aos.domain.model.WebViewConfig
  * */
 data class WebViewConfigModel(
     val url: String,
-    val userAgent: LinkedHashMap<String, String>
+    val userAgent: String
 )
 
 fun WebViewConfig.toPresentation(): WebViewConfigModel =

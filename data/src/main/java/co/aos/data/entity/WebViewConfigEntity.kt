@@ -9,7 +9,7 @@ import co.aos.domain.model.WebViewConfig
  * */
 data class WebViewConfigEntity(
     val url: String,
-    val userAgent: LinkedHashMap<String, String>
+    val userAgent: String
 ) {
     // 도메인과 통신하기 위함
     fun toDomain(): WebViewConfig = WebViewConfig(
