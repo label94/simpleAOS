@@ -1,7 +1,9 @@
 package co.aos.domain.di
 
 import co.aos.domain.usecase.GetWebViewConfigUseCase
+import co.aos.domain.usecase.RequestFileChooserUseCase
 import co.aos.domain.usecase.impl.GetWebViewConfigUseCaseImpl
+import co.aos.domain.usecase.impl.RequestFileChooserUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,4 +23,11 @@ internal abstract class DomainModule {
     abstract fun bindGetWebViewConfigUseCase(
         getWebViewConfigUseCaseImpl: GetWebViewConfigUseCaseImpl
     ): GetWebViewConfigUseCase
+
+    /** 파일 업로드 관련 유스케이스 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindRequestFileChooserUseCase(
+        requestFileChooserUseCaseImpl: RequestFileChooserUseCaseImpl
+    ): RequestFileChooserUseCase
 }

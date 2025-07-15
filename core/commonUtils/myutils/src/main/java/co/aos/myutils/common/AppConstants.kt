@@ -6,11 +6,12 @@ package co.aos.myutils.common
 object AppConstants {
 
     /** 서버 도메인 타입 */
-    var serverType: AppServerType = AppServerType.SERVER_PRD
+    var serverType: AppServerType = AppServerType.SERVER_FILE_UPLOAD_TEST
 
     /** 서버 도메인 정의 */
     enum class AppServerType(var url: String, name: String) {
         SERVER_DEV("https://www.ost.co.kr/", "개발서버"),
+        SERVER_FILE_UPLOAD_TEST("https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_fileupload_get", "파일업로드 테스트"),
         SERVER_PRD("https://m.naver.com/", "운영서버") // https://[도메인]
     }
 

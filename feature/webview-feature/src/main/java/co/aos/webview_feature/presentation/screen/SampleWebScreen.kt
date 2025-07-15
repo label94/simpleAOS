@@ -4,6 +4,8 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import co.aos.myutils.common.AppConstants
 import co.aos.myutils.log.LogUtil
 import co.aos.webview.BaseWebViewFragment
+import co.aos.webview_feature.presentation.state.WebViewContract
 import co.aos.webview_feature.presentation.viewmodel.WebViewModel
 
 /**
@@ -33,6 +36,15 @@ fun SampleWebScreen(
     val uiState by viewModel.uiState.collectAsState()
     val activity = LocalActivity.current
     val fmActivity = activity as? FragmentActivity
+    val effectFlow = viewModel.effect
+
+    // 파일 선택 결과 전달
+    val fileLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+        LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "fileLauncher : $uris")
+
+        // 선택한 파일 Uri를 웹으로 보내는 이벤트 실행
+        viewModel.setEvent(WebViewContract.Event.FileChooserResult(uris))
+    }
 
     // 런타임 시 동적으로 ID를 생성
     val containerId = remember { View.generateViewId() }
@@ -61,20 +73,22 @@ fun SampleWebScreen(
                             onPageStartedCallback = { url, bitmap ->
 
                             }
+
                             // 웹뷰 로드 종료
-                            onPageFinishedCallback = {
+                            onPageFinishedCallback = {}
 
-                            }
                             // 웹뷰 오류
-                            onReceivedErrorCallback = { request, error ->
+                            onReceivedErrorCallback = { request, error -> }
 
-                            }
                             // 웹뷰 내 페이지 전환
                             shouldOverrideUrlLoadingCallback = { url ->
+                                viewModel.setEvent(WebViewContract.Event.ShouldOverrideLoading(url))
                                 false
                             }
+
                             // 파일 탐색기 열기
                             onShowFileChooserCallback = { filePathCallback, fileChooserParams ->
+                                viewModel.setEvent(WebViewContract.Event.ShowFileChooser(filePathCallback, fileChooserParams))
                                 true
                             }
                         }
@@ -86,6 +100,20 @@ fun SampleWebScreen(
             }
         }
     )
+
+    /** 1회성 이벤트 감지 */
+    LaunchedEffect(key1 = effectFlow) {
+        effectFlow.collect { effect ->
+            when(effect) {
+                is WebViewContract.Effect.LaunchFileChooser -> {
+                    LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "LaunchFileChooser")
+
+                    // 이미지 형식만 표시하는 탐색기 호출
+                    fileLauncher.launch("image/*")
+                }
+            }
+        }
+    }
 
     // 뒤로가기 핸들링
     BackHandler {
