@@ -16,7 +16,7 @@ androidxSwiperefreshlayout = "1.1.0"
 # Project versions
 projectVersionName = "1.0.0"
 projectVersionCode = "1"
-projectMinSdkVersion = "28"
+projectMinSdkVersion = "26"
 projectTargetSdkVersion = "35"
 projectCompileSdkVersion = "35"
 
