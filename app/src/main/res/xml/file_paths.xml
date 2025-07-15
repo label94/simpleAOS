@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 내부 캐시 디렉토리: context.cacheDir -->
+    <cache-path
+        name="images"
+        path="." />
+</paths>

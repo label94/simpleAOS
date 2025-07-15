@@ -1,5 +1,6 @@
 package co.aos.webview_feature.presentation.state
 
+import android.content.Intent
 import android.net.Uri
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
@@ -28,7 +29,7 @@ class WebViewContract {
         ): Event()
 
         /** 파일 선택 시 웹으로 보내는 uri 데이터 이벤트 */
-        data class FileChooserResult(val uris: List<Uri?>?): Event()
+        data class FileChooserResult(val resultCode: Int, val intent: Intent?): Event()
     }
 
     /** 상태 정의 */
@@ -39,14 +40,11 @@ class WebViewContract {
             userAgent = ""
         ),
 
-        /** 파일 선택 시 웹으로 보내는 uri 데이터 상태 */
-        val selectedUris: List<Uri?>? = null
-
     ): UiState
 
     /** 1회성 이벤트 처리 */
     sealed class Effect: UiEffect {
         /** 파일 탐색기 여는 이벤트를 받아서 처리하기 위함 */
-        data object LaunchFileChooser: Effect()
+        data class LaunchFileChooser(val intent: Intent): Effect()
     }
 }

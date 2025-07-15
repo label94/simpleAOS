@@ -1,5 +1,6 @@
 package co.aos.webview_feature.presentation.screen
 
+import android.content.Intent
 import android.view.View
 import android.widget.FrameLayout
 import androidx.activity.compose.BackHandler
@@ -39,11 +40,14 @@ fun SampleWebScreen(
     val effectFlow = viewModel.effect
 
     // 파일 선택 결과 전달
-    val fileLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
-        LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "fileLauncher : $uris")
+    val fileLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "fileLauncher code : ${result.resultCode} \n data : ${result.data}")
 
-        // 선택한 파일 Uri를 웹으로 보내는 이벤트 실행
-        viewModel.setEvent(WebViewContract.Event.FileChooserResult(uris))
+        // 선택한 파일을 웹으로 보내는 이벤트 실행
+        viewModel.setEvent(WebViewContract.Event.FileChooserResult(
+            resultCode = result.resultCode,
+            intent = result.data
+        ))
     }
 
     // 런타임 시 동적으로 ID를 생성
@@ -88,6 +92,7 @@ fun SampleWebScreen(
 
                             // 파일 탐색기 열기
                             onShowFileChooserCallback = { filePathCallback, fileChooserParams ->
+                                // 파일 탐색기 연동을 위한 이벤트 호출
                                 viewModel.setEvent(WebViewContract.Event.ShowFileChooser(filePathCallback, fileChooserParams))
                                 true
                             }
@@ -109,7 +114,7 @@ fun SampleWebScreen(
                     LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "LaunchFileChooser")
 
                     // 이미지 형식만 표시하는 탐색기 호출
-                    fileLauncher.launch("image/*")
+                    fileLauncher.launch(effect.intent)
                 }
             }
         }
