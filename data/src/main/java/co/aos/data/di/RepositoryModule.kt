@@ -1,8 +1,10 @@
 package co.aos.data.di
 
 import co.aos.data.repository.FileChooserRepositoryImpl
+import co.aos.data.repository.OcrRepositoryImpl
 import co.aos.data.repository.WebViewConfigRepositoryImpl
 import co.aos.domain.repository.FileChooserRepository
+import co.aos.domain.repository.OcrRepository
 import co.aos.domain.repository.WebViewConfigRepository
 import dagger.Binds
 import dagger.Module
@@ -30,4 +32,11 @@ internal abstract class RepositoryModule {
     abstract fun bindFileChooserRepository(
         fileChooserRepositoryImpl: FileChooserRepositoryImpl
     ): FileChooserRepository
+
+    /** OCR 관련 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindOcrRepository(
+        ocrRepositoryImpl: OcrRepositoryImpl
+    ): OcrRepository
 }

@@ -20,6 +20,9 @@ dependencies {
     // kotlinx-serialize 설정
     implementation(libs.kotlinx.serialization.json)
 
+    // camerax
+    implementation(libs.androidx.camera.view)
+
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))
 }

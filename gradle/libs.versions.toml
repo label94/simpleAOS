@@ -59,6 +59,13 @@ coil = "3.2.0"
 # chucker
 chucker = "4.1.0"
 
+# OCR
+mlkit = "16.0.1"
+mlkit-barcode = "17.3.0"
+
+# CameraX
+camera = "1.5.0-beta01"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -136,6 +143,20 @@ coil-network = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = 
 # chucker
 chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker" }
 chucker-release = { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chucker" }
+
+# google mlkit ocr / qr, barcode
+google-mlkit-text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "mlkit" }
+google-mlkit-text-recognition-korean = { module = "com.google.mlkit:text-recognition-korean", version.ref = "mlkit" }
+google-mlkit-barcode-scanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "mlkit-barcode" }
+
+# cameraX
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camera" }
+androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camera" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camera" }
+androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camera" }
+androidx-camera-video = { group = "androidx.camera", name = "camera-video", version.ref = "camera" }
+androidx-camera-extensions = { group = "androidx.camera", name = "camera-extensions", version.ref = "camera" }
+androidx-camera-mlkit = { group = "androidx.camera", name = "camera-mlkit-vision", version.ref = "camera" }
 
 [bundles]
 compose = [

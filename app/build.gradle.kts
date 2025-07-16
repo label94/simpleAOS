@@ -53,4 +53,5 @@ dependencies {
     implementation(project(":core:commonUtils:myutils"))
     implementation(project(":core:network"))
     implementation(project(":feature:webview-feature"))
+    implementation(project(":feature:ocr"))
 }

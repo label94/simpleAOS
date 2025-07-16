@@ -1,11 +1,18 @@
 plugins {
-    alias(libs.plugins.multi.module.android.library)  // library plugin 추가
+    alias(libs.plugins.multi.module.android.library.compose) // 컴포즈 옵션 적용 된 plugin 추가
+    alias(libs.plugins.multi.module.ui) // ui 옵션 적용 된 plugin 추가
     alias(libs.plugins.multi.module.hilt) // hilt 관련 plugin 추가
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "co.aos.data"
+    namespace = "co.aos.ocr"
+}
+
+kotlin {
+    // 코틀린 2.2.0 => 어노테이션 추가 시 param 과 프로퍼티 둘다 적용
+    compilerOptions {
+        freeCompilerArgs.add("-Xannotation-default-target=param-property")
+    }
 }
 
 dependencies {
@@ -16,9 +23,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    // kotlinx-serialize 설정
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.swiperefreshlayout)
 
     // ocr
     implementation(libs.google.mlkit.text.recognition)
@@ -34,6 +39,10 @@ dependencies {
     implementation(libs.androidx.camera.mlkit)
 
     // 모듈 추가
+    implementation(project(":core:base"))
     implementation(project(":core:commonUtils:myutils"))
     implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(project(":common-ui:common"))
+    implementation(project(":common-ui:permission"))
 }

@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import co.aos.base.BaseActivity
 import co.aos.myjetpack.ui.theme.MyJetpackTheme
+import co.aos.ocr.presention.screen.OcrScreen
 import co.aos.webview_feature.presentation.screen.SampleWebScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,13 +35,7 @@ class MainActivity : BaseActivity() {
         enableEdgeToEdge()
         setContent {
             MyJetpackTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Box(
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
-                        SampleWebScreen()
-                    }
-                }
+                OcrScreen()
             }
         }
     }
