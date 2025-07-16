@@ -12,6 +12,7 @@ object AppConstants {
     enum class AppServerType(var url: String, name: String) {
         SERVER_DEV("https://www.ost.co.kr/", "개발서버"),
         SERVER_FILE_UPLOAD_TEST("https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_fileupload_get", "파일업로드 테스트"),
+        SERVER_TO_HOME("https://tohomepartner.thehyundai.com/front/cu/cua/login.do", "현대 백화점 투홈파트너"),
         SERVER_PRD("https://m.naver.com/", "운영서버") // https://[도메인]
     }
 
