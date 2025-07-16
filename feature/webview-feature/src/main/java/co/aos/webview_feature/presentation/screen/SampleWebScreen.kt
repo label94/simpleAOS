@@ -7,7 +7,11 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -61,58 +65,73 @@ fun SampleWebScreen(
     // 런타임 시 동적으로 ID를 생성
     val containerId = remember { View.generateViewId() }
 
-    AndroidView(
-        modifier = modifier.fillMaxSize(),
-        factory = { con ->
-            FrameLayout(con).apply {
-                // 프래그먼트 추가를 위한 동적 id 지정
-                id = containerId
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
 
-                // 웹뷰 프래그먼트 추가
-                post {
-                    val fragmentManager = (activity as? FragmentActivity)?.supportFragmentManager
-                    val tag = "BaseWebViewFragment"
+        // 하단 바
+//        bottomBar = {
+//            BottomAppBar {
+//
+//            }
+//        }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            AndroidView(
+                modifier = modifier.fillMaxSize(),
+                factory = { con ->
+                    FrameLayout(con).apply {
+                        // 프래그먼트 추가를 위한 동적 id 지정
+                        id = containerId
 
-                    if (fragmentManager?.findFragmentByTag(tag) == null) {
-                        val fragment = BaseWebViewFragment().apply {
-                            // 웹뷰 초기 URL 및 UA 설정
-                            arguments = bundleOf(
-                                AppConstants.WEB_LOAD_URL_KEY to uiState.webViewConfig.url,
-                                AppConstants.WEB_LOAD_UA_KEY to uiState.webViewConfig.userAgent
-                            )
+                        // 웹뷰 프래그먼트 추가
+                        post {
+                            val fragmentManager = (activity as? FragmentActivity)?.supportFragmentManager
+                            val tag = "BaseWebViewFragment"
 
-                            // 웹뷰 로드 시작
-                            onPageStartedCallback = { url, bitmap ->
+                            if (fragmentManager?.findFragmentByTag(tag) == null) {
+                                val fragment = BaseWebViewFragment().apply {
+                                    // 웹뷰 초기 URL 및 UA 설정
+                                    arguments = bundleOf(
+                                        AppConstants.WEB_LOAD_URL_KEY to uiState.webViewConfig.url,
+                                        AppConstants.WEB_LOAD_UA_KEY to uiState.webViewConfig.userAgent
+                                    )
 
-                            }
+                                    // 웹뷰 로드 시작
+                                    onPageStartedCallback = { url, bitmap ->
 
-                            // 웹뷰 로드 종료
-                            onPageFinishedCallback = {}
+                                    }
 
-                            // 웹뷰 오류
-                            onReceivedErrorCallback = { request, error -> }
+                                    // 웹뷰 로드 종료
+                                    onPageFinishedCallback = {}
 
-                            // 웹뷰 내 페이지 전환
-                            shouldOverrideUrlLoadingCallback = { url ->
-                                viewModel.setEvent(WebViewContract.Event.ShouldOverrideLoading(url))
-                                false
-                            }
+                                    // 웹뷰 오류
+                                    onReceivedErrorCallback = { request, error -> }
 
-                            // 파일 탐색기 열기
-                            onShowFileChooserCallback = { filePathCallback, fileChooserParams ->
-                                // 파일 탐색기 연동을 위한 이벤트 호출
-                                viewModel.setEvent(WebViewContract.Event.ShowFileChooser(filePathCallback, fileChooserParams))
-                                true
+                                    // 웹뷰 내 페이지 전환
+                                    shouldOverrideUrlLoadingCallback = { url ->
+                                        viewModel.setEvent(WebViewContract.Event.ShouldOverrideLoading(url))
+                                        false
+                                    }
+
+                                    // 파일 탐색기 열기
+                                    onShowFileChooserCallback = { filePathCallback, fileChooserParams ->
+                                        // 파일 탐색기 연동을 위한 이벤트 호출
+                                        viewModel.setEvent(WebViewContract.Event.ShowFileChooser(filePathCallback, fileChooserParams))
+                                        true
+                                    }
+                                }
+
+                                // fragment commit
+                                fragmentManager?.beginTransaction()?.replace(containerId, fragment, tag)?.commit()
                             }
                         }
-
-                        // fragment commit
-                        fragmentManager?.beginTransaction()?.replace(containerId, fragment, tag)?.commit()
                     }
                 }
-            }
+            )
         }
-    )
+    }
 
     /** 1회성 이벤트 감지 */
     LaunchedEffect(key1 = effectFlow) {

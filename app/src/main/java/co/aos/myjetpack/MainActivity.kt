@@ -35,7 +35,8 @@ class MainActivity : BaseActivity() {
         enableEdgeToEdge()
         setContent {
             MyJetpackTheme {
-                OcrScreen()
+                //OcrScreen()
+                SampleWebScreen()
             }
         }
     }
