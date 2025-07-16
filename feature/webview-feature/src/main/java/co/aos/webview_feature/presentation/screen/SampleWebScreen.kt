@@ -50,6 +50,14 @@ fun SampleWebScreen(
         ))
     }
 
+    // 카메라 권한 요청 및 처리
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isPermission ->
+        LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "cameraPermissionLauncher : $isPermission")
+
+        // 카메라 권한 허용 여부에 따른 이벤트 실행
+        viewModel.setEvent(WebViewContract.Event.ReOpenFileChooser(isPermission))
+    }
+
     // 런타임 시 동적으로 ID를 생성
     val containerId = remember { View.generateViewId() }
 
@@ -115,6 +123,12 @@ fun SampleWebScreen(
 
                     // 이미지 형식만 표시하는 탐색기 호출
                     fileLauncher.launch(effect.intent)
+                }
+                is WebViewContract.Effect.RequestCameraPermission -> {
+                    LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "RequestCameraPermission")
+
+                    // 카메라 권한 요청
+                    cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
                 }
             }
         }

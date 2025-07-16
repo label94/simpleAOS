@@ -1,12 +1,15 @@
 package co.aos.webview_feature.presentation.viewmodel
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.MediaStore
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.viewModelScope
 import co.aos.base.BaseViewModel
@@ -33,6 +36,13 @@ class WebViewModel @Inject constructor(
     private val getWebViewConfigUseCase: GetWebViewConfigUseCase,
     private val requestFileChooserUseCase: RequestFileChooserUseCase
 ): BaseViewModel<WebViewContract.Event, WebViewContract.State, WebViewContract.Effect>() {
+
+    /**
+     * 카메라 촬영 후 촬영한 이미지 업로드를 위한 Uri 경로
+     * - 카메라 촬영 후 인텐트에서 전달되는 Uri 경로가 null 이기 때문에
+     * - 맴버변수 형태로 저장하고 있어야 한다!
+     * */
+    private var cameraPhotoUri: Uri? = null
 
     init {
         // 초기 웹뷰 설정 이벤트 호출
@@ -67,44 +77,92 @@ class WebViewModel @Inject constructor(
             fileChooserParams = fileChooserParams
         )
 
-        // 파일 탐색기 열기 위한 Effect 실행
-        setEffect(WebViewContract.Effect.LaunchFileChooser(getFileChooserIntent()))
+        if (!checkCameraPermission()) {
+            // 카메라 권한 미 허용 시 권한 요청
+            setEffect(WebViewContract.Effect.RequestCameraPermission)
+        } else {
+            // 파일 탐색기 열기 위한 Effect 실행
+            openFileChooser(true)
+        }
+    }
+
+    /** 파일 탐색기 오픈 */
+    private fun openFileChooser(isCameraPermission: Boolean) {
+        setEffect(WebViewContract.Effect.LaunchFileChooser(getFileChooserIntent(isCameraPermission)))
     }
 
     /** 파일 선택 후 처리 */
     private fun fileChooserResult(resultCode: Int, result: Intent?) {
+        LogUtil.d(LogUtil.WEB_VIEW_LOG_TAG, "fileChooserResult createCameraIntent uri : $cameraPhotoUri \n result : ${result?.toString()}")
+
         val uris: Array<Uri>? = when {
-            resultCode != Activity.RESULT_OK -> null
-            result == null -> null
-            result.clipData != null -> {
+            resultCode != Activity.RESULT_OK -> {
+                // 실패한 경우
+                null
+            }
+
+            result?.clipData != null -> {
                 // 다중 선택
                 val clipData = result.clipData
                 clipData?.let {
                     Array(clipData.itemCount) { index -> clipData.getItemAt(index).uri }
                 }
             }
-            // 단일 선택
-            result.data != null -> arrayOf(result.data!!)
-            else -> null
+
+            result?.data != null -> {
+                // 단일 선택
+                result.data?.let { selectedData ->
+                    arrayOf(selectedData)
+                }
+            }
+
+            cameraPhotoUri != null -> {
+                // 카메라 촬영 시
+                cameraPhotoUri?.let { photoUri ->
+                    arrayOf(photoUri)
+                }
+            }
+
+            else -> {
+                // 그 외
+                null
+            }
         }
+
         val uriList: List<Uri?>? = uris?.toList()
         LogUtil.d(LogUtil.WEB_VIEW_LOG_TAG, "fileChooserResult : $uriList")
 
         // 웹뷰에 업로드 하기 위해 유스케이스 호출
         requestFileChooserUseCase.onFileChosen(uriList)
+
+        // 사용 후 초기화
+        cameraPhotoUri = null
     }
 
     /**
      * 카메라 및 갤러리 탐색기 인텐트 생성
      * */
-    private fun getFileChooserIntent(): Intent {
-        val cameraIntent = createCameraIntent() // 카메라 앱 실행을 위한 인텐트
+    private fun getFileChooserIntent(isGrantedCameraPermission: Boolean): Intent {
         val galleryIntent = createGalleryIntent() // 갤러리 앱 실행을 위한 인텐트
 
+        // 카메라 앱 실행을 위한 인텐트
+        // 단, 카메라 권한이 허용 될 경우에만 카메라 관련 인텐트 설정!
+        val cameraIntent = if (isGrantedCameraPermission) {
+            val cIntent = createCameraIntent()
+            cIntent?.let { arrayOf(it) }
+        } else {
+            null
+        }
+
+        // 카메라 및 갤러리 앱 실행을 위한 인텐트 설정
         val chooserIntent = Intent(Intent.ACTION_CHOOSER).apply {
             putExtra(Intent.EXTRA_INTENT, galleryIntent)
             putExtra(Intent.EXTRA_TITLE, "미디어 파일 선택")
-            putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntent?.let { arrayOf(it) })
+
+            // 카메라 권한 허용 시에만 카메라 앱 실행 표시
+            if (isGrantedCameraPermission && cameraIntent != null) {
+                putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntent)
+            }
         }
 
         return chooserIntent
@@ -115,8 +173,9 @@ class WebViewModel @Inject constructor(
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (cameraIntent.resolveActivity(context.packageManager) == null) return null
 
-        // 사진 촬영 후 저장할 파일 생성
+        // 사진 촬영 후 저장할 파일 생성(임시 파일)
         val mediaFile = try {
+            // 임시 파일 생성 후 종료 후 파일을 자동 삭제 하기 위해 예약 설정
             createTempMediaFile().also {
                 it.deleteOnExit()
             }
@@ -132,6 +191,10 @@ class WebViewModel @Inject constructor(
             "${context.packageName}.fileprovider",
             mediaFile
         )
+
+        // 사진 uri 경로 저장
+        cameraPhotoUri = uri
+        LogUtil.d(LogUtil.WEB_VIEW_LOG_TAG, "createCameraIntent uri : $uri")
 
         return cameraIntent.apply {
             putExtra(MediaStore.EXTRA_OUTPUT, uri)
@@ -154,6 +217,14 @@ class WebViewModel @Inject constructor(
             putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
             type = "image/*" // 이미지만 허용
         }
+
+    /** 카메라 권한 체크 */
+    private fun checkCameraPermission(): Boolean {
+        val hasCameraPermission =
+            ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+
+        return hasCameraPermission
+    }
 
     /** 초기 상태 설정 */
     override fun createInitialState(): WebViewContract.State {
@@ -178,6 +249,10 @@ class WebViewModel @Inject constructor(
             is WebViewContract.Event.FileChooserResult -> {
                 // 선택한 파일을 웹으로 전송
                 fileChooserResult(event.resultCode, event.intent)
+            }
+            is WebViewContract.Event.ReOpenFileChooser -> {
+                // 파일 탐색기 오픈
+                openFileChooser(event.isGrantedCameraPermission)
             }
         }
     }

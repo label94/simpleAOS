@@ -30,6 +30,9 @@ class WebViewContract {
 
         /** 파일 선택 시 웹으로 보내는 uri 데이터 이벤트 */
         data class FileChooserResult(val resultCode: Int, val intent: Intent?): Event()
+
+        /** 카메라 권한 처리 후 파일 탐색기 열기 위한 이벤트 */
+        data class ReOpenFileChooser(val isGrantedCameraPermission: Boolean): Event()
     }
 
     /** 상태 정의 */
@@ -39,12 +42,14 @@ class WebViewContract {
             url = "",
             userAgent = ""
         ),
-
     ): UiState
 
     /** 1회성 이벤트 처리 */
     sealed class Effect: UiEffect {
         /** 파일 탐색기 여는 이벤트를 받아서 처리하기 위함 */
         data class LaunchFileChooser(val intent: Intent): Effect()
+
+        /** 카메라 권한 요청 */
+        data object RequestCameraPermission: Effect()
     }
 }

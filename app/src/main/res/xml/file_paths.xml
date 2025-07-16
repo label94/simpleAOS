@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- 내부 캐시 디렉토리: context.cacheDir -->
+    <!-- 내부 캐시 이미지 디렉토리: context.cacheDir -->
     <cache-path
         name="images"
+        path="." />
+
+    <!-- 내부 캐시 디렉토리 -->
+    <cache-path
+        name="cache"
+        path="." />
+
+    <!-- 외부 캐시 디렉토리 (getExternalCacheDir()) -->
+    <external-cache-path
+        name="external_cache"
         path="." />
 </paths>
