@@ -85,6 +85,11 @@ class BaseWebViewFragment: Fragment(), BaseWebClient, BaseWebChromeClient {
         return webView
     }
 
+    /** 변경 된 url 로드 */
+    fun reLoadUrl(url: String) {
+        webView.loadWebViewUrl(url)
+    }
+
     override fun onResume() {
         super.onResume()
         webView.onResume()

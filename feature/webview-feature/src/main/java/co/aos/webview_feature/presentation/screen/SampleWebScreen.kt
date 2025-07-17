@@ -1,6 +1,5 @@
 package co.aos.webview_feature.presentation.screen
 
-import android.content.Intent
 import android.view.View
 import android.widget.FrameLayout
 import androidx.activity.compose.BackHandler
@@ -94,7 +93,7 @@ fun SampleWebScreen(
                                 val fragment = BaseWebViewFragment().apply {
                                     // 웹뷰 초기 URL 및 UA 설정
                                     arguments = bundleOf(
-                                        AppConstants.WEB_LOAD_URL_KEY to uiState.webViewConfig.url,
+                                        AppConstants.WEB_LOAD_URL_KEY to uiState.url,
                                         AppConstants.WEB_LOAD_UA_KEY to uiState.webViewConfig.userAgent
                                     )
 
@@ -128,7 +127,7 @@ fun SampleWebScreen(
                             }
                         }
                     }
-                }
+                },
             )
         }
     }
@@ -148,6 +147,15 @@ fun SampleWebScreen(
 
                     // 카메라 권한 요청
                     cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+                }
+                is WebViewContract.Effect.ReLoadWebViewUrl -> {
+                    LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "ReLoadWebViewUrl url : ${effect.url}")
+
+                    // onNewIntent 시 전달되는 url 로 웹뷰 재 로드
+                    val fragment = (fmActivity?.supportFragmentManager?.findFragmentByTag("BaseWebViewFragment")) as? BaseWebViewFragment
+                    if (fragment != null && fragment.isAdded) {
+                        fragment.reLoadUrl(effect.url)
+                    }
                 }
             }
         }

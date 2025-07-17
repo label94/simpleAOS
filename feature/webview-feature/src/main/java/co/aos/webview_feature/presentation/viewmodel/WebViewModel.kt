@@ -49,7 +49,49 @@ class WebViewModel @Inject constructor(
         setEvent(WebViewContract.Event.InitWebViewConfig)
     }
 
-    /** 초기 웹뷰 설정 */
+    /** 초기 상태 설정 */
+    override fun createInitialState(): WebViewContract.State {
+        return WebViewContract.State()
+    }
+
+    /** 이벤트 처리를 위한 핸들러 */
+    override fun handleEvent(event: WebViewContract.Event) {
+        when(event) {
+            is WebViewContract.Event.InitWebViewConfig -> {
+                // 웹뷰 초기 셋팅
+                initWebViewSetting()
+            }
+            is WebViewContract.Event.UpdateLoadWebViewUrl -> {
+                // 웹뷰 URL 업데이트
+                updateLoadWebViewUrl(event.url)
+            }
+            is WebViewContract.Event.ShouldOverrideLoading -> {
+                // 웹뷰 내 페이지 전환 될 때 호출
+                shouldOverrideLoading(event.url)
+            }
+            is WebViewContract.Event.ShowFileChooser -> {
+                // 웹뷰 내 파일 탐색기 오픈
+                showFileChooser(event.filePathCallback, event.fileChooserParams)
+            }
+            is WebViewContract.Event.FileChooserResult -> {
+                // 선택한 파일을 웹으로 전송
+                fileChooserResult(event.resultCode, event.intent)
+            }
+            is WebViewContract.Event.ReOpenFileChooser -> {
+                // 파일 탐색기 재오픈
+                openFileChooser(event.isGrantedCameraPermission)
+            }
+            is WebViewContract.Event.ReLoadWebUrl -> {
+                // 웹뷰 url 변경 후 리로드
+                reLoadWebUrl()
+            }
+        }
+    }
+
+    /**
+     * 초기 웹뷰 설정
+     * - UserAgent 설정
+     * */
     private fun initWebViewSetting() {
         viewModelScope.launch {
             val config = (getWebViewConfigUseCase.invoke()).toPresentation()
@@ -59,6 +101,11 @@ class WebViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    /** 웹뷰 URL 업데이트 */
+    private fun updateLoadWebViewUrl(loadWebUrl: String) {
+        setState { copy(url = loadWebUrl) }
     }
 
     /** should Override Loading */
@@ -226,34 +273,11 @@ class WebViewModel @Inject constructor(
         return hasCameraPermission
     }
 
-    /** 초기 상태 설정 */
-    override fun createInitialState(): WebViewContract.State {
-        return WebViewContract.State()
-    }
-
-    /** 이벤트 처리를 위한 핸들러 */
-    override fun handleEvent(event: WebViewContract.Event) {
-        when(event) {
-            is WebViewContract.Event.InitWebViewConfig -> {
-                // 웹뷰 초기 셋팅
-                initWebViewSetting()
-            }
-            is WebViewContract.Event.ShouldOverrideLoading -> {
-                // 웹뷰 내 페이지 전환 될 때 호출
-                shouldOverrideLoading(event.url)
-            }
-            is WebViewContract.Event.ShowFileChooser -> {
-                // 웹뷰 내 파일 탐색기 오픈
-                showFileChooser(event.filePathCallback, event.fileChooserParams)
-            }
-            is WebViewContract.Event.FileChooserResult -> {
-                // 선택한 파일을 웹으로 전송
-                fileChooserResult(event.resultCode, event.intent)
-            }
-            is WebViewContract.Event.ReOpenFileChooser -> {
-                // 파일 탐색기 오픈
-                openFileChooser(event.isGrantedCameraPermission)
-            }
+    /** onNewIntent 호출 되었을 때 웹뷰 리로드 */
+    private fun reLoadWebUrl() {
+        val newUrl = currentState.url
+        if (!newUrl.isNullOrEmpty()) {
+            setEffect(WebViewContract.Effect.ReLoadWebViewUrl(newUrl))
         }
     }
 }

@@ -19,6 +19,9 @@ class WebViewContract {
         /** 초기 웹뷰 설정 이벤트 */
         data object InitWebViewConfig: Event()
 
+        /** 로드할 웹뷰 URL 업데이트 */
+        data class UpdateLoadWebViewUrl(val url: String): Event()
+
         /** shouldOverrideLoading 호출 시 처리하기 위한 이벤트 */
         data class ShouldOverrideLoading(val url: String?): Event()
 
@@ -33,15 +36,20 @@ class WebViewContract {
 
         /** 카메라 권한 처리 후 파일 탐색기 열기 위한 이벤트 */
         data class ReOpenFileChooser(val isGrantedCameraPermission: Boolean): Event()
+
+        /** 앱 실행 된 상태에서 외부에서 변경된 URL이 전달 될 경우 */
+        data object ReLoadWebUrl: Event()
     }
 
     /** 상태 정의 */
     data class State(
         /** 초기 웹뷰 설정 관련 상태 */
         val webViewConfig: WebViewConfigModel = WebViewConfigModel(
-            url = "",
             userAgent = ""
         ),
+
+        /** 웹뷰 로드할 URL */
+        val url: String? = null
     ): UiState
 
     /** 1회성 이벤트 처리 */
@@ -51,5 +59,8 @@ class WebViewContract {
 
         /** 카메라 권한 요청 */
         data object RequestCameraPermission: Effect()
+
+        /** 업데이트 한 url로 웹뷰 로드 */
+        data class ReLoadWebViewUrl(val url: String): Effect()
     }
 }

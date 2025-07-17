@@ -6,7 +6,7 @@ package co.aos.myutils.common
 object AppConstants {
 
     /** 서버 도메인 타입 */
-    var serverType: AppServerType = AppServerType.SERVER_FILE_UPLOAD_TEST
+    var serverType: AppServerType = AppServerType.SERVER_PRD
 
     /** 서버 도메인 정의 */
     enum class AppServerType(var url: String, name: String) {

@@ -41,7 +41,6 @@ class WebViewConfigRepositoryImpl @Inject constructor(
 
     override suspend fun getWebViewConfig(): WebViewConfig {
         val entity = WebViewConfigEntity(
-            url = AppConstants.serverType.url,
             userAgent = createUserAgent()
         )
         return entity.toDomain()
