@@ -8,6 +8,13 @@ android {
     namespace = "co.aos.network"
 }
 
+kotlin {
+    // 코틀린 2.2.0 => 어노테이션 추가 시 param 과 프로퍼티 둘다 적용
+    compilerOptions {
+        freeCompilerArgs.add("-Xannotation-default-target=param-property")
+    }
+}
+
 dependencies {
     // androidx
     implementation(libs.androidx.core.ktx)

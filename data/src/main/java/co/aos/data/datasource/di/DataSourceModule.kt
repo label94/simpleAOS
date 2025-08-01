@@ -1,7 +1,9 @@
 package co.aos.data.datasource.di
 
 import co.aos.data.datasource.CameraOcrDataSource
+import co.aos.data.datasource.NetworkStatusRemoteDataSource
 import co.aos.data.datasource.impl.CameraOcrDataSourceImpl
+import co.aos.data.datasource.impl.NetworkStatusDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,4 +23,11 @@ internal abstract class DataSourceModule {
     abstract fun bindCameraOcrDataSource(
         cameraOcrDataSourceImpl: CameraOcrDataSourceImpl
     ): CameraOcrDataSource
+
+    /** 네트워크 상태 관련 DataSource 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindNetworkStatusDataSource(
+        networkStatusDataSourceImpl: NetworkStatusDataSourceImpl
+    ): NetworkStatusRemoteDataSource
 }

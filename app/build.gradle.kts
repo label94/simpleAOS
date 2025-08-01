@@ -54,4 +54,6 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":feature:webview-feature"))
     implementation(project(":feature:ocr"))
+    implementation(project(":feature:webview-renewal-feature"))
+    implementation(project(":feature:network-error-feature"))
 }

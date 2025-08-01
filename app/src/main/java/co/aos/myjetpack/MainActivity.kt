@@ -9,11 +9,14 @@ import co.aos.base.BaseActivity
 import co.aos.myjetpack.ui.theme.MyJetpackTheme
 import co.aos.myutils.common.AppConstants
 import co.aos.myutils.log.LogUtil
+import co.aos.network_error_feature.test.TestNetworkStatusScreen
+import co.aos.network_error_feature.viewmodel.NetworkStatusViewModel
 import co.aos.ocr.presention.screen.OcrScreen
 import co.aos.webview_feature.presentation.screen.SampleWebScreen
 import co.aos.webview_feature.presentation.state.WebViewContract
 import co.aos.webview_feature.presentation.viewmodel.WebViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.getValue
 
 /**
  * Main
@@ -24,20 +27,17 @@ class MainActivity : BaseActivity() {
     // 웹뷰 관련 뷰모델
     private val webViewModel: WebViewModel by viewModels()
 
+    // 네트워크 상태 관련 뷰모델
+    private val networkStatusViewModel: NetworkStatusViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // 초기 웹뷰 로드에 필요한 url 설정
-        initWebViewUrlSetting(intent)
-
         // UI
         setContent {
             MyJetpackTheme {
-                //OcrScreen()
-                SampleWebScreen(
-                    viewModel = webViewModel
-                )
+
             }
         }
     }
@@ -63,10 +63,10 @@ class MainActivity : BaseActivity() {
         setIntent(intent)
         LogUtil.d(LogUtil.DEFAULT_TAG, "onNewIntent : ${intent.toString()}")
 
-        // intent 에 전달되는 url 이 있으면 그 url로 로드하기 위한 절차 수행
-        initWebViewUrlSetting(intent)
-
-        // 변경 된 url로 웹뷰 리로드
-        webViewModel.setEvent(WebViewContract.Event.ReLoadWebUrl)
+//        // intent 에 전달되는 url 이 있으면 그 url로 로드하기 위한 절차 수행
+//        initWebViewUrlSetting(intent)
+//
+//        // 변경 된 url로 웹뷰 리로드
+//        webViewModel.setEvent(WebViewContract.Event.ReLoadWebUrl)
     }
 }

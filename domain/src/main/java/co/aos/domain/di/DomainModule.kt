@@ -1,9 +1,11 @@
 package co.aos.domain.di
 
 import co.aos.domain.usecase.GetWebViewConfigUseCase
+import co.aos.domain.usecase.NetworkStatusUseCase
 import co.aos.domain.usecase.ObserveCameraOcrUseCase
 import co.aos.domain.usecase.RequestFileChooserUseCase
 import co.aos.domain.usecase.impl.GetWebViewConfigUseCaseImpl
+import co.aos.domain.usecase.impl.NetworkStatusUseCaseImpl
 import co.aos.domain.usecase.impl.ObserveCameraOcrUseCaseImpl
 import co.aos.domain.usecase.impl.RequestFileChooserUseCaseImpl
 import dagger.Binds
@@ -39,4 +41,11 @@ internal abstract class DomainModule {
     abstract fun bindObserveCameraOcrUseCase(
         observeCameraOcrUseCaseImpl: ObserveCameraOcrUseCaseImpl
     ): ObserveCameraOcrUseCase
+
+    /** 네트워크 상태 관련 유스케이스 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindNetworkStatusUseCase(
+        networkStatusUseCaseImpl: NetworkStatusUseCaseImpl
+    ): NetworkStatusUseCase
 }

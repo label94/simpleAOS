@@ -36,4 +36,5 @@ dependencies {
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))
     implementation(project(":domain"))
+    implementation(project(":core:network"))
 }
