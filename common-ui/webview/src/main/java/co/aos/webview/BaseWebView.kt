@@ -15,12 +15,10 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.aos.myutils.log.LogUtil
 import co.aos.webview.utils.BaseWebChromeClient
 import co.aos.webview.utils.BaseWebClient
 import co.aos.webview.utils.WebUtils
-import co.aos.webview.utils.WebViewUiListener
 
 /**
  * 공통 웹뷰
@@ -30,26 +28,26 @@ class BaseWebView(
     attrs: AttributeSet? = null
 ) : WebView(context, attrs)  {
 
-    /** webViewClient 인터페이스 */
+    /** webViewClient 인터페이스((사용 안함)) */
     private var webViewClientInterface: BaseWebClient? = null
 
-    /** chromeClient 인터페이스 */
+    /** chromeClient 인터페이스(사용 안함) */
     private var webViewChromeClientInterface: BaseWebChromeClient? = null
 
-    /** 웹뷰 ui 관련 인터페이스 */
-    private var webViewUiListener: WebViewUiListener? = null
+    /** onPageFinishCallback */
+    var onPageFinishedCallback: ((String?) -> Unit)? = null
 
-    /** 스와이프 레이아웃 관련 */
-    var swipeRefreshLayout: SwipeRefreshLayout? = null
-        set(value) {
-            field = value
-            field?.setOnRefreshListener {
-                field?.let {
-                    it.isRefreshing = false
-                    webViewUiListener?.swipeRefresh(it)
-                }
-            }
-        }
+    /** onShowFileChooserCallback */
+    var onShowFileChooserCallback: ((ValueCallback<Array<out Uri?>?>?, WebChromeClient.FileChooserParams?) -> Boolean)? = null
+
+    /** onReceivedErrorCallback */
+    var onReceivedErrorCallback: ((WebResourceRequest?, WebResourceError?) -> Unit)? = null
+
+    /** onPageStartedCallback */
+    var onPageStartedCallback: ((String?, Bitmap?) -> Unit)? = null
+
+    /** shouldOverrideUrlLoadingCallback */
+    var shouldOverrideUrlLoadingCallback: ((String?) -> Boolean)? = null
 
     /**
      * 초기화(웹뷰 내 설정 정의)
@@ -70,7 +68,7 @@ class BaseWebView(
             loadWithOverviewMode = true // 화면 전체 너비 맞춰 로드(ViewPort와 함께 모바일 최적화)
             domStorageEnabled = true // HTML5 DOM Storage 허용(JS 기발 웹앱 필수)
             loadsImagesAutomatically = true // 이미지 자동 로드(대부분 웹앱 경우 옵션 활성화)
-            allowFileAccess = false // 파일 접근 미허용(보안상 신중하게 사용)
+            allowFileAccess = true // 파일 접근 미허용(보안상 신중하게 사용)
             cacheMode = WebSettings.LOAD_NO_CACHE // 캐시 사용 안함(항상 최신 컨텐츠 로드)
             layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING // 페이지 레이아웃 방식(텍스트 자동 크기 조정)
         }
@@ -79,13 +77,13 @@ class BaseWebView(
         webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "shouldOverrideUrlLoading() : $url")
-                return webViewClientInterface?.shouldOverrideUrlLoading(view, url) ?: false
+                return shouldOverrideUrlLoadingCallback?.invoke(url) ?: false
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "onPageStarted() : $url")
                 super.onPageStarted(view, url, favicon)
-                webViewClientInterface?.onPageStarted(view, url, favicon)
+                onPageStartedCallback?.invoke(url, favicon)
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -95,7 +93,7 @@ class BaseWebView(
                 // 즉각적인 쿠키 동기화를 위함
                 CookieManager.getInstance().flush() // pageFinish 및 onResume 시 쿠키 동기화 필요!
 
-                webViewClientInterface?.onPageFinished(view, url)
+                onPageFinishedCallback?.invoke(url)
             }
 
             override fun onReceivedError(
@@ -105,7 +103,7 @@ class BaseWebView(
             ) {
                 LogUtil.e(LogUtil.WEB_VIEW_LOG_TAG, "onReceivedError() : ${error?.errorCode} desc : ${error?.description}")
                 super.onReceivedError(view, request, error)
-                webViewClientInterface?.onReceivedError(view, request, error)
+                onReceivedErrorCallback?.invoke(request, error)
             }
 
             /**
@@ -146,11 +144,10 @@ class BaseWebView(
                 filePathCallback: ValueCallback<Array<out Uri?>?>?,
                 fileChooserParams: FileChooserParams?
             ): Boolean {
-                return webViewChromeClientInterface?.onShowFileChooser(
-                    webView,
-                    filePathCallback,
-                    fileChooserParams
-                ) ?: super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
+                val acceptTypes = fileChooserParams?.acceptTypes ?: arrayOf()
+                LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "onShowFileChooser() acceptTypes : $acceptTypes")
+                return onShowFileChooserCallback?.invoke(filePathCallback, fileChooserParams)
+                    ?: super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
             }
         }
 
@@ -158,6 +155,15 @@ class BaseWebView(
         val cookieManager = CookieManager.getInstance()
         cookieManager.setAcceptCookie(true)
         cookieManager.setAcceptThirdPartyCookies(this, true)
+
+        // userAgent 설정
+        setCustomUserAgent(createUserAgent())
+
+        // 디버그 모드
+        if (BuildConfig.DEBUG) {
+            setWebViewDebugMode(true)
+            LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "webView Full UA : ${settings.userAgentString}")
+        }
     }
 
     /**
@@ -200,14 +206,6 @@ class BaseWebView(
     }
 
     /**
-     * SwipeRefresh 활성화 세팅
-     * @param isSwipeRefreshBlock SwipeRefresh Block 여부
-     */
-    fun setSwipeRefreshBlock(isSwipeRefreshBlock: Boolean) {
-        swipeRefreshLayout?.isEnabled = !isSwipeRefreshBlock
-    }
-
-    /**
      * 웹뷰 Url 로드
      * */
     fun loadWebViewUrl(url: String?) {
@@ -232,5 +230,29 @@ class BaseWebView(
 
         // 웹뷰에 ua 설정
         settings.userAgentString = "$userAgentString; $customUa;"
+    }
+
+    /** userAgent 생성 */
+    private fun createUserAgent(): String {
+        val userAgent = LinkedHashMap<String, String>().apply {
+            put("APP", "Y")
+            put("DTYPE", "A")
+        }
+
+        if(userAgent.isNotEmpty()) {
+            val sb = StringBuilder()
+            val keys = userAgent.keys.iterator()
+
+            while (keys.hasNext()) {
+                val key = keys.next()
+                sb.append(key).append("=").append(userAgent[key])
+
+                if (keys.hasNext()) {
+                    sb.append(";")
+                }
+            }
+            return sb.toString()
+        }
+        return "APP=Y;DTYPE=A"
     }
 }
