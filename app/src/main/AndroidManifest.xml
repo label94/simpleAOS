@@ -67,6 +67,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|uiMode"
             />
 
+        <activity android:name=".setting.SettingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|uiMode"
+            />
+
         <!-- FileProvider 설정 -->
         <provider
             android:name="androidx.core.content.FileProvider"

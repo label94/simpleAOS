@@ -59,4 +59,5 @@ dependencies {
     implementation(project(":common-ui:permission"))
     implementation(project(":feature:webview-renewal-feature"))
     implementation(project(":feature:network-error-feature"))
+    implementation(project(":feature:setting-feature"))
 }

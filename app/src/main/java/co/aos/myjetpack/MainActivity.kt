@@ -6,8 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import co.aos.base.BaseActivity
-import co.aos.base.utils.moveActivity
-import co.aos.myjetpack.sub.SubWebActivity
 import co.aos.myjetpack.ui.theme.MyJetpackTheme
 import co.aos.myjetpack.web.screen.MainWebViewScreen
 import co.aos.myutils.common.AppConstants
@@ -43,11 +41,7 @@ class MainActivity : BaseActivity() {
             MyJetpackTheme {
                 MainWebViewScreen(
                     webViewModel = webViewModel,
-                    networkStatusViewModel = networkStatusViewModel,
-                    openSubWeb = { url ->
-                        // 서브 웹뷰 연동
-                        moveActivity(SubWebActivity::class.java, WebConstants.MOVE_URL, url)
-                    }
+                    networkStatusViewModel = networkStatusViewModel
                 )
             }
         }

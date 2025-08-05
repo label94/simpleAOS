@@ -12,4 +12,7 @@ sealed class JsEvent {
 
     /** 외부 브라우저 열기 */
     data class OpenWebBrowser(val url: String) : JsEvent()
+
+    /** 앱 설정 메뉴 열기 */
+    data object OpenAppSetting: JsEvent()
 }

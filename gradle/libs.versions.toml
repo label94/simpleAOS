@@ -12,6 +12,7 @@ ksp = "2.2.0-2.0.2"
 
 # androidx ui
 androidxSwiperefreshlayout = "1.1.0"
+composeIconExtended = "1.7.8"
 
 # Project versions
 projectVersionName = "1.0.0"
@@ -28,10 +29,10 @@ kotlinxSerializationJson = "1.9.0"
 kotlinxCoroutines = "1.10.2"
 
 # hilt
-comGoogleDaggerHilt = "2.56.2"
+comGoogleDaggerHilt = "2.57"
 androixHiltCompiler = "1.2.0"
 androidxHiltExt = "1.2.0"
-androidxWorkRuntimeKtx = "2.10.2"
+androidxWorkRuntimeKtx = "2.10.3"
 appcompat = "1.7.1"
 material = "1.12.0"
 
@@ -54,17 +55,17 @@ roomCompiler = "2.7.2"
 roomGradlePlugin = "2.7.2"
 
 # Coil
-coil = "3.2.0"
+coil = "3.3.0"
 
 # chucker
-chucker = "4.1.0"
+chucker = "4.2.0"
 
 # OCR
 mlkit = "16.0.1"
 mlkit-barcode = "17.3.0"
 
 # CameraX
-camera = "1.5.0-beta01"
+camera = "1.5.0-beta02"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -91,6 +92,7 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose" , version.ref = "lifecycleRuntimeKtx"}
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
+androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "composeIconExtended" }
 
 # hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "comGoogleDaggerHilt" }

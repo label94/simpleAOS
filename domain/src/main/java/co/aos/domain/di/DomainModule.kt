@@ -4,10 +4,12 @@ import co.aos.domain.usecase.GetWebViewConfigUseCase
 import co.aos.domain.usecase.NetworkStatusUseCase
 import co.aos.domain.usecase.ObserveCameraOcrUseCase
 import co.aos.domain.usecase.RequestFileChooserUseCase
+import co.aos.domain.usecase.SettingNotificationUseCase
 import co.aos.domain.usecase.impl.GetWebViewConfigUseCaseImpl
 import co.aos.domain.usecase.impl.NetworkStatusUseCaseImpl
 import co.aos.domain.usecase.impl.ObserveCameraOcrUseCaseImpl
 import co.aos.domain.usecase.impl.RequestFileChooserUseCaseImpl
+import co.aos.domain.usecase.impl.SettingNotificationUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -48,4 +50,11 @@ internal abstract class DomainModule {
     abstract fun bindNetworkStatusUseCase(
         networkStatusUseCaseImpl: NetworkStatusUseCaseImpl
     ): NetworkStatusUseCase
+
+    /** 설정 화면 내 알람 권한 관련 유스케이스 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindSettingNotificationUseCase(
+        settingNotificationUseCaseImpl: SettingNotificationUseCaseImpl
+    ): SettingNotificationUseCase
 }

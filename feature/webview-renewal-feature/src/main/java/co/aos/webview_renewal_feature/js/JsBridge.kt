@@ -33,4 +33,10 @@ class JsBridge(
         if (url.isNullOrEmpty()) return
         callback(JsEvent.OpenWebBrowser(url))
     }
+
+    @JavascriptInterface
+    fun openAppSetting() {
+        LogUtil.d(LogUtil.JS_LOG_TAG, "openAppSetting() call!")
+        callback(JsEvent.OpenAppSetting)
+    }
 }

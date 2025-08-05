@@ -9,9 +9,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -23,6 +25,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import co.aos.base.utils.moveActivity
+import co.aos.myjetpack.setting.SettingActivity
+import co.aos.myjetpack.sub.SubWebActivity
 import co.aos.myutils.log.LogUtil
 import co.aos.network_error_feature.screen.NetworkErrorScreen
 import co.aos.network_error_feature.state.NetworkStatusContract
@@ -46,8 +51,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainWebViewScreen(
     networkStatusViewModel: NetworkStatusViewModel,
-    webViewModel: WebViewModel,
-    openSubWeb: ((String) -> Unit)? = null
+    webViewModel: WebViewModel
 ) {
     // snack bar 상태
     val snackBarHostState = remember { SnackbarHostState() }
@@ -115,10 +119,7 @@ fun MainWebViewScreen(
         baseWebView = baseWebView,
         activity = activity,
         fileLauncher = fileLauncher,
-        cameraPermissionLauncher = cameraPermissionLauncher,
-        openSubWeb = { url ->
-            openSubWeb?.invoke(url)
-        }
+        cameraPermissionLauncher = cameraPermissionLauncher
     )
 
     // 생명 주기 관련 처리
@@ -213,8 +214,7 @@ private fun EffectHandler(
     baseWebView: BaseWebView,
     activity: Activity?,
     fileLauncher: ActivityResultLauncher<Intent>,
-    cameraPermissionLauncher: ActivityResultLauncher<String>,
-    openSubWeb: ((String) -> Unit)? = null
+    cameraPermissionLauncher: ActivityResultLauncher<String>
 ) {
     LaunchedEffect(Unit) {
         // 1. URL 변경 감지 -> 웹뷰 로드
@@ -258,7 +258,10 @@ private fun EffectHandler(
                         cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
                     }
                     is WebViewContract.Effect.SubWebViewOpen -> {
-                        openSubWeb?.invoke(effect.url)
+                        activity?.moveActivity(SubWebActivity::class.java, WebConstants.MOVE_URL, effect.url)
+                    }
+                    is WebViewContract.Effect.OpenAppSetting -> {
+                        activity?.moveActivity(SettingActivity::class.java)
                     }
                 }
             }

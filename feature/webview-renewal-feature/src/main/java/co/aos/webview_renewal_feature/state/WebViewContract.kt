@@ -71,5 +71,8 @@ class WebViewContract {
 
         /** 서브 웹 액티비티 실행 */
         data class SubWebViewOpen(val url: String): Effect()
+
+        /** 앱 설정 화면 실행 */
+        data object OpenAppSetting: Effect()
     }
 }

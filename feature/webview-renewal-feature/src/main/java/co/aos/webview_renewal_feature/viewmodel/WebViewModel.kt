@@ -102,6 +102,9 @@ class WebViewModel @Inject constructor(
                     setEffect(WebViewContract.Effect.SubWebViewOpen(url))
                 }
             }
+            is JsEvent.OpenAppSetting -> {
+                setEffect(WebViewContract.Effect.OpenAppSetting)
+            }
         }
     }
 
