@@ -55,6 +55,9 @@ dependencies {
     // 빌드 런타임 오류 방지
     implementation(libs.androidx.work.runtime.ktx)
 
+    // 확장 아이콘
+    implementation(libs.androidx.compose.material.icons)
+
     // 다양한 디스플레이 대응을 위함
     implementation(libs.androidx.compose.material3.window)
 

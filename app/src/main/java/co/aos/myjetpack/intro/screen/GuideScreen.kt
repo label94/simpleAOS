@@ -3,8 +3,11 @@ package co.aos.myjetpack.intro.screen
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,12 +17,16 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -118,6 +125,10 @@ fun GuideScreen(
                     }
                     WindowWidthSizeClass.Medium -> {
                         // 태블릿 레이아웃
+                        TabletDisplay(
+                            requiredPermissionList = requiredPermissionList,
+                            optionalPermissionList = optionalPermissionList
+                        )
                     }
                     WindowWidthSizeClass.Expanded -> {
                         // 대형 레이아웃, 폴 더블
@@ -148,7 +159,12 @@ fun PhoneDisplay(
         )
 
         // 필수 접근 권한
-        PermissionSectionTitle(title = stringResource(R.string.guide_permission_screen_require_title))
+        PermissionSectionTitle(
+            title = stringResource(R.string.guide_permission_screen_require_title),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        )
         requiredPermissionList.forEach {
             PermissionItem(
                 icon = it.icon,
@@ -161,7 +177,12 @@ fun PhoneDisplay(
         Spacer(modifier = Modifier.height(24.dp))
 
         // 선택 접근 권한
-        PermissionSectionTitle(title = stringResource(R.string.guide_permission_screen_optional_title))
+        PermissionSectionTitle(
+            title = stringResource(R.string.guide_permission_screen_optional_title),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        )
         optionalPermissionList.forEach {
             PermissionItem(
                 icon = it.icon,
@@ -190,22 +211,97 @@ fun PhoneDisplay(
 
 /** 태블릿 레이아웃 */
 @Composable
-fun TabletDisplay() {
+fun TabletDisplay(
+    requiredPermissionList: List<GuidePermissionData>,
+    optionalPermissionList: List<GuidePermissionData>
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Text(
+            text = stringResource(R.string.guide_permission_screen_contents),
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .padding(start = 8.dp, end = 8.dp, bottom = 24.dp)
+                .align(Alignment.CenterHorizontally)
+        )
 
+        // 필수 접근 권한
+        PermissionSectionTitle(
+            title = stringResource(R.string.guide_permission_screen_require_title),
+            modifier = Modifier.padding(horizontal = 8.dp) // 좌우 패딩 추가
+        )
+        requiredPermissionList.forEach { permissionData ->
+            PermissionItemCard(
+                icon = permissionData.icon,
+                permissionName = permissionData.name,
+                description = permissionData.description,
+                isOptional = permissionData.isOptional
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // 선택적 접근 권한
+        PermissionSectionTitle(
+            title = stringResource(R.string.guide_permission_screen_optional_title),
+            modifier = Modifier.padding(horizontal = 8.dp) // 좌우 패딩 추가
+        )
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            //columns = GridCells.Adaptive(minSize = 300.dp), // 각 아이템의 최소 너비를 지정하여, 자동으로 열 개수 조절
+            contentPadding = PaddingValues(0.dp), // grid 자체 패딩은 0
+            verticalArrangement = Arrangement.spacedBy(16.dp), // 아이템 간 수직 간격
+            horizontalArrangement = Arrangement.spacedBy(16.dp), // 아이템 간 수평 간격
+            modifier = Modifier.weight(1f)
+        ) {
+            items(optionalPermissionList.size) { index ->
+                PermissionItemCard(
+                    icon = optionalPermissionList[index].icon,
+                    permissionName = optionalPermissionList[index].name,
+                    description = optionalPermissionList[index].description,
+                    isOptional = optionalPermissionList[index].isOptional
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = stringResource(R.string.guide_permission_screen_contents2),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier
+                .padding(horizontal = 8.dp, vertical = 8.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+        Text(
+            text = stringResource(R.string.guide_permission_screen_contents3),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier
+                .padding(horizontal = 8.dp, vertical = 8.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+    }
 }
-
 
 /** 권한 제목 공통 UI */
 @Composable
-fun PermissionSectionTitle(title: String) {
+fun PermissionSectionTitle(title: String, modifier: Modifier) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
+        modifier = modifier
     )
-    HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp))
+    Spacer(modifier = Modifier.height(2.dp))
+
+    HorizontalDivider(modifier = Modifier
+        .fillMaxWidth()
+        .padding(bottom = 8.dp))
 }
 
 /** 공통 권한 내용 UI */
@@ -214,10 +310,11 @@ fun PermissionItem(
     icon: ImageVector,
     permissionName: String,
     description: String,
-    isOptional: Boolean
+    isOptional: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.Top
@@ -250,5 +347,29 @@ fun PermissionItem(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
+    }
+}
+
+/** 공통 권한 내용 UI (Card 형태) */
+@Composable
+fun PermissionItemCard(
+    icon: ImageVector,
+    permissionName: String,
+    description: String,
+    isOptional: Boolean,
+    modifier: Modifier = Modifier
+) {
+    // 각 권한 항목을 Card로 감싸서 시각적 구분 강화
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+       PermissionItem(
+           icon = icon,
+           permissionName = permissionName,
+           description = description,
+           isOptional = isOptional,
+           modifier = Modifier.padding(16.dp)
+       )
     }
 }

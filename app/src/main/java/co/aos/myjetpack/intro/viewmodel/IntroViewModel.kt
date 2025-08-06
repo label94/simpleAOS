@@ -2,10 +2,13 @@ package co.aos.myjetpack.intro.viewmodel
 
 import android.content.Context
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.NetworkWifi
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.lifecycle.viewModelScope
 import co.aos.base.BaseViewModel
 import co.aos.local.pref.SharedPreferenceManager
@@ -102,7 +105,7 @@ class IntroViewModel @Inject constructor(
 
         // 인터넷 관련 권한 설명
         val internetPermission = GuidePermissionData(
-            icon = Icons.Filled.Info,
+            icon = Icons.Filled.NetworkWifi,
             name = context.getString(R.string.guide_permission_internet),
             description = context.getString(R.string.guide_permission_internet_contents),
             isOptional = false
@@ -119,7 +122,7 @@ class IntroViewModel @Inject constructor(
 
         // 카메라 관련 권한 설명
         val cameraPermission = GuidePermissionData(
-            icon = Icons.Filled.Face,
+            icon = Icons.Filled.PhotoCamera,
             name = context.getString(R.string.guide_permission_camera),
             description = context.getString(R.string.guide_permission_camera_contents),
             isOptional = true
@@ -127,7 +130,7 @@ class IntroViewModel @Inject constructor(
 
         // 블루투스 관련 권한 설명
         val bluetoothPermission = GuidePermissionData(
-            icon = Icons.Filled.LocationOn,
+            icon = Icons.Filled.Bluetooth,
             name = context.getString(R.string.guide_permission_bluetooth),
             description = context.getString(R.string.guide_permission_bluetooth_contents),
             isOptional = true
