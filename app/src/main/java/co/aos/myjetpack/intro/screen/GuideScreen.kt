@@ -1,12 +1,14 @@
 package co.aos.myjetpack.intro.screen
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,8 +19,10 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -48,11 +52,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.aos.myjetpack.R
 import co.aos.myjetpack.intro.model.GuidePermissionData
+import co.aos.myjetpack.ui.theme.LightSeaGreen
 import co.aos.myjetpack.ui.theme.White
+import co.aos.myutils.log.LogUtil
 
 /**
  * 접근권한 안내 화면
  * */
+@SuppressLint("UnusedCrossfadeTargetStateParameter")
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class,
     ExperimentalMaterial3Api::class
 )
@@ -95,7 +102,7 @@ fun GuideScreen(
                     .fillMaxWidth()
                     .background(White)
                     .navigationBarsPadding()
-                    .padding(16.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 10.dp, top = 10.dp)
                     .height(56.dp)
             ) {
                 Text(text = stringResource(R.string.btn_ok), fontSize = 18.sp)
@@ -115,23 +122,31 @@ fun GuideScreen(
                     optionalPermissionList = optionalPermissionList
                 )
             } else {
-                when(windowSizeClass.widthSizeClass) {
-                    WindowWidthSizeClass.Compact -> {
-                        // 기본 휴대폰 레이아웃
-                        PhoneDisplay(
-                            requiredPermissionList = requiredPermissionList,
-                            optionalPermissionList = optionalPermissionList
-                        )
-                    }
-                    WindowWidthSizeClass.Medium -> {
-                        // 태블릿 레이아웃
-                        TabletDisplay(
-                            requiredPermissionList = requiredPermissionList,
-                            optionalPermissionList = optionalPermissionList
-                        )
-                    }
-                    WindowWidthSizeClass.Expanded -> {
-                        // 대형 레이아웃, 폴 더블
+                Crossfade(
+                    targetState = windowSizeClass.widthSizeClass,
+                ) { sizeClass ->
+                    when(sizeClass) {
+                        WindowWidthSizeClass.Compact -> {
+                            // 기본 휴대폰 레이아웃
+                            PhoneDisplay(
+                                requiredPermissionList = requiredPermissionList,
+                                optionalPermissionList = optionalPermissionList
+                            )
+                        }
+                        WindowWidthSizeClass.Medium -> {
+                            // 태블릿 레이아웃(세로) or 폴더블 접힌 상태 대응
+                            TabletDisplay(
+                                requiredPermissionList = requiredPermissionList,
+                                optionalPermissionList = optionalPermissionList
+                            )
+                        }
+                        WindowWidthSizeClass.Expanded -> {
+                            // 대형 레이아웃, or 폴더블 펼친 상태 대응
+                            ExpandedDisplay(
+                                requiredPermissionList = requiredPermissionList,
+                                optionalPermissionList = optionalPermissionList
+                            )
+                        }
                     }
                 }
             }
@@ -258,17 +273,17 @@ fun TabletDisplay(
             horizontalArrangement = Arrangement.spacedBy(16.dp), // 아이템 간 수평 간격
             modifier = Modifier.weight(1f)
         ) {
-            items(optionalPermissionList.size) { index ->
+            items(optionalPermissionList) { permissionData ->
                 PermissionItemCard(
-                    icon = optionalPermissionList[index].icon,
-                    permissionName = optionalPermissionList[index].name,
-                    description = optionalPermissionList[index].description,
-                    isOptional = optionalPermissionList[index].isOptional
+                    icon = permissionData.icon,
+                    permissionName = permissionData.name,
+                    description = permissionData.description,
+                    isOptional = permissionData.isOptional
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(6.dp))
 
         Text(
             text = stringResource(R.string.guide_permission_screen_contents2),
@@ -286,6 +301,95 @@ fun TabletDisplay(
                 .padding(horizontal = 8.dp, vertical = 8.dp)
                 .align(Alignment.CenterHorizontally)
         )
+    }
+}
+
+/** 대형 레이아웃 */
+@Composable
+fun ExpandedDisplay(
+    requiredPermissionList: List<GuidePermissionData>,
+    optionalPermissionList: List<GuidePermissionData>
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Text(
+            text = stringResource(R.string.guide_permission_screen_contents),
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier
+                .padding(bottom = 32.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+
+        // 필수 접근 권한
+        PermissionSectionTitle(
+            title = stringResource(R.string.guide_permission_screen_require_title),
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+        requiredPermissionList.forEach { permissionData ->
+            PermissionItemCard(
+                icon = permissionData.icon,
+                permissionName = permissionData.name,
+                description = permissionData.description,
+                isOptional = permissionData.isOptional
+            )
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // 선택적 접근 권한
+        PermissionSectionTitle(
+            title = stringResource(R.string.guide_permission_screen_optional_title),
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 280.dp), // 각 아이템의 최소 너비를 지정하여, 자동으로 열 개수 조절
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            modifier = Modifier.weight(1f)
+        ) {
+            items(optionalPermissionList) { permissionData ->
+                PermissionItemCard(
+                    icon = permissionData.icon,
+                    permissionName = permissionData.name,
+                    description = permissionData.description,
+                    isOptional = permissionData.isOptional
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // 하단 안내 문구
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 10.dp)
+                .align(Alignment.CenterHorizontally),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.guide_permission_screen_contents_expanded_contents),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 3.dp)
+            )
+            Text(
+                text = stringResource(R.string.guide_permission_screen_contents_expanded_contents2),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 3.dp)
+            )
+            Text(
+                text = stringResource(R.string.guide_permission_screen_contents3),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
     }
 }
 

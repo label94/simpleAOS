@@ -9,7 +9,6 @@ import co.aos.base.BaseActivity
 import co.aos.myjetpack.intro.screen.IntroScreen
 import co.aos.myjetpack.intro.viewmodel.IntroViewModel
 import co.aos.myjetpack.ui.theme.MyJetpackTheme
-import co.aos.myutils.common.AppConstants
 import co.aos.myutils.log.LogUtil
 import co.aos.network_error_feature.viewmodel.NetworkStatusViewModel
 import co.aos.webview_renewal_feature.consts.WebConstants
@@ -57,7 +56,7 @@ class MainActivity : BaseActivity() {
         // 인텐트에 전달되는 URL 정보가 있는지 확인
         var intentUrl = intent?.data?.toString() ?: intent?.getStringExtra(WebConstants.MOVE_URL)
         if (intentUrl.isNullOrEmpty()) {
-            intentUrl = AppConstants.serverType.url
+            intentUrl = WebConstants.webServerType.url
         }
         LogUtil.d(LogUtil.DEFAULT_TAG, "intentUrl : $intentUrl")
 
