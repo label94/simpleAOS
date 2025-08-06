@@ -6,8 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import co.aos.base.BaseActivity
+import co.aos.myjetpack.intro.screen.IntroScreen
+import co.aos.myjetpack.intro.viewmodel.IntroViewModel
 import co.aos.myjetpack.ui.theme.MyJetpackTheme
-import co.aos.myjetpack.web.screen.MainWebViewScreen
 import co.aos.myutils.common.AppConstants
 import co.aos.myutils.log.LogUtil
 import co.aos.network_error_feature.viewmodel.NetworkStatusViewModel
@@ -29,6 +30,9 @@ class MainActivity : BaseActivity() {
     // 네트워크 상태 관련 뷰모델
     private val networkStatusViewModel: NetworkStatusViewModel by viewModels()
 
+    // 인트로 뷰모델
+    private val introViewModel: IntroViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,7 +43,8 @@ class MainActivity : BaseActivity() {
         // UI
         setContent {
             MyJetpackTheme {
-                MainWebViewScreen(
+                IntroScreen(
+                    introViewModel = introViewModel,
                     webViewModel = webViewModel,
                     networkStatusViewModel = networkStatusViewModel
                 )
