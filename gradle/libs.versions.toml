@@ -1,5 +1,5 @@
 [versions]
-agp = "8.11.1"
+agp = "8.12.0"
 kotlin = "2.2.0"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -13,6 +13,7 @@ ksp = "2.2.0-2.0.2"
 # androidx ui
 androidxSwiperefreshlayout = "1.1.0"
 composeIconExtended = "1.7.8"
+window = "1.3.2"
 
 # Project versions
 projectVersionName = "1.0.0"
@@ -93,6 +94,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose" , version.ref = "lifecycleRuntimeKtx"}
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "composeIconExtended" }
+androidx-compose-material3-window = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "window"}
 
 # hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "comGoogleDaggerHilt" }

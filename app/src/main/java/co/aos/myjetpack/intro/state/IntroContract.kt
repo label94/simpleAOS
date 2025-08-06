@@ -3,6 +3,7 @@ package co.aos.myjetpack.intro.state
 import co.aos.base.state.UiEffect
 import co.aos.base.state.UiEvent
 import co.aos.base.state.UiState
+import co.aos.myjetpack.intro.model.GuidePermissionData
 
 /**
  * 인트로 관련 기능 명세서
@@ -24,13 +25,18 @@ class IntroContract {
 
         /** 앱 최초 1회 실행 이후 다음 단계로 넘어가기 위한 이벤트 */
         data object OnNextStep: Event()
+
+        /** 초기 접근권한 안내 화면을 구성하기 위한 데이터 생성 */
+        data object LoadGuidePermissionData: Event()
     }
 
     /** 상태 정의 */
     data class State(
         val isNotificationPermission: Boolean = false, // 알림 권한 유무
         val isShowSplash: Boolean = true, // 스플래시 표시 유무
-        val isFirstLaunch: Boolean = false // 최초 실행 유무
+        val isFirstLaunch: Boolean = false, // 최초 실행 유무
+        val guideRequiredPermissionList: List<GuidePermissionData> = emptyList(), // 접근 권한 리스트(필수)
+        val guideOptionalPermissionList: List<GuidePermissionData> = emptyList() // 접근 권한 리스트(선택)
     ): UiState
 
     /** 1회성 이벤트 정의 */

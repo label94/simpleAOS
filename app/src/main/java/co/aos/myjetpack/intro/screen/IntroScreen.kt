@@ -80,7 +80,9 @@ fun IntroScreen(
                 onBack = {
                     // 백키 이벤트 호출
                     introViewModel.setEvent(IntroContract.Event.OnBackPressed)
-                }
+                },
+                requiredPermissionList = introUiState.value.guideRequiredPermissionList,
+                optionalPermissionList = introUiState.value.guideOptionalPermissionList
             )
         }
     }

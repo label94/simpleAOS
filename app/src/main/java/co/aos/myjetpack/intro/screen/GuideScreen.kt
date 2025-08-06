@@ -1,41 +1,99 @@
 package co.aos.myjetpack.intro.screen
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import co.aos.myjetpack.R
+import co.aos.myjetpack.intro.model.GuidePermissionData
 import co.aos.myjetpack.ui.theme.White
 
 /**
  * 접근권한 안내 화면
  * */
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class,
+    ExperimentalMaterial3Api::class
+)
 @Composable
 fun GuideScreen(
     onComplete: () -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    requiredPermissionList: List<GuidePermissionData>,
+    optionalPermissionList: List<GuidePermissionData>
 ) {
+    // 디스플레이 사이즈
+    val activity = LocalActivity.current
+    val windowSizeClass = if (activity != null) {
+        calculateWindowSizeClass(activity = activity)
+    } else {
+        null
+    }
+
     // Back 버튼 처리
     BackHandler {
         onBack.invoke()
     }
 
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(R.string.guide_permission_screen_title))
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+        },
+        bottomBar = {
+            Button(
+                onClick = onComplete,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(White)
+                    .navigationBarsPadding()
+                    .padding(16.dp)
+                    .height(56.dp)
+            ) {
+                Text(text = stringResource(R.string.btn_ok), fontSize = 18.sp)
+            }
+        }
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -43,33 +101,154 @@ fun GuideScreen(
                 .fillMaxSize()
                 .background(White)
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "접근권한 안내화면",
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
+            if (windowSizeClass == null) {
+                // null 인 경우 기본 디스플레이 사용
+                PhoneDisplay(
+                    requiredPermissionList = requiredPermissionList,
+                    optionalPermissionList = optionalPermissionList
                 )
-
-                Spacer(modifier = Modifier.weight(1f)) // 빈 공간으로 밀어내기
-
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-                    onClick = {
-                        onComplete.invoke()
+            } else {
+                when(windowSizeClass.widthSizeClass) {
+                    WindowWidthSizeClass.Compact -> {
+                        // 기본 휴대폰 레이아웃
+                        PhoneDisplay(
+                            requiredPermissionList = requiredPermissionList,
+                            optionalPermissionList = optionalPermissionList
+                        )
                     }
-                ) {
-                    Text(
-                        text = "확인",
-                        fontSize = 30.sp,
-                    )
+                    WindowWidthSizeClass.Medium -> {
+                        // 태블릿 레이아웃
+                    }
+                    WindowWidthSizeClass.Expanded -> {
+                        // 대형 레이아웃, 폴 더블
+                    }
                 }
             }
+        }
+    }
+}
+
+/** 휴대폰 레이아웃 */
+@Composable
+fun PhoneDisplay(
+    requiredPermissionList: List<GuidePermissionData>,
+    optionalPermissionList: List<GuidePermissionData>
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.guide_permission_screen_contents),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 24.dp)
+        )
+
+        // 필수 접근 권한
+        PermissionSectionTitle(title = stringResource(R.string.guide_permission_screen_require_title))
+        requiredPermissionList.forEach {
+            PermissionItem(
+                icon = it.icon,
+                permissionName = it.name,
+                description = it.description,
+                isOptional = it.isOptional
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // 선택 접근 권한
+        PermissionSectionTitle(title = stringResource(R.string.guide_permission_screen_optional_title))
+        optionalPermissionList.forEach {
+            PermissionItem(
+                icon = it.icon,
+                permissionName = it.name,
+                description = it.description,
+                isOptional = it.isOptional
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // 설명 영역
+        Text(
+            text = stringResource(R.string.guide_permission_screen_contents2),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Text(
+            text = stringResource(R.string.guide_permission_screen_contents3),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+/** 태블릿 레이아웃 */
+@Composable
+fun TabletDisplay() {
+
+}
+
+
+/** 권한 제목 공통 UI */
+@Composable
+fun PermissionSectionTitle(title: String) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    )
+    HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp))
+}
+
+/** 공통 권한 내용 UI */
+@Composable
+fun PermissionItem(
+    icon: ImageVector,
+    permissionName: String,
+    description: String,
+    isOptional: Boolean
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = permissionName,
+            tint = if (isOptional) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+            modifier = Modifier.size(36.dp)
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Column {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = permissionName,
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = if (isOptional) Icons.Filled.Info else Icons.Filled.CheckCircle,
+                    contentDescription = if (isOptional) "선택" else "필수",
+                    tint = if (isOptional) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }
