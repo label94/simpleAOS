@@ -79,7 +79,7 @@ class IntroViewModel @Inject constructor(
                 setEvent(IntroContract.Event.UpdateIsFirstLaunch(false))
 
                 // local 저장소 업데이트
-                //sharedPreferenceManager.setBoolean(SharedConstants.KEY_IS_FIRST_LAUNCH, false)
+                sharedPreferenceManager.setBoolean(SharedConstants.KEY_IS_FIRST_LAUNCH, false)
             }
             is IntroContract.Event.LoadGuidePermissionData -> {
                 createGuidePermissionData()
