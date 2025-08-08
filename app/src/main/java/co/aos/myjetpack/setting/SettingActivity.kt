@@ -6,9 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import co.aos.myjetpack.ui.theme.MyJetpackTheme
 import co.aos.myutils.log.LogUtil
-import com.thehyundai.setting_feature.screen.SettingScreen
-import com.thehyundai.setting_feature.state.SettingContract
-import com.thehyundai.setting_feature.viewmodel.SettingViewModel
+import co.aos.setting_feature.screen.SettingScreen
+import co.aos.setting_feature.state.SettingContract
+import co.aos.setting_feature.viewmodel.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

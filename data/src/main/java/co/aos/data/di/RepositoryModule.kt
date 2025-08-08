@@ -4,11 +4,13 @@ import co.aos.data.repository.FileChooserRepositoryImpl
 import co.aos.data.repository.NetworkStatusRepositoryImpl
 import co.aos.data.repository.OcrRepositoryImpl
 import co.aos.data.repository.SettingNotificationRepositoryImpl
+import co.aos.data.repository.UserRepositoryImpl
 import co.aos.data.repository.WebViewConfigRepositoryImpl
 import co.aos.domain.repository.FileChooserRepository
 import co.aos.domain.repository.NetworkStatusRepository
 import co.aos.domain.repository.OcrRepository
 import co.aos.domain.repository.SettingNotificationRepository
+import co.aos.domain.repository.UserRepository
 import co.aos.domain.repository.WebViewConfigRepository
 import dagger.Binds
 import dagger.Module
@@ -57,4 +59,11 @@ internal abstract class RepositoryModule {
     abstract fun bindSettingRepository(
         settingRepositoryImpl: SettingNotificationRepositoryImpl
     ): SettingNotificationRepository
+
+    /** user Repository 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindUserRepository(
+        userRepositoryImpl: UserRepositoryImpl
+    ): UserRepository
 }

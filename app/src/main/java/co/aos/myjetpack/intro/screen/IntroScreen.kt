@@ -17,8 +17,11 @@ import androidx.compose.ui.Modifier
 import co.aos.myjetpack.intro.state.IntroContract
 import co.aos.myjetpack.intro.viewmodel.IntroViewModel
 import co.aos.myjetpack.web.screen.MainWebViewScreen
+import co.aos.myutils.log.LogUtil
 import co.aos.network_error_feature.viewmodel.NetworkStatusViewModel
 import co.aos.permission.NotificationPermissionHandler
+import co.aos.user_feature.login.screen.LoginScreen
+import co.aos.user_feature.login.viewmodel.LoginViewModel
 import co.aos.webview_renewal_feature.viewmodel.WebViewModel
 
 /**
@@ -28,7 +31,8 @@ import co.aos.webview_renewal_feature.viewmodel.WebViewModel
 fun IntroScreen(
     introViewModel: IntroViewModel,
     webViewModel: WebViewModel,
-    networkStatusViewModel: NetworkStatusViewModel
+    networkStatusViewModel: NetworkStatusViewModel,
+    loginViewModel: LoginViewModel
 ) {
     val activity = LocalActivity.current
 
@@ -46,11 +50,26 @@ fun IntroScreen(
         modifier = Modifier
             .fillMaxSize(),
     ) {
-        // 메인 웹뷰 스크린
-        MainWebViewScreen(
-            networkStatusViewModel = networkStatusViewModel,
-            webViewModel = webViewModel
+        // 로그인 화면
+        LoginScreen(
+            viewModel = loginViewModel,
+            onLoginSuccess = { loginInfo ->
+                LogUtil.d(LogUtil.DEFAULT_TAG, "onLoginSuccess() info : $loginInfo")
+            },
+            onShowSnackBar = { str ->
+
+            },
+            onMoveUserJoinPage = {
+
+            }
         )
+
+
+        // 메인 웹뷰 스크린
+//        MainWebViewScreen(
+//            networkStatusViewModel = networkStatusViewModel,
+//            webViewModel = webViewModel
+//        )
 
         // 스플래시 스크린
         AnimatedVisibility(

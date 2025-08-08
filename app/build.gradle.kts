@@ -74,4 +74,5 @@ dependencies {
     implementation(project(":feature:webview-renewal-feature"))
     implementation(project(":feature:network-error-feature"))
     implementation(project(":feature:setting-feature"))
+    implementation(project(":feature:user-feature"))
 }

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.aos.setting_feature"
+    namespace = "co.aos.user_feature"
 }
 
 kotlin {
@@ -23,16 +23,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.androidx.swiperefreshlayout)
-
-    // material icon
-    implementation(libs.androidx.compose.material.icons)
 
     // 모듈 추가
     implementation(project(":core:base"))
     implementation(project(":core:commonUtils:myutils"))
-    implementation(project(":common-ui:common"))
-    implementation(project(":common-ui:permission"))
     implementation(project(":domain"))
-    implementation(project(":core:local"))
+    implementation(project(":common-ui:common"))
 }

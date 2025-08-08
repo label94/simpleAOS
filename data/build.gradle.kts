@@ -37,4 +37,5 @@ dependencies {
     implementation(project(":core:commonUtils:myutils"))
     implementation(project(":domain"))
     implementation(project(":core:network"))
+    implementation(project(":core:roomDB"))
 }

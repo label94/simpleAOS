@@ -1,11 +1,11 @@
 plugins {
-    alias(libs.plugins.multi.module.android.library.compose) // 컴포즈 옵션 적용 된 plugin 추가
-    alias(libs.plugins.multi.module.ui) // ui 옵션 적용 된 plugin 추가
+    alias(libs.plugins.multi.module.android.library)  // library plugin 추가
     alias(libs.plugins.multi.module.hilt) // hilt 관련 plugin 추가
+    alias(libs.plugins.multi.module.android.room) // room 관련 plugin 추가
 }
 
 android {
-    namespace = "com.aos.setting_feature"
+    namespace = "co.aos.roomdb"
 }
 
 kotlin {
@@ -23,16 +23,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.androidx.swiperefreshlayout)
-
-    // material icon
-    implementation(libs.androidx.compose.material.icons)
 
     // 모듈 추가
-    implementation(project(":core:base"))
     implementation(project(":core:commonUtils:myutils"))
-    implementation(project(":common-ui:common"))
-    implementation(project(":common-ui:permission"))
-    implementation(project(":domain"))
-    implementation(project(":core:local"))
 }
