@@ -13,4 +13,19 @@ object SharedConstants {
      * - false : 최초 실행 X
      * */
     const val KEY_IS_FIRST_LAUNCH = "IS_FIRST_LAUNCH"
+
+    /**
+     * 자동 로그인 유무
+     * */
+    const val KEY_IS_AUTO_LOGIN = "IS_AUTO_LOGIN"
+
+    /**
+     * 로그인 아이디
+     * */
+    const val KEY_LOGIN_ID = "LOGIN_ID"
+
+    /**
+     * 패스워드
+     * */
+    const val KEY_LOGIN_PWD = "LOGIN_PWD"
 }
