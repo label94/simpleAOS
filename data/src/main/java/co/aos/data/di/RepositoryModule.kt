@@ -2,12 +2,14 @@ package co.aos.data.di
 
 import co.aos.data.repository.FileChooserRepositoryImpl
 import co.aos.data.repository.NetworkStatusRepositoryImpl
+import co.aos.data.repository.NewOcrRepositoryImpl
 import co.aos.data.repository.OcrRepositoryImpl
 import co.aos.data.repository.SettingNotificationRepositoryImpl
 import co.aos.data.repository.UserRepositoryImpl
 import co.aos.data.repository.WebViewConfigRepositoryImpl
 import co.aos.domain.repository.FileChooserRepository
 import co.aos.domain.repository.NetworkStatusRepository
+import co.aos.domain.repository.NewOcrRepository
 import co.aos.domain.repository.OcrRepository
 import co.aos.domain.repository.SettingNotificationRepository
 import co.aos.domain.repository.UserRepository
@@ -66,4 +68,11 @@ internal abstract class RepositoryModule {
     abstract fun bindUserRepository(
         userRepositoryImpl: UserRepositoryImpl
     ): UserRepository
+
+    /** 신규 OCR 관련 Repository 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindNewOcrRepository(
+        newOcrRepositoryImpl: NewOcrRepositoryImpl
+    ): NewOcrRepository
 }

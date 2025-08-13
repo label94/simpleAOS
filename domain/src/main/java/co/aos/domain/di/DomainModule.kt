@@ -10,6 +10,8 @@ import co.aos.domain.usecase.impl.NetworkStatusUseCaseImpl
 import co.aos.domain.usecase.impl.ObserveCameraOcrUseCaseImpl
 import co.aos.domain.usecase.impl.RequestFileChooserUseCaseImpl
 import co.aos.domain.usecase.impl.SettingNotificationUseCaseImpl
+import co.aos.domain.usecase.newocr.NewOcrRecognizeTextUseCase
+import co.aos.domain.usecase.newocr.impl.NewOcrRecognizeTextUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -57,4 +59,11 @@ internal abstract class DomainModule {
     abstract fun bindSettingNotificationUseCase(
         settingNotificationUseCaseImpl: SettingNotificationUseCaseImpl
     ): SettingNotificationUseCase
+
+    /** 신규 OCR 관련 유스케이스 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindNewOcrRecognizeTextUseCase(
+        newOcrRecognizeTextUseCaseImpl: NewOcrRecognizeTextUseCaseImpl
+    ): NewOcrRecognizeTextUseCase
 }
