@@ -10,6 +10,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -39,10 +40,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
@@ -67,6 +70,9 @@ fun NewOcrScreen(
     val context = LocalContext.current
     val activity = LocalActivity.current
     val lifecycleOwner = LocalLifecycleOwner.current
+
+    // preview
+    val preview = remember { PreviewView(context) }
 
     // 권한 요청
     CameraPermissionHandler {
@@ -93,13 +99,29 @@ fun NewOcrScreen(
                 Box(modifier = Modifier.weight(1f)) {
                     if (uiState.isCameraGranted) {
                         CameraPreviewAndCapture(
+                            preview = preview,
                             context = context,
                             lifecycleOwner = lifecycleOwner,
                             onImageCaptured = { imageProxy ->
                                 try {
+                                    // 1. ImageProxy → Bitmap 변환 + 회전 보정
                                     val bitmap = ImageUtils.imageProxyToBitmap(imageProxy)
+
+                                    // 2. PreviewView 실제 크기 가져오기
+                                    val previewWidth = preview.width
+                                    val previewHeight = preview.height
+
+                                    // 3. UI 가이드 박스 비율로 크롭
+                                    val croppedBitmap = ImageUtils.cropByUiGuideBox(
+                                        bitmap,
+                                        previewWidth,
+                                        previewHeight,
+                                        guideWidthRatio = 0.8f, // 가이드 박스 가로 비율
+                                        guideHeightRatio = 0.32f // 가이드 박스 세로 비율
+                                    )
+                                    viewModel.setEvent(NewOcrContract.Event.OnCaptureBitmap(croppedBitmap))
+
                                     imageProxy.close()
-                                    viewModel.setEvent(NewOcrContract.Event.OnCaptureBitmap(bitmap))
                                 } catch (e: Exception) {
                                     e.printStackTrace()
                                     LogUtil.e(LogUtil.OCR_LOG_TAG, "error : ${e.message}")
@@ -160,7 +182,6 @@ fun NewOcrScreen(
                             }
                         }
                     }// uiState
-
                 }
             }
         }
@@ -180,11 +201,10 @@ fun NewOcrScreen(
 fun CameraPreviewAndCapture(
     context: Context,
     lifecycleOwner: LifecycleOwner,
+    preview: PreviewView,
     onImageCaptured: (ImageProxy) -> Unit,
     onError: (ImageCaptureException) -> Unit
 ) {
-    // preview
-    val preview = remember { PreviewView(context) }
 
     // imageCapture 설정
     val imageCapture = remember {
@@ -219,6 +239,21 @@ fun CameraPreviewAndCapture(
         ) { view ->
             // nothing extra
             (view.parent as? ViewGroup)?.clipToPadding = false
+        }
+
+        // 중앙 영역 가이드 박스
+        Canvas (modifier = Modifier.fillMaxSize()) {
+            val rectWidth = size.width * 0.8f
+            val rectHeight = size.height * 0.32f
+            val left = (size.width - rectWidth) / 2
+            val top = (size.height - rectHeight) / 2
+
+            drawRect(
+                color = Color.White.copy(alpha = 0.5f),
+                topLeft = Offset(left, top),
+                size = Size(rectWidth, rectHeight),
+                style = Stroke(width = 4.dp.toPx())
+            )
         }
 
         // 버튼 영역
