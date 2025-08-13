@@ -18,7 +18,7 @@ import kotlin.coroutines.resumeWithException
 /**
  * 신규 OCR 관련 - OCR Repository 구현체
  * */
-class NewOcrRepositoryImpl @Inject constructor(): NewOcrRepository {
+class NewOcrRepositoryImpl @Inject constructor() : NewOcrRepository {
 
     private val recognizer by lazy {
         // 한국어 최적화 recognizer
@@ -33,14 +33,14 @@ class NewOcrRepositoryImpl @Inject constructor(): NewOcrRepository {
                 .addOnSuccessListener { visionText ->
                     // 성공
                     val blocks = visionText.textBlocks.mapNotNull { block ->
-                    val box = block.boundingBox ?: return@mapNotNull null
+                        val box = block.boundingBox ?: return@mapNotNull null
 
-                    LogUtil.i(LogUtil.OCR_LOG_TAG, "text : ${block.text}")
-                    NewOcrTextBlockModel(block.text, Rect(box), null)
+                        LogUtil.i(LogUtil.OCR_LOG_TAG, "text : ${block.text}")
+                        NewOcrTextBlockModel(block.text, Rect(box), null)
+                    }
+                    cont.resume(NewOcrResult(visionText.text, blocks))
                 }
-                cont.resume(NewOcrResult(visionText.text, blocks))
-            }
-                .addOnFailureListener { e->
+                .addOnFailureListener { e ->
                     // 실패
                     LogUtil.e(LogUtil.OCR_LOG_TAG, "error : ${e.message}")
                     cont.resumeWithException(e)
