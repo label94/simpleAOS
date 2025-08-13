@@ -38,6 +38,9 @@ dependencies {
     implementation(libs.androidx.camera.extensions)
     implementation(libs.androidx.camera.mlkit)
 
+    // 확장 아이콘
+    implementation(libs.androidx.compose.material.icons)
+
     // 모듈 추가
     implementation(project(":core:base"))
     implementation(project(":core:commonUtils:myutils"))

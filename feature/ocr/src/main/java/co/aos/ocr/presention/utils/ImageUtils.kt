@@ -28,6 +28,7 @@ object ImageUtils {
         return bitmap
     }
 
+    /** 회전 보정 */
     private fun rotateBitmap(bitmap: Bitmap, rotationDegrees: Int): Bitmap {
         val matrix = Matrix()
         matrix.postRotate(rotationDegrees.toFloat())

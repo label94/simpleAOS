@@ -64,7 +64,6 @@ class NewOcrViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val result = recognizeTextUseCase(bitmap)
-                LogUtil.e("TestLog", "test block => ${result.blocks}")
 
                 // 결과 데이터 업데이트 요청
                 setEvent(NewOcrContract.Event.UpdateOcrResult(result))
