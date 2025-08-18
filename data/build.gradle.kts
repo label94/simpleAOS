@@ -38,4 +38,5 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":core:network"))
     implementation(project(":core:roomDB"))
+    implementation(project(":core:local"))
 }

@@ -11,4 +11,8 @@ class LoginUseCaseImpl @Inject constructor(
     override suspend fun invoke(id: String, password: String): User? {
         return userRepository.login(id, password)
     }
+
+    override suspend fun invoke(): User? {
+        return userRepository.autoLogin()
+    }
 }

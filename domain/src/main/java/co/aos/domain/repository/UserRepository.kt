@@ -26,4 +26,13 @@ interface UserRepository {
 
     /** 사용자 정보 삭제 */
     suspend fun deleteUser(id: String) : Boolean
+
+    /** 자동 로그인 활성화 유무 */
+    suspend fun  isAutoLogin() : Boolean
+
+    /** 자동 로그인 활성화 및 비활성화*/
+    suspend fun setAutoLogin(isAutoLogin: Boolean)
+
+    /** 자동 로그인 요청 */
+    suspend fun autoLogin() : User?
 }

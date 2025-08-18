@@ -3,7 +3,10 @@ package co.aos.user_feature.login.viewmodel
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import co.aos.base.BaseViewModel
+import co.aos.domain.model.User
+import co.aos.domain.usecase.user.AutoLoginCheckUseCase
 import co.aos.domain.usecase.user.LoginUseCase
+import co.aos.myutils.log.LogUtil
 import co.aos.user_feature.login.model.LoginInfoModel
 import co.aos.user_feature.login.state.LoginContract
 import co.aos.user_feature.utils.UserConst
@@ -20,8 +23,14 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val autoLoginCheckUseCase: AutoLoginCheckUseCase
 ): BaseViewModel<LoginContract.Event, LoginContract.State, LoginContract.Effect>() {
+
+    init {
+        // 자동 로그인 활성화 유무 확인
+        isAutoLoginEnable()
+    }
 
     /** 초기 상태 정의 */
     override fun createInitialState(): LoginContract.State {
@@ -43,7 +52,11 @@ class LoginViewModel @Inject constructor(
                 setEffect(LoginContract.Effect.MovePage(UserConst.UserPage.JOIN.pageName))
             }
             is LoginContract.Event.AutoLogin -> {
+                // 로딩 UI 상태
+                setState { copy(loginState = LoginContract.LoginState.Loading) }
+
                 // 자동 로그인
+                autoLogin()
             }
             is LoginContract.Event.UpdateId -> {
                 // id 상태 업데이트
@@ -54,10 +67,8 @@ class LoginViewModel @Inject constructor(
                 setState { copy(password = event.password) }
             }
             is LoginContract.Event.UpdateIsAutoLogin -> {
-                // isAutoLogin 상태 업데이트
-                setState { copy(isAutoLoginEnable = event.isAutoLoginEnable) }
-
-                // preference 에 저장 로직 필요!
+                // 자동 로그인 설정 값 업데이트
+                updateIsAutoLogin(event.isAutoLoginEnable)
             }
         }
     }
@@ -81,34 +92,75 @@ class LoginViewModel @Inject constructor(
             delay(500)
 
             val user = loginUseCase.invoke(id, password)
-            if (user != null) {
-                // 로그인 상태로 업데이트
-                setState { copy(loginState = LoginContract.LoginState.Login(user)) }
+            updateLoginStateInfo(user)
 
-                // 로그인 상태 저장
-                val loginInfoData = LoginInfoModel(
-                    id = user.id,
-                    password = user.password,
-                    nickname = user.nickname,
-                    profileImagePath = user.profileImagePath
-                )
-
-                // 로그인 완료
-                setEffect(LoginContract.Effect.LoginComplete(loginInfo = loginInfoData))
-            } else {
-                // 비 로그인 상태로 업데이트
-                setState { copy(loginState = LoginContract.LoginState.LoginOut) }
-
-                // 로그인 실패 snack bar 표시
-                setEffect(LoginContract.Effect.ShowSnackBar("로그인에 실패하였습니다."))
-            }
+            // 입력한 값 초기화
+            setState { copy(id = "", password = "") }
         }
     }
 
     /** 자동 로그인 */
     private fun autoLogin() {
-        // 로컬 저장소에서 로그인 정보를 가져온 후 로그인 요청
+        viewModelScope.launch {
+            // 딜레이 추가
+            delay(500)
 
-        // 로그인 요청
+            val user = loginUseCase.invoke()
+            updateLoginStateInfo(user)
+        }
+    }
+
+    /** 로그인 상태 업데이트 */
+    private fun updateLoginStateInfo(user: User?) {
+        if (user != null) {
+            // 로그인 상태로 업데이트
+            setState { copy(loginState = LoginContract.LoginState.Login(user)) }
+
+            // 로그인 상태 저장
+            val loginInfoData = LoginInfoModel(
+                id = user.id,
+                password = user.password,
+                nickname = user.nickname,
+                profileImagePath = user.profileImagePath
+            )
+
+            // 로그인 완료
+            setEffect(LoginContract.Effect.LoginComplete(loginInfo = loginInfoData))
+        } else {
+            // 비 로그인 상태로 업데이트
+            setState { copy(loginState = LoginContract.LoginState.LoginOut) }
+
+            // 로그인 실패 snack bar 표시
+            setEffect(LoginContract.Effect.ShowSnackBar("로그인에 실패하였습니다."))
+        }
+    }
+
+    /** 자동 로그인 관련 설정 상태 업데이트 */
+    private fun updateIsAutoLogin(isAutoLogin: Boolean) {
+        viewModelScope.launch {
+            // 설정 상태 업데이트
+            setState { copy(isAutoLoginEnable = isAutoLogin) }
+
+            // 로컬에도 값을 업데이트
+            saveIsAutoLoginEnable()
+        }
+    }
+
+    /** 자동 로그인 활성화 유무 확인 */
+    private fun isAutoLoginEnable() {
+        viewModelScope.launch {
+            val isAutoLoginEnable = autoLoginCheckUseCase.invoke()
+            LogUtil.d(LogUtil.LOGIN_LOG_TAG, "isAutoLoginEnable : $isAutoLoginEnable")
+
+            // 상태 업데이트
+            setState { copy(isAutoLoginEnable = isAutoLoginEnable) }
+        }
+    }
+
+    /** 자동 로그인 설정 값 로컬에 저장 */
+    private suspend fun saveIsAutoLoginEnable() {
+        val isAutoLoginEnable = currentState.isAutoLoginEnable
+        // 설정 상태 업데이트
+        autoLoginCheckUseCase.invoke(isAutoLoginEnable)
     }
 }

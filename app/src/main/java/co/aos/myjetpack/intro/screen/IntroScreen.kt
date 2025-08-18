@@ -19,6 +19,7 @@ import co.aos.myjetpack.intro.viewmodel.IntroViewModel
 import co.aos.myjetpack.web.screen.MainWebViewScreen
 import co.aos.myutils.log.LogUtil
 import co.aos.network_error_feature.viewmodel.NetworkStatusViewModel
+import co.aos.ocr.presention.screen.NewOcrScreen
 import co.aos.permission.NotificationPermissionHandler
 import co.aos.user_feature.login.screen.LoginScreen
 import co.aos.user_feature.login.viewmodel.LoginViewModel
@@ -55,9 +56,6 @@ fun IntroScreen(
             viewModel = loginViewModel,
             onLoginSuccess = { loginInfo ->
                 LogUtil.d(LogUtil.DEFAULT_TAG, "onLoginSuccess() info : $loginInfo")
-            },
-            onShowSnackBar = { str ->
-
             },
             onMoveUserJoinPage = {
 

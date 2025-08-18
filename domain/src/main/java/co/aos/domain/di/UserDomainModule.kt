@@ -1,5 +1,6 @@
 package co.aos.domain.di
 
+import co.aos.domain.usecase.user.AutoLoginCheckUseCase
 import co.aos.domain.usecase.user.DeleteUserUseCase
 import co.aos.domain.usecase.user.InsertUserUseCase
 import co.aos.domain.usecase.user.LoginUseCase
@@ -7,6 +8,7 @@ import co.aos.domain.usecase.user.SearchUserInfoUseCase
 import co.aos.domain.usecase.user.UpdateNickNameUseCase
 import co.aos.domain.usecase.user.UpdatePasswordUseCase
 import co.aos.domain.usecase.user.UpdateProfileImageUseCase
+import co.aos.domain.usecase.user.impl.AutoLoginCheckUseCaseImpl
 import co.aos.domain.usecase.user.impl.DeleteUserUseCaseImpl
 import co.aos.domain.usecase.user.impl.InsertUserUseCaseImpl
 import co.aos.domain.usecase.user.impl.LoginUseCaseImpl
@@ -75,4 +77,11 @@ internal abstract class UserDomainModule {
     abstract fun bindDeleteUserUseCase(
         deleteUserUseCaseImpl: DeleteUserUseCaseImpl
     ): DeleteUserUseCase
+
+    /** 자동 로그인 관련 유스케이스 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindAutoLoginCheckUseCase(
+        autoLoginCheckUseCaseImpl: AutoLoginCheckUseCaseImpl
+    ): AutoLoginCheckUseCase
 }
