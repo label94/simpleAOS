@@ -1,3 +1,8 @@
+import com.android.build.gradle.internal.api.ApkVariantOutputImpl
+import com.android.build.gradle.internal.tasks.FinalizeBundleTask
+import java.util.Locale
+import kotlin.jvm.java
+
 plugins {
     alias(libs.plugins.multi.module.android.application.compose) // 컴포즈 관련 빌드 옵션 Plugin 추가
     alias(libs.plugins.multi.module.ui) // UI 관련 Plugin 추가
@@ -22,6 +27,25 @@ android {
     // LGPL2.1 : GNU Lesser General Public License 2.1(자동으로 생성)
     androidResources {
         noCompress += listOf("AL2.0", "LGPL2.1")
+    }
+
+    // apk,aab 이름 명칭 설정
+    applicationVariants.all {
+        outputs.all {
+            // APK 이름 명칭
+            if (this is ApkVariantOutputImpl) {
+                outputFileName = "${rootProject.name}-${name}-v${versionName}(${versionCode}).apk"
+            }
+
+            // AAB 이름 명칭
+            val bundleTaskName = "sign${name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}Bundle"
+            tasks.named(bundleTaskName, FinalizeBundleTask::class.java) {
+                val file = finalBundleFile.asFile.get()
+                finalBundleFile.set(
+                    File(file.parent, "${rootProject.name}-${name}-v${versionName}(${versionCode}).aab")
+                )
+            }
+        }
     }
 }
 
