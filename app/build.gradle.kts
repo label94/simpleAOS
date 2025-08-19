@@ -99,4 +99,5 @@ dependencies {
     implementation(project(":feature:network-error-feature"))
     implementation(project(":feature:setting-feature"))
     implementation(project(":feature:user-feature"))
+    implementation(project(":feature:home-feature"))
 }
