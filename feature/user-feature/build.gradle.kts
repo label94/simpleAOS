@@ -24,6 +24,13 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // coil
+    implementation(libs.coil)
+    implementation(libs.coil.network)
+
+    // icon
+    implementation(libs.androidx.compose.material.icons)
+
     // 모듈 추가
     implementation(project(":core:base"))
     implementation(project(":core:commonUtils:myutils"))

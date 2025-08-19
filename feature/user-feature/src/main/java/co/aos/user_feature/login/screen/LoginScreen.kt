@@ -66,7 +66,7 @@ fun LoginScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().imePadding(),
         snackbarHost = {
             SnackbarHost(snackBarHostState)
         }
@@ -75,7 +75,6 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .imePadding()
                 .consumeWindowInsets(PaddingValues())
         ) {
             Column(

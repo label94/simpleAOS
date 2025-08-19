@@ -21,6 +21,7 @@ import co.aos.myutils.log.LogUtil
 import co.aos.network_error_feature.viewmodel.NetworkStatusViewModel
 import co.aos.ocr.presention.screen.NewOcrScreen
 import co.aos.permission.NotificationPermissionHandler
+import co.aos.user_feature.join.screen.JoinScreen
 import co.aos.user_feature.login.screen.LoginScreen
 import co.aos.user_feature.login.viewmodel.LoginViewModel
 import co.aos.webview_renewal_feature.viewmodel.WebViewModel
@@ -42,6 +43,9 @@ fun IntroScreen(
     val effectFlow = introViewModel.effect
     val requestNotificationPermission = remember { mutableStateOf(false) }
 
+    // 회원가입 화면 제어 관련
+    val isJoinScreenVisible = remember { mutableStateOf(false) }
+
     // 백키 핸들러
     BackHandler {
         introViewModel.setEvent(IntroContract.Event.OnBackPressed)
@@ -58,10 +62,9 @@ fun IntroScreen(
                 LogUtil.d(LogUtil.DEFAULT_TAG, "onLoginSuccess() info : $loginInfo")
             },
             onMoveUserJoinPage = {
-
+                isJoinScreenVisible.value = true
             }
         )
-
 
         // 메인 웹뷰 스크린
 //        MainWebViewScreen(
@@ -100,6 +103,22 @@ fun IntroScreen(
                 },
                 requiredPermissionList = introUiState.value.guideRequiredPermissionList,
                 optionalPermissionList = introUiState.value.guideOptionalPermissionList
+            )
+        }
+
+        // 회원가입 스크린
+        AnimatedVisibility(
+            visible = isJoinScreenVisible.value,
+            enter = fadeIn(),
+            exit = fadeOut(animationSpec = tween(delayMillis = 500))
+        ) {
+            JoinScreen(
+                onBack = {
+                    isJoinScreenVisible.value = false
+                },
+                onJoinSuccess = {
+                    isJoinScreenVisible.value = false
+                }
             )
         }
     }
