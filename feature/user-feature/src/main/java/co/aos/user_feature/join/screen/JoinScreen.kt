@@ -51,8 +51,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,13 +62,16 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
+import co.aos.common.noRippleClickable
 import co.aos.common.showSnackBarMessage
 import co.aos.myutils.log.LogUtil
+import co.aos.popup.CommonDialog
 import co.aos.user_feature.join.state.JoinContract
 import co.aos.user_feature.join.viewmodel.JoinViewModel
 import coil3.compose.rememberAsyncImagePainter
@@ -89,6 +94,12 @@ fun JoinScreen(
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
+    // 팝업 관련
+    var showDialog by remember { mutableStateOf(false) }
+
+    // ime 포커스 관련
+    val focusManager = LocalFocusManager.current
+
     // 파일 선택 관련 런처
     val fileLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         LogUtil.i(LogUtil.JOIN_LOG_TAG, "fileLauncher code : ${result.resultCode} \n data : ${result.data}")
@@ -110,6 +121,7 @@ fun JoinScreen(
 
     // Back 버튼 처리
     BackHandler {
+        focusManager.clearFocus() // 뒤로가기 시 ime 숨김
         onBack.invoke()
     }
 
@@ -121,7 +133,12 @@ fun JoinScreen(
                     Text("회원가입", style = MaterialTheme.typography.titleLarge)
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(
+                        onClick = {
+                            focusManager.clearFocus() // 닫기 버튼 클릭 시 ime 숨김
+                            onBack.invoke()
+                        }
+                    ) {
                         Icon(Icons.Default.Close, contentDescription = "닫기")
                     }
                 },
@@ -136,7 +153,11 @@ fun JoinScreen(
             JoinButtonLayout(
                 modifier = Modifier.navigationBarsPadding(),
                 isJoinEnable = uiState.isIdValid && (uiState.id.isNotEmpty() && uiState.password.isNotEmpty()),
-                onJoin = { viewModel.setEvent(JoinContract.Event.OnJoin) }
+                onJoin = {
+                    // 회원가입 "완료" 버튼 클릭 시 ime 포커스 해제
+                    focusManager.clearFocus()
+                    viewModel.setEvent(JoinContract.Event.OnJoin)
+                }
             )
         },
         snackbarHost = { SnackbarHost(snackBarHostState) },
@@ -146,6 +167,9 @@ fun JoinScreen(
         Box(
             modifier = Modifier
                 .padding(innerPadding)
+                .noRippleClickable {
+                    focusManager.clearFocus()
+                }
         ) {
             Column(
                 modifier = Modifier
@@ -160,7 +184,10 @@ fun JoinScreen(
                 // 프로필 이미지 영역
                 ProfileLayout(
                     profileImagePath = uiState.profileImagePath,
-                    onProfileClick = { viewModel.setEvent(JoinContract.Event.ClickProfileImage) }
+                    onProfileClick = {
+                        focusManager.clearFocus()
+                        viewModel.setEvent(JoinContract.Event.ClickProfileImage)
+                    }
                 )
 
                 // ID 입력 영역
@@ -175,6 +202,7 @@ fun JoinScreen(
                         viewModel.setEvent(JoinContract.Event.OnUpdateId(it))
                     },
                     onDuplicateCheck = {
+                        focusManager.clearFocus()
                         viewModel.setEvent(JoinContract.Event.CheckIdDuplicate)
                     }
                 )
@@ -216,7 +244,7 @@ fun JoinScreen(
                 is JoinContract.Effect.JoinSuccess -> {
                     // 회원가입 성공 시 기존 데이터 초기화
                     viewModel.setEvent(JoinContract.Event.InitData)
-                    onJoinSuccess.invoke()
+                    showDialog = true
                 }
                 is JoinContract.Effect.RequestCameraPermission -> {
                     cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
@@ -226,6 +254,21 @@ fun JoinScreen(
                 }
             }
         }
+    }
+
+    // 회원가입 안내 팝업
+    if (showDialog) {
+        CommonDialog(
+            title = "안내",
+            message = "회원가입이 완료 되었습니다.",
+            confirmText = "확인",
+            onConfirm = {
+                showDialog = false
+
+                // 회원가입 화면 닫기
+                onJoinSuccess.invoke()
+            },
+        )
     }
 }
 
@@ -244,7 +287,7 @@ fun ProfileLayout(
             .size(140.dp)
             .background(Color.Transparent)
             .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
-            .clickable {
+            .noRippleClickable {
                 // 클릭 시 이벤트 처리
                 onProfileClick.invoke()
             },

@@ -37,7 +37,7 @@ fun CommonDialog(
     confirmText: String = "확인",
     dismissText: String? = null,
     isDismissable: Boolean = true,
-    onDismiss: () -> Unit,
+    onDismiss: () -> Unit = {},
     onConfirm: () -> Unit
 ) {
     Dialog(
