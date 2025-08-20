@@ -1,10 +1,9 @@
-package co.aos.myjetpack.intro.screen
+package co.aos.myjetpack.intro.legacy.screen
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,7 +18,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -51,10 +49,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.aos.myjetpack.R
-import co.aos.myjetpack.intro.model.GuidePermissionData
-import co.aos.myjetpack.ui.theme.LightSeaGreen
+import co.aos.myjetpack.intro.legacy.model.GuidePermissionData
 import co.aos.myjetpack.ui.theme.White
-import co.aos.myutils.log.LogUtil
 
 /**
  * 접근권한 안내 화면

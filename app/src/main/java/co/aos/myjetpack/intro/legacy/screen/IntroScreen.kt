@@ -1,4 +1,4 @@
-package co.aos.myjetpack.intro.screen
+package co.aos.myjetpack.intro.legacy.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
@@ -14,20 +14,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import co.aos.myjetpack.intro.state.IntroContract
-import co.aos.myjetpack.intro.viewmodel.IntroViewModel
+import co.aos.myjetpack.intro.legacy.state.IntroContract
+import co.aos.myjetpack.intro.legacy.viewmodel.IntroViewModel
 import co.aos.myjetpack.web.screen.MainWebViewScreen
-import co.aos.myutils.log.LogUtil
 import co.aos.network_error_feature.viewmodel.NetworkStatusViewModel
-import co.aos.ocr.presention.screen.NewOcrScreen
 import co.aos.permission.NotificationPermissionHandler
 import co.aos.user_feature.join.screen.JoinScreen
-import co.aos.user_feature.login.screen.LoginScreen
 import co.aos.user_feature.login.viewmodel.LoginViewModel
 import co.aos.webview_renewal_feature.viewmodel.WebViewModel
 
 /**
- * Intro 컴포즈 UI
+ * Intro 컴포즈 UI (웹뷰 샘플 전용 인트로 화면)
  * */
 @Composable
 fun IntroScreen(
@@ -56,21 +53,21 @@ fun IntroScreen(
             .fillMaxSize(),
     ) {
         // 로그인 화면
-        LoginScreen(
-            viewModel = loginViewModel,
-            onLoginSuccess = { loginInfo ->
-                LogUtil.d(LogUtil.DEFAULT_TAG, "onLoginSuccess() info : $loginInfo")
-            },
-            onMoveUserJoinPage = {
-                isJoinScreenVisible.value = true
-            }
-        )
+//        LoginScreen(
+//            viewModel = loginViewModel,
+//            onLoginSuccess = { loginInfo ->
+//                LogUtil.d(LogUtil.DEFAULT_TAG, "onLoginSuccess() info : $loginInfo")
+//            },
+//            onMoveUserJoinPage = {
+//                isJoinScreenVisible.value = true
+//            }
+//        )
 
         // 메인 웹뷰 스크린
-//        MainWebViewScreen(
-//            networkStatusViewModel = networkStatusViewModel,
-//            webViewModel = webViewModel
-//        )
+        MainWebViewScreen(
+            networkStatusViewModel = networkStatusViewModel,
+            webViewModel = webViewModel
+        )
 
         // 스플래시 스크린
         AnimatedVisibility(

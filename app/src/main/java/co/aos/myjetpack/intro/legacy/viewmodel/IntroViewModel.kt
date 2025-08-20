@@ -1,11 +1,8 @@
-package co.aos.myjetpack.intro.viewmodel
+package co.aos.myjetpack.intro.legacy.viewmodel
 
 import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bluetooth
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.NetworkWifi
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PhotoCamera
@@ -14,8 +11,8 @@ import co.aos.base.BaseViewModel
 import co.aos.local.pref.SharedPreferenceManager
 import co.aos.local.pref.consts.SharedConstants
 import co.aos.myjetpack.R
-import co.aos.myjetpack.intro.model.GuidePermissionData
-import co.aos.myjetpack.intro.state.IntroContract
+import co.aos.myjetpack.intro.legacy.model.GuidePermissionData
+import co.aos.myjetpack.intro.legacy.state.IntroContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay

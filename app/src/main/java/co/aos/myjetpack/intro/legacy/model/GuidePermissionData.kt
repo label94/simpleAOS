@@ -1,4 +1,4 @@
-package co.aos.myjetpack.intro.model
+package co.aos.myjetpack.intro.legacy.model
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

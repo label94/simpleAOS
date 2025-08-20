@@ -1,9 +1,9 @@
-package co.aos.myjetpack.intro.state
+package co.aos.myjetpack.intro.legacy.state
 
 import co.aos.base.state.UiEffect
 import co.aos.base.state.UiEvent
 import co.aos.base.state.UiState
-import co.aos.myjetpack.intro.model.GuidePermissionData
+import co.aos.myjetpack.intro.legacy.model.GuidePermissionData
 
 /**
  * 인트로 관련 기능 명세서

@@ -52,7 +52,7 @@
         android:name=".MainApplication"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".LegacyMainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|uiMode"
             android:launchMode="singleTop"
             android:exported="true">
