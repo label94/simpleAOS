@@ -100,4 +100,6 @@ dependencies {
     implementation(project(":feature:setting-feature"))
     implementation(project(":feature:user-feature"))
     implementation(project(":feature:home-feature"))
+    implementation(project(":feature:guide-feature"))
+    implementation(project(":feature:splash-feature"))
 }

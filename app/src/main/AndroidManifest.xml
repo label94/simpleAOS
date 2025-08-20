@@ -51,14 +51,26 @@
         android:theme="@style/Theme.MyJetpack"
         android:name=".MainApplication"
         tools:targetApi="31">
-        <activity
-            android:name=".LegacyMainActivity"
+
+        <!-- 웹 전용 Main Activity -->
+<!--        <activity-->
+<!--            android:name=".LegacyMainActivity"-->
+<!--            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|uiMode"-->
+<!--            android:launchMode="singleTop"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+        <!-- Native 전용 Main Activity -->
+        <activity android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|uiMode"
             android:launchMode="singleTop"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
