@@ -1,4 +1,4 @@
-package co.aos.myjetpack.ui.theme
+package co.aos.ui.theme
 
 import android.app.Activity
 import android.os.Build

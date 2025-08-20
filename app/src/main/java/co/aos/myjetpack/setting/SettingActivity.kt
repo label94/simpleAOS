@@ -4,11 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import co.aos.myjetpack.ui.theme.MyJetpackTheme
 import co.aos.myutils.log.LogUtil
 import co.aos.setting_feature.screen.SettingScreen
 import co.aos.setting_feature.state.SettingContract
 import co.aos.setting_feature.viewmodel.SettingViewModel
+import co.aos.ui.theme.MyJetpackTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

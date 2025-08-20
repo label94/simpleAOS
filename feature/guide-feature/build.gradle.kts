@@ -31,6 +31,9 @@ dependencies {
     // icon
     implementation(libs.androidx.compose.material.icons)
 
+    // 다양한 디스플레이 대응을 위함
+    implementation(libs.androidx.compose.material3.window)
+
     // 모듈 추가
     implementation(project(":core:base"))
     implementation(project(":core:commonUtils:myutils"))

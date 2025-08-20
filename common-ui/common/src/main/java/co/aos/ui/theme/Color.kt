@@ -1,4 +1,4 @@
-package co.aos.myjetpack.ui.theme
+package co.aos.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -8,9 +8,9 @@ import androidx.activity.viewModels
 import co.aos.base.BaseActivity
 import co.aos.myjetpack.intro.legacy.screen.IntroScreen
 import co.aos.myjetpack.intro.legacy.viewmodel.IntroViewModel
-import co.aos.myjetpack.ui.theme.MyJetpackTheme
 import co.aos.myutils.log.LogUtil
 import co.aos.network_error_feature.viewmodel.NetworkStatusViewModel
+import co.aos.ui.theme.MyJetpackTheme
 import co.aos.user_feature.login.viewmodel.LoginViewModel
 import co.aos.webview_renewal_feature.consts.WebConstants
 import co.aos.webview_renewal_feature.state.WebViewContract

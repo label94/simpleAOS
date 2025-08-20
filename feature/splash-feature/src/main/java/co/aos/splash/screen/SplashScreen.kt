@@ -1,4 +1,4 @@
-package co.aos.myjetpack.intro.legacy.screen
+package co.aos.splash.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
