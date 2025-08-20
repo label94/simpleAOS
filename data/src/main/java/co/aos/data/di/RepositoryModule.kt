@@ -1,18 +1,22 @@
 package co.aos.data.di
 
 import co.aos.data.repository.FileChooserRepositoryImpl
+import co.aos.data.repository.GuideRepositoryImpl
 import co.aos.data.repository.NetworkStatusRepositoryImpl
 import co.aos.data.repository.NewOcrRepositoryImpl
 import co.aos.data.repository.OcrRepositoryImpl
 import co.aos.data.repository.SettingNotificationRepositoryImpl
+import co.aos.data.repository.SplashRepositoryImpl
 import co.aos.data.repository.UserRepositoryImpl
 import co.aos.data.repository.WebViewConfigRepositoryImpl
 import co.aos.data.repository.WishRepositoryImpl
 import co.aos.domain.repository.FileChooserRepository
+import co.aos.domain.repository.GuideRepository
 import co.aos.domain.repository.NetworkStatusRepository
 import co.aos.domain.repository.NewOcrRepository
 import co.aos.domain.repository.OcrRepository
 import co.aos.domain.repository.SettingNotificationRepository
+import co.aos.domain.repository.SplashRepository
 import co.aos.domain.repository.UserRepository
 import co.aos.domain.repository.WebViewConfigRepository
 import co.aos.domain.repository.WishRepository
@@ -28,6 +32,20 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class RepositoryModule {
+
+    /** 스플래시 관련 Repository 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindSplashRepository(
+        splashRepositoryImpl: SplashRepositoryImpl
+    ): SplashRepository
+
+    /** 최초 실행 관련 Repository 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindGuideRepository(
+        guideRepositoryImpl: GuideRepositoryImpl
+    ): GuideRepository
 
     /** 웹뷰 설정 관련 Repository 주입 */
     @Binds

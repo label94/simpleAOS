@@ -2,11 +2,14 @@ package co.aos.myjetpack
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import co.aos.base.BaseActivity
+import co.aos.myjetpack.intro.newintro.AppNavHost
 import co.aos.myutils.log.LogUtil
 import co.aos.network_error_feature.viewmodel.NetworkStatusViewModel
+import co.aos.ui.theme.MyJetpackTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
@@ -24,7 +27,11 @@ class MainActivity : BaseActivity() {
         enableEdgeToEdge()
         LogUtil.d(LogUtil.DEFAULT_TAG, "onCreate")
 
-
+        setContent {
+            MyJetpackTheme {
+                AppNavHost()
+            }
+        }
     }
 
     override fun onNewIntent(intent: Intent) {

@@ -31,10 +31,14 @@ object LogUtil {
     // js
     const val JS_LOG_TAG = "${DEFAULT_TAG}_js"
 
+    // 로그인
     const val LOGIN_LOG_TAG = "${DEFAULT_TAG}_login"
 
     // 회원가입
     const val JOIN_LOG_TAG = "${DEFAULT_TAG}_join"
+
+    // 스플래시
+    const val SPLASH_LOG_TAG = "${DEFAULT_TAG}_splash"
 
     // build.gradle.kts 에 적용 된 build Type 을 확인하기 위한 상수
     private const val BUILD_TYPE_DEBUG = "debug" // 디버그(개발)

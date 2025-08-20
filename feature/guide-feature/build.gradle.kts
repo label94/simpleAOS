@@ -39,4 +39,5 @@ dependencies {
     implementation(project(":core:commonUtils:myutils"))
     implementation(project(":domain"))
     implementation(project(":common-ui:common"))
+    implementation(project(":common-ui:permission"))
 }

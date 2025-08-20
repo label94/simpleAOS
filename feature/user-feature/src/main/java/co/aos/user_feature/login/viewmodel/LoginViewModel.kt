@@ -154,6 +154,11 @@ class LoginViewModel @Inject constructor(
 
             // 상태 업데이트
             setState { copy(isAutoLoginEnable = isAutoLoginEnable) }
+
+            // 자동 로그인 활성화 됬을 경우, 자동 로그인 절차 수행
+            if (isAutoLoginEnable) {
+                setEvent(LoginContract.Event.AutoLogin)
+            }
         }
     }
 

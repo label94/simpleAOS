@@ -41,16 +41,24 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import co.aos.guide.R
 import co.aos.guide.model.GuidePermissionData
+import co.aos.guide.state.GuideContract
+import co.aos.guide.viewmoel.GuideViewModel
+import co.aos.permission.NotificationPermissionHandler
 import co.aos.ui.theme.White
 import kotlin.collections.forEach
 
@@ -63,10 +71,8 @@ import kotlin.collections.forEach
 )
 @Composable
 fun GuideScreen(
+    viewModel: GuideViewModel = hiltViewModel(),
     onComplete: () -> Unit,
-    onBack: () -> Unit,
-    requiredPermissionList: List<GuidePermissionData>,
-    optionalPermissionList: List<GuidePermissionData>
 ) {
     // 디스플레이 사이즈
     val activity = LocalActivity.current
@@ -76,9 +82,33 @@ fun GuideScreen(
         null
     }
 
+    // 상태
+    val uiState by viewModel.uiState.collectAsState()
+    val effectFlow = viewModel.effect
+    val isRequestPermission = remember { mutableStateOf(false) }
+
     // Back 버튼 처리
     BackHandler {
-        onBack.invoke()
+        if (activity?.isFinishing != true) {
+            activity?.finish()
+        }
+    }
+
+    // 1회성 이벤트 처리
+    LaunchedEffect(effectFlow) {
+        effectFlow.collect { effect ->
+            when(effect) {
+                is GuideContract.Effect.RequestPermission -> {
+                    // 퍼미션 요청
+                    isRequestPermission.value = true
+                }
+            }
+        }
+    }
+
+    // 알림 권한 요청
+    if (isRequestPermission.value) {
+        NotificationPermissionHandler {  }
     }
 
     Scaffold(
@@ -95,7 +125,13 @@ fun GuideScreen(
         },
         bottomBar = {
             Button(
-                onClick = onComplete,
+                onClick = {
+                    // 앱 실행 시 다시 접근권한 안내 화면이 표시 되지 않도록 해당 이벤트 요청
+                    viewModel.setEvent(GuideContract.Event.OnNextStep)
+
+                    // 다음 화면으로 이동
+                    onComplete.invoke()
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(White)
@@ -116,8 +152,8 @@ fun GuideScreen(
             if (windowSizeClass == null) {
                 // null 인 경우 기본 디스플레이 사용
                 PhoneDisplay(
-                    requiredPermissionList = requiredPermissionList,
-                    optionalPermissionList = optionalPermissionList
+                    requiredPermissionList = uiState.guideRequiredPermissionList,
+                    optionalPermissionList = uiState.guideOptionalPermissionList
                 )
             } else {
                 Crossfade(
@@ -127,22 +163,22 @@ fun GuideScreen(
                         WindowWidthSizeClass.Compact -> {
                             // 기본 휴대폰 레이아웃
                             PhoneDisplay(
-                                requiredPermissionList = requiredPermissionList,
-                                optionalPermissionList = optionalPermissionList
+                                requiredPermissionList = uiState.guideRequiredPermissionList,
+                                optionalPermissionList = uiState.guideOptionalPermissionList
                             )
                         }
                         WindowWidthSizeClass.Medium -> {
                             // 태블릿 레이아웃(세로) or 폴더블 접힌 상태 대응
                             TabletDisplay(
-                                requiredPermissionList = requiredPermissionList,
-                                optionalPermissionList = optionalPermissionList
+                                requiredPermissionList = uiState.guideRequiredPermissionList,
+                                optionalPermissionList = uiState.guideOptionalPermissionList
                             )
                         }
                         WindowWidthSizeClass.Expanded -> {
                             // 대형 레이아웃, or 폴더블 펼친 상태 대응
                             ExpandedDisplay(
-                                requiredPermissionList = requiredPermissionList,
-                                optionalPermissionList = optionalPermissionList
+                                requiredPermissionList = uiState.guideRequiredPermissionList,
+                                optionalPermissionList = uiState.guideOptionalPermissionList
                             )
                         }
                     }
