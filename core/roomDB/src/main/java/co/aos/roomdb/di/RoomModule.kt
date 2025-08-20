@@ -23,6 +23,11 @@ object RoomModule {
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase = Room.databaseBuilder(context,
         AppDatabase::class.java, RoomConst.ROOM_DB_NAME).build()
 
+    /** user 관련 */
     @Provides
     fun provideUserDao(appDatabase: AppDatabase) = appDatabase.userDao()
+
+    /** wish 관련 */
+    @Provides
+    fun provideWishDao(appDatabase: AppDatabase) = appDatabase.wishDao()
 }
