@@ -51,6 +51,10 @@ class BarcodeScannerRepositoryImpl @Inject constructor() : BarcodeScannerReposit
                 }?.addOnFailureListener {
                     LogUtil.e(LogUtil.BARCODE_SCAN_LOG_TAG, "barcode scan error : $it")
                     cont.resume(BarcodeResult(""))
+                }?.addOnCompleteListener {
+                    LogUtil.d(LogUtil.BARCODE_SCAN_LOG_TAG, "barcode scan complete")
+                    scanner?.close()
+                    scanner = null
                 }
         }
     }
