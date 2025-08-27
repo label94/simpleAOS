@@ -4,7 +4,9 @@ import co.aos.domain.model.BarcodeResult
 import co.aos.domain.repository.BarcodeScannerRepository
 import co.aos.myutils.log.LogUtil
 import com.google.mlkit.vision.barcode.BarcodeScanner
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -19,7 +21,15 @@ class BarcodeScannerRepositoryImpl @Inject constructor() : BarcodeScannerReposit
 
     private fun getScanner(): BarcodeScanner {
         if (scanner == null) {
-            scanner = BarcodeScanning.getClient()
+            // 인식 가능한 바코드 옵션 정의
+            val options = BarcodeScannerOptions.Builder()
+                .setBarcodeFormats(
+                    Barcode.FORMAT_QR_CODE,
+                    Barcode.FORMAT_CODE_128,
+                    Barcode.FORMAT_EAN_13,
+                    Barcode.FORMAT_EAN_8,
+                ).build()
+            scanner = BarcodeScanning.getClient(options)
         }
         return scanner!!
     }
@@ -31,7 +41,7 @@ class BarcodeScannerRepositoryImpl @Inject constructor() : BarcodeScannerReposit
             scanner?.process(image)
                 ?.addOnSuccessListener { barcodes ->
                     val barcode = barcodes.firstOrNull()
-                    LogUtil.i(LogUtil.BARCODE_SCAN_LOG_TAG, "barcode : $barcode")
+                    LogUtil.d(LogUtil.BARCODE_SCAN_LOG_TAG, "barcode : ${barcode?.rawValue}")
 
                     if (barcode?.rawValue != null) {
                         cont.resume(BarcodeResult(barcode.rawValue ?: ""))
