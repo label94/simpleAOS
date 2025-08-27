@@ -40,6 +40,9 @@ object LogUtil {
     // 스플래시
     const val SPLASH_LOG_TAG = "${DEFAULT_TAG}_splash"
 
+    // barcode 스캔
+    const val BARCODE_SCAN_LOG_TAG = "${DEFAULT_TAG}_barcode"
+
     // build.gradle.kts 에 적용 된 build Type 을 확인하기 위한 상수
     private const val BUILD_TYPE_DEBUG = "debug" // 디버그(개발)
 

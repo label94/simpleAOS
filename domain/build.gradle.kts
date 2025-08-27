@@ -23,6 +23,9 @@ dependencies {
     // camerax
     implementation(libs.androidx.camera.view)
 
+    // barcode
+    implementation(libs.google.mlkit.barcode.scanning)
+
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))
 }

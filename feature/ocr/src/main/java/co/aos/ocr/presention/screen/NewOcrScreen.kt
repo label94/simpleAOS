@@ -225,7 +225,7 @@ fun NewOcrScreen(
  * @param onHeightUpdate 가이드 박스 세로 비율 업데이트 콜백
  * */
 @Composable
-fun CameraPreviewAndCapture(
+private fun CameraPreviewAndCapture(
     context: Context,
     lifecycleOwner: LifecycleOwner,
     preview: PreviewView,

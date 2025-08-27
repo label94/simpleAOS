@@ -102,4 +102,5 @@ dependencies {
     implementation(project(":feature:home-feature"))
     implementation(project(":feature:guide-feature"))
     implementation(project(":feature:splash-feature"))
+    implementation(project(":feature:barcode-feature"))
 }

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "co.aos.ocr"
+    namespace = "co.aos.barcode"
 }
 
 kotlin {
@@ -25,9 +25,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.androidx.swiperefreshlayout)
 
-    // ocr
-    implementation(libs.google.mlkit.text.recognition)
-    implementation(libs.google.mlkit.text.recognition.korean)
+    // barcode 스캔
+    implementation(libs.google.mlkit.barcode.scanning)
 
     // cameraX
     implementation(libs.androidx.camera.core)
@@ -44,7 +43,6 @@ dependencies {
     implementation(project(":core:base"))
     implementation(project(":core:commonUtils:myutils"))
     implementation(project(":domain"))
-    implementation(project(":data"))
     implementation(project(":common-ui:common"))
     implementation(project(":common-ui:permission"))
 }

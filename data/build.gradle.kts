@@ -33,6 +33,9 @@ dependencies {
     implementation(libs.androidx.camera.extensions)
     implementation(libs.androidx.camera.mlkit)
 
+    // barcode
+    implementation(libs.google.mlkit.barcode.scanning)
+
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))
     implementation(project(":domain"))

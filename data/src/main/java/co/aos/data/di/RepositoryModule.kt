@@ -1,5 +1,6 @@
 package co.aos.data.di
 
+import co.aos.data.repository.BarcodeScannerRepositoryImpl
 import co.aos.data.repository.FileChooserRepositoryImpl
 import co.aos.data.repository.GuideRepositoryImpl
 import co.aos.data.repository.NetworkStatusRepositoryImpl
@@ -10,6 +11,7 @@ import co.aos.data.repository.SplashRepositoryImpl
 import co.aos.data.repository.UserRepositoryImpl
 import co.aos.data.repository.WebViewConfigRepositoryImpl
 import co.aos.data.repository.WishRepositoryImpl
+import co.aos.domain.repository.BarcodeScannerRepository
 import co.aos.domain.repository.FileChooserRepository
 import co.aos.domain.repository.GuideRepository
 import co.aos.domain.repository.NetworkStatusRepository
@@ -95,6 +97,13 @@ internal abstract class RepositoryModule {
     abstract fun bindNewOcrRepository(
         newOcrRepositoryImpl: NewOcrRepositoryImpl
     ): NewOcrRepository
+
+    /** barcode 관련 Repository 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindBarcodeScannerRepository(
+        barcodeScannerRepositoryImpl: BarcodeScannerRepositoryImpl
+    ): BarcodeScannerRepository
 
     /** Wish Repository 주입 */
     @Binds

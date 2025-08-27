@@ -7,6 +7,10 @@ import co.aos.domain.usecase.ObserveCameraOcrUseCase
 import co.aos.domain.usecase.RequestFileChooserUseCase
 import co.aos.domain.usecase.SettingNotificationUseCase
 import co.aos.domain.usecase.UpdateIsFirstRunUseCase
+import co.aos.domain.usecase.barcode.ProcessBarcodeStopUseCase
+import co.aos.domain.usecase.barcode.ProcessBarcodeUseCase
+import co.aos.domain.usecase.barcode.impl.ProcessBarcodeStopUseCaseImpl
+import co.aos.domain.usecase.barcode.impl.ProcessBarcodeUseCaseImpl
 import co.aos.domain.usecase.impl.GetWebViewConfigUseCaseImpl
 import co.aos.domain.usecase.impl.IsAppFirstRunUseCaseImpl
 import co.aos.domain.usecase.impl.NetworkStatusUseCaseImpl
@@ -84,4 +88,17 @@ internal abstract class DomainModule {
     abstract fun bindUpdateIsFirstRunUseCase(
         updateIsFirstRunUseCaseImpl: UpdateIsFirstRunUseCaseImpl
     ): UpdateIsFirstRunUseCase
+
+    /** 바코드 스캔 유스케이스 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindProcessBarcodeUseCase(
+        processBarUseCaseImpl: ProcessBarcodeUseCaseImpl
+    ): ProcessBarcodeUseCase
+
+    @Binds
+    @Singleton
+    abstract fun bindProcessBarcodeStopUseCase(
+        processBarcodeStopUseCaseImpl: ProcessBarcodeStopUseCaseImpl
+    ): ProcessBarcodeStopUseCase
 }
