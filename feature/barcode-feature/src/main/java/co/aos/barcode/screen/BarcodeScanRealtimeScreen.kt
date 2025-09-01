@@ -2,6 +2,8 @@ package co.aos.barcode.screen
 
 import android.content.Context
 import android.graphics.Rect
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.annotation.OptIn
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
@@ -104,11 +106,16 @@ private fun RealtimeBarcodeScanScreen(
 
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+    val activity = LocalActivity.current
 
     val previewView = remember { PreviewView(context) }
 
     // 카메라 권한 관련
     val isGrantedCameraPermission = remember { mutableStateOf(false) }
+
+    BackHandler {
+        activity?.finish()
+    }
 
     // 카메라 권한 요청
     CameraPermissionHandler {
