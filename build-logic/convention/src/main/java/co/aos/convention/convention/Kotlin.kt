@@ -22,6 +22,10 @@ internal fun Project.configureKotlinAndroid(
 
         defaultConfig.minSdk = libs.findVersion("projectMinSdkVersion").get().toString().toInt()
 
+        buildFeatures {
+            viewBinding = true
+        }
+
         compileOptions {
             isCoreLibraryDesugaringEnabled = true
 
