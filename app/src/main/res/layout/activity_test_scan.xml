@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00ffffff">
+
+    <!-- 카메라 프리뷰 -->
+<!--    <androidx.camera.view.PreviewView-->
+<!--        android:id="@+id/barcode_preview"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/btn_barcode_close_img"-->
+<!--        android:adjustViewBounds="true"-->
+<!--        android:layout_marginTop="23dp"-->
+<!--        android:layout_marginRight="3dp"-->
+<!--        android:padding="20dp"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:scaleType="fitXY"-->
+<!--        android:src="@drawable/ic_launcher_background"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <androidx.constraintlayout.widget.Guideline-->
+<!--        android:id="@+id/guide_line"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintGuide_percent="0.80" />-->
+
+<!--    <TextView-->
+<!--        app:layout_constraintTop_toBottomOf="@id/guide_line"-->
+<!--        android:gravity="center"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="14dp"-->
+<!--        android:text="바코드를 스캔하시면 물품코드가 자동으로 입력됩니다."-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content" />-->
+
+<!--    <View-->
+<!--        android:id="@+id/view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0.5dp"-->
+<!--        android:background="#B4EF70"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
