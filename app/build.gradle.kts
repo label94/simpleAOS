@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
 
     // test 관련 부분은 해당 모듈에 정의!
     testImplementation(libs.junit)
