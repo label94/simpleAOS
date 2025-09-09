@@ -5,7 +5,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import co.aos.barcode.screen.BarcodeScanScreen
+import co.aos.barcode.screen.NewBarcodeScanRootScreen
+import co.aos.barcode.screen.NewBarcodeScanScreen
+import co.aos.barcode.screen.RealtimeRootScreen
 import co.aos.guide.screen.GuideScreen
+import co.aos.home.main.screen.MainHomeScreen
 import co.aos.myjetpack.main.screen.MainScreen
 import co.aos.splash.screen.SplashScreen
 import co.aos.user_feature.join.screen.JoinScreen
@@ -16,7 +21,8 @@ import co.aos.user_feature.login.screen.LoginScreen
  * */
 @Composable
 fun AppNavHost(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    onTestClick: () -> Unit = {}
 ) {
     NavHost(navController, startDestination = SPLASH_SCREEN) {
 
@@ -84,7 +90,7 @@ fun AppNavHost(
 
         // Main
         composable(MAIN_SCREEN) {
-            MainScreen()
+            MainHomeScreen()
         }
     }
 }

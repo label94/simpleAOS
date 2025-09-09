@@ -15,3 +15,5 @@ val LightSeaGreen = Color(0xFF26A69A)
 val White = Color(0xFFFFFFFF)
 
 val DarkSeaGreen = Color(0xFF8FBC8F)
+
+val LightGreen = Color(0xFF97D5B5)
