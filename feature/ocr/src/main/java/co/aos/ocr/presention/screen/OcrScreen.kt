@@ -28,12 +28,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import co.aos.common.showSnackBarMessage
 import co.aos.ocr.presention.state.OcrContract
 import co.aos.ocr.presention.viewmodel.OcrViewModel
-import co.aos.permission.CameraPermissionHandler
 
 /**
  * OCR 관련 화면

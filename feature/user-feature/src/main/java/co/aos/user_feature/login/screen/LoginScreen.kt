@@ -36,7 +36,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import co.aos.common.showSnackBarMessage
 import co.aos.user_feature.login.model.LoginInfoModel
 import co.aos.user_feature.login.state.LoginContract

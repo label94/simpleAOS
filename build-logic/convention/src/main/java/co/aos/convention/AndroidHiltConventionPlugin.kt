@@ -23,7 +23,7 @@ class AndroidHiltConventionPlugin: Plugin<Project> {
 
             dependencies {
                 add("implementation", libs.findLibrary("hilt.android").get())
-                add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
+                add("implementation", libs.findLibrary("androidx.hilt.lifecycle.viewmodel").get())
                 add("implementation", libs.findLibrary("hilt.ext.work").get())
                 add("ksp", libs.findLibrary("hilt.compiler").get())
             }
