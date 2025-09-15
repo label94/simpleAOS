@@ -75,7 +75,11 @@ class BaseWebView(
 
         /** WebView Client 설정 */
         webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                val url = request?.url?.toString() ?: ""
                 LogUtil.i(LogUtil.WEB_VIEW_LOG_TAG, "shouldOverrideUrlLoading() : $url")
                 return shouldOverrideUrlLoadingCallback?.invoke(url) ?: false
             }
