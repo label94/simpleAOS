@@ -17,3 +17,7 @@ val White = Color(0xFFFFFFFF)
 val DarkSeaGreen = Color(0xFF8FBC8F)
 
 val LightGreen = Color(0xFF97D5B5)
+
+val Red = Color(0xFFE53935)
+
+val MintCream = Color(0xFFF5FFFA)

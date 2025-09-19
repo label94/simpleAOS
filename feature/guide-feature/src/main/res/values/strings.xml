@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">MyJetpack</string>
-
     <!-- 공통 문구 -->
     <string name="btn_ok">확인</string>
 

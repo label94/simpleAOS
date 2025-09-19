@@ -34,7 +34,7 @@ fun BottomBar() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(15.dp)
+                .padding(start = 15.dp, end = 15.dp)
                 .background(White),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween

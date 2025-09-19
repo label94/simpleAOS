@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import co.aos.common.APP_MAIN_NAME
 import co.aos.permission.NotificationPermissionHandler
 import co.aos.splash.state.SplashContract
 import co.aos.splash.viewmodel.SplashViewModel
@@ -42,7 +43,7 @@ fun SplashScreen(
         Text(
             modifier = Modifier
                 .align(Alignment.Center),
-            text = "Android",
+            text = APP_MAIN_NAME,
             fontWeight = FontWeight.Bold,
             fontSize = 30.sp,
             color = Color.White,
