@@ -32,6 +32,7 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
@@ -182,12 +183,14 @@ fun ScannerOverlay(
     var roi by remember { mutableStateOf(RectF()) }
     val density = LocalDensity.current
     val boxSizePx = with(density) { boxSizeDp.toPx() }
+    val cornerRadiusPx = with(density) { 8.dp.toPx() }
+    val borderLinePx = with(density) { 2.dp.toPx() }
 
     Canvas(
         modifier = modifier
             // onSizeChanged 대신 onGloballyPositioned 사용 (초기 레이아웃에서도 안정적)
-            .onGloballyPositioned { coords ->
-                val s = coords.size
+            .onGloballyPositioned { coordinates ->
+                val s = coordinates.size
                 if (s != parentSize) {
                     parentSize = s
                     val cx = s.width / 2f
@@ -203,12 +206,44 @@ fun ScannerOverlay(
                 }
             }
     ) {
-        // ROI 테두리
+        val (width, height) = size // Canvas의 전체 크기
+
+        // 반투명 배경색 설정 (예: 검은색에 50% 투명도)
+        val scrimColor = Color.Black.copy(alpha = 0.5f)
+
+        // ROI 외부 영역 그리기
+        // 상단
         drawRect(
-            color = Color.Green,
+            color = scrimColor,
+            topLeft = Offset.Zero,
+            size = Size(width, roi.top)
+        )
+        // 하단
+        drawRect(
+            color = scrimColor,
+            topLeft = Offset(0f, roi.bottom),
+            size = Size(width, height - roi.bottom)
+        )
+        // 왼쪽
+        drawRect(
+            color = scrimColor,
+            topLeft = Offset(0f, roi.top),
+            size = Size(roi.left, roi.height())
+        )
+        // 오른쪽
+        drawRect(
+            color = scrimColor,
+            topLeft = Offset(roi.right, roi.top),
+            size = Size(width - roi.right, roi.height())
+        )
+
+        // ROI 테두리
+        drawRoundRect(
+            color = Color.White,
             topLeft = Offset(roi.left, roi.top),
             size = Size(roi.width(), roi.height()),
-            style = Stroke(width = 4f)
+            cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
+            style = Stroke(width = borderLinePx)
         )
     }
 }
