@@ -21,3 +21,11 @@ val LightGreen = Color(0xFF97D5B5)
 val Red = Color(0xFFE53935)
 
 val MintCream = Color(0xFFF5FFFA)
+
+val Snow = Color(0xFFFFFAFA)
+
+val Lavender = Color(0xFFE6E6FA)
+
+val GhostWhite = Color(0xFFF8F8FF)
+
+val LavenderBlush = Color(0xFFFFF0F5)

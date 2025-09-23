@@ -27,7 +27,6 @@ import co.aos.common.APP_MAIN_NAME
 @Composable
 fun HomeTopBar(
     scrollBehavior: TopAppBarScrollBehavior,
-    onScanClick: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -39,16 +38,6 @@ fun HomeTopBar(
                 fontFamily = FontFamily.Serif,
                 color = Color.Black
             )
-        },
-        actions = {
-            IconButton(onClick = onScanClick) { // IconButton 사용
-                Icon(
-                    imageVector = Icons.Outlined.DocumentScanner,
-                    tint = Color.Black,
-                    contentDescription = "스캔",
-                    modifier = Modifier.size(35.dp)
-                )
-            }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.White, // 배경색 흰색으로 지정

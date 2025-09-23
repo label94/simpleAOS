@@ -13,6 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -21,6 +25,11 @@ import co.aos.permission.NotificationPermissionHandler
 import co.aos.splash.state.SplashContract
 import co.aos.splash.viewmodel.SplashViewModel
 import co.aos.ui.theme.DarkSeaGreen
+import co.aos.ui.theme.GhostWhite
+import co.aos.ui.theme.Lavender
+import co.aos.ui.theme.LavenderBlush
+import co.aos.ui.theme.Snow
+import co.aos.ui.theme.White
 
 /**
  * 스플래시 화면
@@ -38,7 +47,7 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkSeaGreen)
+            .background(Black)
     ) {
         Text(
             modifier = Modifier
@@ -46,7 +55,9 @@ fun SplashScreen(
             text = APP_MAIN_NAME,
             fontWeight = FontWeight.Bold,
             fontSize = 30.sp,
-            color = Color.White,
+            color = White,
+            fontStyle = FontStyle.Italic,
+            fontFamily = FontFamily.Serif
         )
     }
 

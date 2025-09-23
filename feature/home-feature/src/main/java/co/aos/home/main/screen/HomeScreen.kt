@@ -34,9 +34,6 @@ fun HomeScreen(
         topBar = {
             HomeTopBar(
                 scrollBehavior,
-                onScanClick = {
-
-                }
             )
         }
     ) { innerPadding ->
