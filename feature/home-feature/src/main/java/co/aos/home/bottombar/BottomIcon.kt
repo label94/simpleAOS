@@ -1,9 +1,9 @@
 package co.aos.home.bottombar
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AddBox
+import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.MusicNote
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -14,11 +14,11 @@ enum class BottomIcon(val id: Int, val icon: ImageVector, val label: String, val
     /** 홈 */
     HOME(0, Icons.Outlined.Home, "홈", "home"),
 
-    /** 게시물 작성 */
-    WRITE_BOARD(1, Icons.Outlined.AddBox, "게시물작성", "writeBoard"),
+    /** 달력 */
+    CALENDAR(1, Icons.Outlined.CalendarMonth, "달력", "calendar"),
 
-    /** 음악 */
-    ADD_MUSIC(2, Icons.Outlined.MusicNote, "음악", "music"),
+    /** 탐색 */
+    EXPLORE(2, Icons.Outlined.Explore, "탐색", "explore"),
 
     /** 마이페이지 */
     MY_PAGE(3, Icons.Outlined.Person, "마이페이지", "myPage")
