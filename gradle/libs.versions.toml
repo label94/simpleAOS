@@ -70,6 +70,9 @@ mlkit-barcode = "17.3.0"
 # CameraX
 camera = "1.5.0"
 
+# firebase
+firebase-bom = "33.16.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -166,6 +169,10 @@ androidx-camera-view = { group = "androidx.camera", name = "camera-view", versio
 androidx-camera-video = { group = "androidx.camera", name = "camera-video", version.ref = "camera" }
 androidx-camera-extensions = { group = "androidx.camera", name = "camera-extensions", version.ref = "camera" }
 androidx-camera-mlkit = { group = "androidx.camera", name = "camera-mlkit-vision", version.ref = "camera" }
+
+# firebase
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+
 
 [bundles]
 compose = [

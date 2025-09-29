@@ -93,4 +93,11 @@
 
 # 특정 패키지 코드 난독화 방지
 -keep class co.aos.network.** { *; }
+-keep class co.aos.domain.** { *; }
+-keep class co.aos.data.** { *; }
+
+# Google ML Kit Barcode Scanning
+-keep public class com.google.mlkit.vision.barcode.** { *; }
+-keep public class com.google.mlkit.vision.barcode.common.** { *; }
+-keep public class com.google.mlkit.vision.common.** { *; }
 
