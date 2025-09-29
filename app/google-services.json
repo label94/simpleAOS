@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "614635550035",
+    "project_id": "my-diary-d2e3c",
+    "storage_bucket": "my-diary-d2e3c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614635550035:android:9e047ef5e176d7fbdc1da6",
+        "android_client_info": {
+          "package_name": "co.aos.myjetpack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrrKB8-tSaxaOoBHWjVcjWKy6qYz431G8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.multi.module.android.application.compose) // 컴포즈 관련 빌드 옵션 Plugin 추가
     alias(libs.plugins.multi.module.ui) // UI 관련 Plugin 추가
     alias(libs.plugins.multi.module.hilt) // hilt 관련 Plugin 추가
+    alias(libs.plugins.gms) // google - service
 }
 
 android {
@@ -85,6 +86,12 @@ dependencies {
 
     // 다양한 디스플레이 대응을 위함
     implementation(libs.androidx.compose.material3.window)
+
+    // firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage.ktx)
 
     // 모듈 추가
     implementation(project(":core:base"))
