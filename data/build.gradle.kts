@@ -42,4 +42,5 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:roomDB"))
     implementation(project(":core:local"))
+    implementation(project(":core:firebase"))
 }

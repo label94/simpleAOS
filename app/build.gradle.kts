@@ -87,17 +87,12 @@ dependencies {
     // 다양한 디스플레이 대응을 위함
     implementation(libs.androidx.compose.material3.window)
 
-    // firebase
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.firestore.ktx)
-    implementation(libs.firebase.storage.ktx)
-
     // 모듈 추가
     implementation(project(":core:base"))
     implementation(project(":core:commonUtils:myutils"))
     implementation(project(":core:network"))
     implementation(project(":core:local"))
+    implementation(project(":core:firebase"))
     implementation(project(":feature:webview-feature"))
     implementation(project(":feature:ocr"))
     implementation(project(":common-ui:webview"))
