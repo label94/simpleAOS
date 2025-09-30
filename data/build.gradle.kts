@@ -36,6 +36,9 @@ dependencies {
     // barcode
     implementation(libs.google.mlkit.barcode.scanning)
 
+    implementation(libs.guava)
+    implementation(libs.listenablefuture)
+
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))
     implementation(project(":domain"))

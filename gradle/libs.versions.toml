@@ -74,6 +74,10 @@ camera = "1.5.0"
 # firebase
 firebase = "33.1.0"
 
+# guava
+guava = "31.1-android"
+listenablefuture = "1.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -176,6 +180,10 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx" }
+
+# guaba
+guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
+listenablefuture = { group = "com.google.guava", name = "listenablefuture", version.ref = "listenablefuture" }
 
 [bundles]
 compose = [

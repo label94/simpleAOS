@@ -24,7 +24,11 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     // firebase
-    implementation(platform(libs.firebase.bom))
+    implementation(platform(libs.firebase.bom)) {
+        // Guava 충돌 방지(CameraX와 firebase 동시 사용 시 guava 라이브러리 충돌 방지 위함)
+        exclude(group = "com.google.guava", module = "listenablefuture")
+        exclude(group = "com.google.guava", module = "guava")
+    }
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.storage.ktx)

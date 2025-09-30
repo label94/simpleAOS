@@ -36,6 +36,8 @@ dependencies {
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.extensions)
     implementation(libs.androidx.camera.mlkit)
+    implementation(libs.guava)
+    implementation(libs.listenablefuture)
 
     // 확장 아이콘
     implementation(libs.androidx.compose.material.icons)
