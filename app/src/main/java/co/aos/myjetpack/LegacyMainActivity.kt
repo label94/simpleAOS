@@ -11,7 +11,7 @@ import co.aos.myjetpack.intro.legacy.viewmodel.IntroViewModel
 import co.aos.myutils.log.LogUtil
 import co.aos.network_error_feature.viewmodel.NetworkStatusViewModel
 import co.aos.ui.theme.MyJetpackTheme
-import co.aos.user_feature.login.viewmodel.LoginViewModel
+import co.aos.user_feature.login.legacy.viewmodel.LoginViewModel
 import co.aos.webview_renewal_feature.consts.WebConstants
 import co.aos.webview_renewal_feature.state.WebViewContract
 import co.aos.webview_renewal_feature.viewmodel.WebViewModel

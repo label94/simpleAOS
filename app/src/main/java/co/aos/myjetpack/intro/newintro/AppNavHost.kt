@@ -9,7 +9,7 @@ import co.aos.guide.screen.GuideScreen
 import co.aos.home.main.screen.MainRootUI
 import co.aos.splash.screen.SplashScreen
 import co.aos.user_feature.join.screen.JoinScreen
-import co.aos.user_feature.login.screen.LoginScreen
+import co.aos.user_feature.login.legacy.screen.LoginScreen
 
 /**
  * App Root

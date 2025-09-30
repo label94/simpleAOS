@@ -1,4 +1,4 @@
-package co.aos.user_feature.login.model
+package co.aos.user_feature.login.legacy.model
 
 /**
  * 로그인 했을 때의 정보 데이터

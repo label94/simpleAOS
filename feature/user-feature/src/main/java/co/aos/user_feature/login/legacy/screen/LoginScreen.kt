@@ -1,4 +1,4 @@
-package co.aos.user_feature.login.screen
+package co.aos.user_feature.login.legacy.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,9 +38,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import co.aos.common.showSnackBarMessage
-import co.aos.user_feature.login.model.LoginInfoModel
-import co.aos.user_feature.login.state.LoginContract
-import co.aos.user_feature.login.viewmodel.LoginViewModel
+import co.aos.user_feature.login.legacy.model.LoginInfoModel
+import co.aos.user_feature.login.legacy.state.LoginContract
+import co.aos.user_feature.login.legacy.viewmodel.LoginViewModel
 import co.aos.user_feature.utils.UserConst
 
 /**

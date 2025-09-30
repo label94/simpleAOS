@@ -20,7 +20,7 @@ import co.aos.myjetpack.web.screen.MainWebViewScreen
 import co.aos.network_error_feature.viewmodel.NetworkStatusViewModel
 import co.aos.permission.NotificationPermissionHandler
 import co.aos.user_feature.join.screen.JoinScreen
-import co.aos.user_feature.login.viewmodel.LoginViewModel
+import co.aos.user_feature.login.legacy.viewmodel.LoginViewModel
 import co.aos.webview_renewal_feature.viewmodel.WebViewModel
 
 /**
