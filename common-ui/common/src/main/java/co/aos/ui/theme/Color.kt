@@ -29,3 +29,5 @@ val Lavender = Color(0xFFE6E6FA)
 val GhostWhite = Color(0xFFF8F8FF)
 
 val LavenderBlush = Color(0xFFFFF0F5)
+
+val Black = Color(0xFF000000)

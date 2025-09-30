@@ -59,6 +59,7 @@ import co.aos.guide.model.GuidePermissionData
 import co.aos.guide.state.GuideContract
 import co.aos.guide.viewmoel.GuideViewModel
 import co.aos.permission.NotificationPermissionHandler
+import co.aos.ui.theme.Black
 import co.aos.ui.theme.White
 import kotlin.collections.forEach
 
@@ -118,8 +119,8 @@ fun GuideScreen(
                     Text(text = stringResource(R.string.guide_permission_screen_title))
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = Black,
+                    titleContentColor = White
                 )
             )
         },
@@ -137,7 +138,12 @@ fun GuideScreen(
                     .background(White)
                     .navigationBarsPadding()
                     .padding(start = 16.dp, end = 16.dp, bottom = 10.dp, top = 10.dp)
-                    .height(56.dp)
+                    .height(56.dp),
+                shape = MaterialTheme.shapes.medium,
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    containerColor = Black,
+                    contentColor = White
+                )
             ) {
                 Text(text = stringResource(R.string.btn_ok), fontSize = 18.sp)
             }
@@ -460,7 +466,7 @@ fun PermissionItem(
         Icon(
             imageVector = icon,
             contentDescription = permissionName,
-            tint = if (isOptional) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+            tint = if (isOptional) Black else MaterialTheme.colorScheme.error,
             modifier = Modifier.size(36.dp)
         )
         Spacer(modifier = Modifier.width(16.dp))
@@ -474,7 +480,7 @@ fun PermissionItem(
                 Icon(
                     imageVector = if (isOptional) Icons.Filled.Info else Icons.Filled.CheckCircle,
                     contentDescription = if (isOptional) "선택" else "필수",
-                    tint = if (isOptional) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                    tint = if (isOptional) Black else MaterialTheme.colorScheme.error,
                     modifier = Modifier.size(18.dp)
                 )
             }
