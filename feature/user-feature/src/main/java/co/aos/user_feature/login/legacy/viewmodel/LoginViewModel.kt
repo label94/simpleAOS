@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import co.aos.base.BaseViewModel
 import co.aos.domain.model.User
-import co.aos.domain.usecase.user.AutoLoginCheckUseCase
-import co.aos.domain.usecase.user.LoginUseCase
+import co.aos.domain.usecase.user.legacy.AutoLoginCheckUseCase
+import co.aos.domain.usecase.user.legacy.LoginUseCase
 import co.aos.myutils.log.LogUtil
 import co.aos.user_feature.login.legacy.model.LoginInfoModel
 import co.aos.user_feature.login.legacy.state.LoginContract

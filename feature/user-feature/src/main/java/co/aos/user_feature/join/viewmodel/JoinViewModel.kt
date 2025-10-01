@@ -8,8 +8,8 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.lifecycle.viewModelScope
 import co.aos.base.BaseViewModel
-import co.aos.domain.usecase.user.IdDuplicateCheckUseCase
-import co.aos.domain.usecase.user.InsertUserUseCase
+import co.aos.domain.usecase.user.legacy.IdDuplicateCheckUseCase
+import co.aos.domain.usecase.user.legacy.InsertUserUseCase
 import co.aos.myutils.log.LogUtil
 import co.aos.user_feature.join.model.JoinUserModel
 import co.aos.user_feature.join.model.toDomain
