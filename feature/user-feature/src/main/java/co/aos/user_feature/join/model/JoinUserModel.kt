@@ -1,6 +1,6 @@
 package co.aos.user_feature.join.model
 
-import co.aos.domain.model.User
+import co.aos.domain.model.LegacyUser
 
 /**
  * 회원가입 관련 데이터 모델
@@ -12,7 +12,7 @@ data class JoinUserModel(
     val profileImagePath: String? = null
 )
 
-fun JoinUserModel.toDomain() = User(
+fun JoinUserModel.toDomain() = LegacyUser(
     id = id,
     password = password,
     nickname = nickname,

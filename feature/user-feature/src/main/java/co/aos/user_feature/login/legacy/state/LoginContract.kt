@@ -3,7 +3,7 @@ package co.aos.user_feature.login.legacy.state
 import co.aos.base.state.UiEffect
 import co.aos.base.state.UiEvent
 import co.aos.base.state.UiState
-import co.aos.domain.model.User
+import co.aos.domain.model.LegacyUser
 import co.aos.user_feature.login.legacy.model.LoginInfoModel
 
 /**
@@ -45,7 +45,7 @@ class LoginContract {
         data object Loading : LoginState()
 
         /** 로그인 상태 */
-        data class Login(val user: User?) : LoginState()
+        data class Login(val legacyUser: LegacyUser?) : LoginState()
 
         /** 로그아웃 상태 */
         data object LoginOut : LoginState()

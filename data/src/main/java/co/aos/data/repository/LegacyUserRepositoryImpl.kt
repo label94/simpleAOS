@@ -2,7 +2,7 @@ package co.aos.data.repository
 
 import co.aos.data.entity.toDomain
 import co.aos.data.entity.toEntity
-import co.aos.domain.model.User
+import co.aos.domain.model.LegacyUser
 import co.aos.domain.repository.LegacyUserRepository
 import co.aos.local.pref.SharedPreferenceManager
 import co.aos.local.pref.consts.SharedConstants
@@ -17,14 +17,14 @@ class LegacyUserRepositoryImpl @Inject constructor(
     private val userDao: UserDao,
     private val preferenceManager: SharedPreferenceManager
 ) : LegacyUserRepository {
-    override suspend fun insertUser(userEntity: User): Boolean {
-        return userDao.insertUser(userEntity.toEntity()) != -1L
+    override suspend fun insertUser(legacyUserEntity: LegacyUser): Boolean {
+        return userDao.insertUser(legacyUserEntity.toEntity()) != -1L
     }
 
     override suspend fun login(
         id: String,
         password: String
-    ): User? {
+    ): LegacyUser? {
         val result = userDao.login(id, password)
 
         // DB에서 로그인 데이터가 존재하면, 임시로 SharedPreference 에 저장
@@ -43,7 +43,7 @@ class LegacyUserRepositoryImpl @Inject constructor(
         return userDao.updateProfileImagePath(id, profileImagePath) > 0
     }
 
-    override suspend fun getUser(id: String): User? {
+    override suspend fun getUser(id: String): LegacyUser? {
         val result = userDao.getUser(id)
         return result?.toDomain()
     }
@@ -74,7 +74,7 @@ class LegacyUserRepositoryImpl @Inject constructor(
         preferenceManager.setBoolean(SharedConstants.KEY_IS_AUTO_LOGIN, isAutoLogin)
     }
 
-    override suspend fun autoLogin(): User? {
+    override suspend fun autoLogin(): LegacyUser? {
         val id = preferenceManager.getString(SharedConstants.KEY_LOGIN_ID)
         val pwd = preferenceManager.getString(SharedConstants.KEY_LOGIN_PWD)
 

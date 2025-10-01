@@ -3,7 +3,7 @@ package co.aos.user_feature.login.legacy.viewmodel
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import co.aos.base.BaseViewModel
-import co.aos.domain.model.User
+import co.aos.domain.model.LegacyUser
 import co.aos.domain.usecase.user.legacy.AutoLoginCheckUseCase
 import co.aos.domain.usecase.user.legacy.LoginUseCase
 import co.aos.myutils.log.LogUtil
@@ -110,17 +110,17 @@ class LoginViewModel @Inject constructor(
     }
 
     /** 로그인 상태 업데이트 */
-    private fun updateLoginStateInfo(user: User?) {
-        if (user != null) {
+    private fun updateLoginStateInfo(legacyUser: LegacyUser?) {
+        if (legacyUser != null) {
             // 로그인 상태로 업데이트
-            setState { copy(loginState = LoginContract.LoginState.Login(user)) }
+            setState { copy(loginState = LoginContract.LoginState.Login(legacyUser)) }
 
             // 로그인 상태 저장
             val loginInfoData = LoginInfoModel(
-                id = user.id,
-                password = user.password,
-                nickname = user.nickname,
-                profileImagePath = user.profileImagePath
+                id = legacyUser.id,
+                password = legacyUser.password,
+                nickname = legacyUser.nickname,
+                profileImagePath = legacyUser.profileImagePath
             )
 
             // 로그인 완료

@@ -1,7 +1,5 @@
 package co.aos.domain.repository
 
-import co.aos.domain.model.User
-
 /**
  * 스플래시 관련 Repository
  * */
