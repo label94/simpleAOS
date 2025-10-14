@@ -1,5 +1,6 @@
-package co.aos.user_feature.join.screen
+package co.aos.user_feature.join.legacy.screen
 
+import android.Manifest
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,17 +12,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -68,8 +64,8 @@ import co.aos.common.noRippleClickable
 import co.aos.common.showSnackBarMessage
 import co.aos.myutils.log.LogUtil
 import co.aos.popup.CommonDialog
-import co.aos.user_feature.join.state.JoinContract
-import co.aos.user_feature.join.viewmodel.JoinViewModel
+import co.aos.user_feature.join.legacy.state.JoinContract
+import co.aos.user_feature.join.legacy.viewmodel.JoinViewModel
 import coil3.compose.rememberAsyncImagePainter
 
 /**
@@ -242,7 +238,7 @@ fun JoinScreen(
                     showDialog = true
                 }
                 is JoinContract.Effect.RequestCameraPermission -> {
-                    cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                 }
                 is JoinContract.Effect.ChooserResult -> {
                     fileLauncher.launch(effect.chooserIntent)
@@ -271,7 +267,7 @@ fun JoinScreen(
  * 프로필 이미지 영역
  * */
 @Composable
-fun ProfileLayout(
+private fun ProfileLayout(
     profileImagePath: String? = null,
     onProfileClick: () -> Unit = {}
 ) {
@@ -311,7 +307,7 @@ fun ProfileLayout(
  * ID 입력 레이아웃
  * */
 @Composable
-fun InputIdFieldLayout(
+private fun InputIdFieldLayout(
     id: String,
     isIdValid: Boolean = false,
     onValueChange: (String) -> Unit,
@@ -354,7 +350,7 @@ fun InputIdFieldLayout(
  * 패스워드 입력 영역
  * */
 @Composable
-fun InputPwdFieldLayout(
+private fun InputPwdFieldLayout(
     pwd: String,
     isPwdVisible: Boolean,
     onValueChange: (String) -> Unit,
@@ -380,7 +376,7 @@ fun InputPwdFieldLayout(
 
 /** 닉네임 입력 영역 */
 @Composable
-fun InputNickNameFieldLayout(
+private fun InputNickNameFieldLayout(
     nickname: String,
     onValueChange: (String) -> Unit,
 ) {
@@ -395,7 +391,7 @@ fun InputNickNameFieldLayout(
 
 /** 회원가입 버튼 영역 */
 @Composable
-fun JoinButtonLayout(
+private fun JoinButtonLayout(
     isJoinEnable: Boolean,
     modifier: Modifier = Modifier,
     onJoin: () -> Unit

@@ -31,3 +31,15 @@ val GhostWhite = Color(0xFFF8F8FF)
 val LavenderBlush = Color(0xFFFFF0F5)
 
 val Black = Color(0xFF000000)
+
+val Transparent = Color(0x00000000)
+
+val LightGreen2 = Color(0xFF4CAF50)
+
+val LightRed = Color(0xFFF44336)
+
+val LightBlack1 = Color(0xF20E1113)
+
+val DarkGreen = Color(0xFF2E7D32)
+
+val Magenta = Color(0xFFFF0090)

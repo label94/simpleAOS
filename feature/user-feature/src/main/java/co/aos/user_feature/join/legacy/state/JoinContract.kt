@@ -1,4 +1,4 @@
-package co.aos.user_feature.join.state
+package co.aos.user_feature.join.legacy.state
 
 import android.content.Intent
 import android.net.Uri

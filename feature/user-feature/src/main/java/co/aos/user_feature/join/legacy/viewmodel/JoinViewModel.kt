@@ -1,4 +1,4 @@
-package co.aos.user_feature.join.viewmodel
+package co.aos.user_feature.join.legacy.viewmodel
 
 import android.app.Activity
 import android.content.ContentValues
@@ -11,9 +11,9 @@ import co.aos.base.BaseViewModel
 import co.aos.domain.usecase.user.legacy.IdDuplicateCheckUseCase
 import co.aos.domain.usecase.user.legacy.InsertUserUseCase
 import co.aos.myutils.log.LogUtil
-import co.aos.user_feature.join.model.JoinUserModel
-import co.aos.user_feature.join.model.toDomain
-import co.aos.user_feature.join.state.JoinContract
+import co.aos.user_feature.join.legacy.model.JoinUserModel
+import co.aos.user_feature.join.legacy.model.toDomain
+import co.aos.user_feature.join.legacy.state.JoinContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch

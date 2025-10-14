@@ -8,8 +8,8 @@ import androidx.navigation.compose.rememberNavController
 import co.aos.guide.screen.GuideScreen
 import co.aos.home.main.screen.MainRootUI
 import co.aos.splash.screen.SplashScreen
-import co.aos.user_feature.join.screen.JoinScreen
-import co.aos.user_feature.login.legacy.screen.LoginScreen
+import co.aos.user_feature.login.renewal.screen.UserJoinScreen
+import co.aos.user_feature.login.renewal.screen.UserLoginScreen
 
 /**
  * App Root
@@ -52,7 +52,7 @@ fun AppNavHost(
 
         // Login
         composable(LOGIN_SCREEN) {
-            LoginScreen(
+            UserLoginScreen(
                 onLoginSuccess = {
                     // 로그인 성공 시 메인 화면으로 이동
                     navController.navigate(MAIN_SCREEN) {
@@ -68,7 +68,7 @@ fun AppNavHost(
 
         // Join
         composable(JOIN_SCREEN) {
-            JoinScreen(
+            UserJoinScreen(
                 onBack = {
                     navController.navigate(LOGIN_SCREEN) {
                         popUpTo(JOIN_SCREEN) { inclusive = true } // 스택 제거

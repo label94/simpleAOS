@@ -9,6 +9,7 @@ import co.aos.data.repository.OcrRepositoryImpl
 import co.aos.data.repository.SettingNotificationRepositoryImpl
 import co.aos.data.repository.SplashRepositoryImpl
 import co.aos.data.repository.LegacyUserRepositoryImpl
+import co.aos.data.repository.UserRepositoryImpl
 import co.aos.data.repository.WebViewConfigRepositoryImpl
 import co.aos.data.repository.WishRepositoryImpl
 import co.aos.domain.repository.BarcodeScannerRepository
@@ -20,6 +21,7 @@ import co.aos.domain.repository.OcrRepository
 import co.aos.domain.repository.SettingNotificationRepository
 import co.aos.domain.repository.SplashRepository
 import co.aos.domain.repository.LegacyUserRepository
+import co.aos.domain.repository.UserRepository
 import co.aos.domain.repository.WebViewConfigRepository
 import co.aos.domain.repository.WishRepository
 import dagger.Binds
@@ -87,7 +89,7 @@ internal abstract class RepositoryModule {
     /** user Repository 주입 */
     @Binds
     @Singleton
-    abstract fun bindUserRepository(
+    abstract fun bindLegacyUserRepository(
         legacyUserRepositoryImpl: LegacyUserRepositoryImpl
     ): LegacyUserRepository
 
@@ -111,4 +113,11 @@ internal abstract class RepositoryModule {
     abstract fun bindWishRepository(
         wishRepositoryImpl: WishRepositoryImpl
     ): WishRepository
+
+    /** UserRepository 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindUserRepository(
+        userRepositoryImpl: UserRepositoryImpl
+    ): UserRepository
 }

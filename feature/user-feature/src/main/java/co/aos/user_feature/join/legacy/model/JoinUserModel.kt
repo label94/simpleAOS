@@ -1,4 +1,4 @@
-package co.aos.user_feature.join.model
+package co.aos.user_feature.join.legacy.model
 
 import co.aos.domain.model.LegacyUser
 

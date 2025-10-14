@@ -31,7 +31,6 @@ dependencies {
     }
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
-    implementation(libs.firebase.storage.ktx)
 
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))

@@ -1,8 +1,10 @@
 package co.aos.data.datasource.di
 
 import co.aos.data.datasource.CameraOcrDataSource
+import co.aos.data.datasource.FirebaseUserDataSource
 import co.aos.data.datasource.NetworkStatusRemoteDataSource
 import co.aos.data.datasource.impl.CameraOcrDataSourceImpl
+import co.aos.data.datasource.impl.FirebaseUserDataSourceImpl
 import co.aos.data.datasource.impl.NetworkStatusDataSourceImpl
 import dagger.Binds
 import dagger.Module
@@ -30,4 +32,11 @@ internal abstract class DataSourceModule {
     abstract fun bindNetworkStatusDataSource(
         networkStatusDataSourceImpl: NetworkStatusDataSourceImpl
     ): NetworkStatusRemoteDataSource
+
+    /** firebase User 관련 DataSource 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindFirebaseUserDataSource(
+        firebaseUserDataSourceImpl: FirebaseUserDataSourceImpl
+    ): FirebaseUserDataSource
 }
