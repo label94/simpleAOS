@@ -16,6 +16,8 @@ object SharedConstants {
 
     /**
      * 자동 로그인 유무
+     * - true : 자동 로그인 활성화
+     * - false : 자동 로그인 비활성화
      * */
     const val KEY_IS_AUTO_LOGIN = "IS_AUTO_LOGIN"
 
@@ -28,4 +30,11 @@ object SharedConstants {
      * 패스워드
      * */
     const val KEY_LOGIN_PWD = "LOGIN_PWD"
+
+    /**
+     * id 저장 유무
+     * - true : id 저장 활성화
+     * - false : id 저장 비활성화
+     * */
+    const val KEY_SAVE_ID = "SAVE_ID"
 }

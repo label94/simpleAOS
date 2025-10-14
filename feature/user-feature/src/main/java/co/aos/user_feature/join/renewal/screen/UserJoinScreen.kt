@@ -1,4 +1,4 @@
-package co.aos.user_feature.login.renewal.screen
+package co.aos.user_feature.join.renewal.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -59,7 +59,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import co.aos.common.noRippleClickable
 import co.aos.common.showSnackBarMessage
-import co.aos.myutils.log.LogUtil
 import co.aos.popup.CommonDialog
 import co.aos.ui.theme.Black
 import co.aos.ui.theme.LightGreen2

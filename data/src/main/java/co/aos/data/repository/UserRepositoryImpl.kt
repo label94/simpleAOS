@@ -3,13 +3,16 @@ package co.aos.data.repository
 import co.aos.data.datasource.FirebaseUserDataSource
 import co.aos.domain.model.User
 import co.aos.domain.repository.UserRepository
+import co.aos.local.pref.SharedPreferenceManager
+import co.aos.local.pref.consts.SharedConstants
 import javax.inject.Inject
 
 /**
  * UserRepository 구현 클래스
  * */
 class UserRepositoryImpl @Inject constructor(
-    private val remote: FirebaseUserDataSource
+    private val remote: FirebaseUserDataSource,
+    private val preferenceManager: SharedPreferenceManager
 ): UserRepository {
 
     override suspend fun signUp(
@@ -73,5 +76,29 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun isIdAvailable(id: String): Boolean {
         return remote.isIdAvailable(id)
+    }
+
+    override fun isAutoLogin(): Boolean {
+        return preferenceManager.getBoolean(SharedConstants.KEY_IS_AUTO_LOGIN, false)
+    }
+
+    override fun setAutoLogin(isAutoLogin: Boolean) {
+        preferenceManager.setBoolean(SharedConstants.KEY_IS_AUTO_LOGIN, isAutoLogin)
+    }
+
+    override fun isSaveId(): Boolean {
+        return preferenceManager.getBoolean(SharedConstants.KEY_SAVE_ID, false)
+    }
+
+    override fun setIsSaveId(isSaveId: Boolean) {
+        preferenceManager.setBoolean(SharedConstants.KEY_SAVE_ID, isSaveId)
+    }
+
+    override fun getLoginId(): String {
+        return preferenceManager.getString(SharedConstants.KEY_LOGIN_ID, "")
+    }
+
+    override fun setLoginId(loginId: String) {
+        preferenceManager.setString(SharedConstants.KEY_LOGIN_ID, loginId)
     }
 }

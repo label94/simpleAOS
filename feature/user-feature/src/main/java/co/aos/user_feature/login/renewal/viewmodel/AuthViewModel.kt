@@ -2,6 +2,11 @@ package co.aos.user_feature.login.renewal.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import co.aos.base.BaseViewModel
+import co.aos.domain.usecase.user.renewal.EnableAutoLoginUseCase
+import co.aos.domain.usecase.user.renewal.EnableIsSaveIdUseCase
+import co.aos.domain.usecase.user.renewal.GetLoginIdUseCase
+import co.aos.domain.usecase.user.renewal.IsSaveIdUseCase
+import co.aos.domain.usecase.user.renewal.SetLoginIdUseCase
 import co.aos.domain.usecase.user.renewal.SignInUseCase
 import co.aos.myutils.log.LogUtil
 import co.aos.user_feature.login.renewal.state.AuthContract
@@ -17,7 +22,16 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase,
+    private val enableIsSaveIdUseCase: EnableIsSaveIdUseCase,
+    private val isSaveIdUseCase: IsSaveIdUseCase,
+    private val setLoginIdUseCase: SetLoginIdUseCase,
+    private val getLoginIdUseCase: GetLoginIdUseCase,
+    private val enableAutoLoginUseCase: EnableAutoLoginUseCase,
 ) : BaseViewModel<AuthContract.Event, AuthContract.State, AuthContract.Effect>() {
+
+    init {
+        initData()
+    }
 
     /** 초기 상태 정의 */
     override fun createInitialState(): AuthContract.State {
@@ -33,6 +47,12 @@ class AuthViewModel @Inject constructor(
                 handleSignIn()
             }
             is AuthContract.Event.MoveToSignUpScreen -> { setEffect(AuthContract.Effect.MovePage(UserConst.UserPage.JOIN.pageName)) }
+            is AuthContract.Event.UpdateIsSaveId -> {
+                saveId(event.isSaveIdChecked)
+            }
+            is AuthContract.Event.UpdateIsAutoLogin -> {
+                setState { copy(isAutoLoginChecked = event.isAutoLoginChecked) }
+            }
         }
     }
 
@@ -54,6 +74,11 @@ class AuthViewModel @Inject constructor(
             val result = runCatching { signInUseCase(id, password) }
             setState { copy(isLoading = false) }
             result.onSuccess {
+                // 로그인 성공 시 자동 로그인 flag가 활성화 된 상태인 경우에만 저장
+                if (currentState.isAutoLoginChecked) {
+                    enableAutoLoginUseCase.invoke(true)
+                }
+
                 setEffect(AuthContract.Effect.LoginSuccess(it))
             }.onFailure {
                 it.printStackTrace()
@@ -61,6 +86,31 @@ class AuthViewModel @Inject constructor(
 
                 setEffect(AuthContract.Effect.ShowSnackBar("로그인 실패했습니다."))
             }
+        }
+    }
+
+    /** id 저장 관련 활성화 처리 */
+    private fun saveId(isSaveId: Boolean) {
+        setState { copy(isSaveIdChecked = isSaveId) }
+        enableIsSaveIdUseCase.invoke(isSaveId)
+
+        if (isSaveId) {
+            setLoginIdUseCase.invoke(currentState.id)
+        } else {
+            setLoginIdUseCase.invoke("")
+        }
+    }
+
+    /** 초기 init */
+    private fun initData() {
+        val isSaveId = isSaveIdUseCase.invoke()
+        val loginId = getLoginIdUseCase.invoke()
+        LogUtil.d(LogUtil.LOGIN_LOG_TAG, "initData => isSaveId : $isSaveId , loginId : $loginId")
+
+        // preference에 저장 된 id가 존재할 경우에만 업데이트 이벤트 실행
+        if (isSaveId && loginId.isNotEmpty()) {
+            setEvent(AuthContract.Event.UpdateID(loginId))
+            setEvent(AuthContract.Event.UpdateIsSaveId(true))
         }
     }
 }

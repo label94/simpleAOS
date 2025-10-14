@@ -19,6 +19,9 @@ class SplashContract {
 
         /** 안내 화면 이동 */
         data object MoveGuidePage: Event()
+
+        /** 홈 화면 이동 */
+        data object MoveHomePage: Event()
     }
 
     /** 상태 정의 */
@@ -34,5 +37,8 @@ class SplashContract {
 
         /** 안내 화면 이동 */
         data object MoveGuidePage: Effect()
+
+        /** 홈 화면 이동 */
+        data object MoveHomePage: Effect()
     }
 }

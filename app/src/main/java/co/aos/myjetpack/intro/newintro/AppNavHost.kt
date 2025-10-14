@@ -8,7 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import co.aos.guide.screen.GuideScreen
 import co.aos.home.main.screen.MainRootUI
 import co.aos.splash.screen.SplashScreen
-import co.aos.user_feature.login.renewal.screen.UserJoinScreen
+import co.aos.user_feature.join.renewal.screen.UserJoinScreen
 import co.aos.user_feature.login.renewal.screen.UserLoginScreen
 
 /**
@@ -32,6 +32,12 @@ fun AppNavHost(
                 onNotFirstLaunch = {
                     // 그 외 로그인 화면으로 이동
                     navController.navigate(LOGIN_SCREEN) {
+                        popUpTo(SPLASH_SCREEN) { inclusive = true } // 스택 제거
+                    }
+                },
+                onMoveHomePage = {
+                    // 홈 화면으로 이동
+                    navController.navigate(MAIN_SCREEN) {
                         popUpTo(SPLASH_SCREEN) { inclusive = true } // 스택 제거
                     }
                 }

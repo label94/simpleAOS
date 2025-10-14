@@ -1,6 +1,5 @@
 package co.aos.user_feature.login.renewal.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,10 +13,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -44,7 +46,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import co.aos.common.noRippleClickable
 import co.aos.common.showSnackBarMessage
-import co.aos.domain.model.User
 import co.aos.ui.theme.Black
 import co.aos.ui.theme.Magenta
 import co.aos.ui.theme.Transparent
@@ -176,6 +177,20 @@ fun UserLoginScreen(
                     }
                 )
 
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // 아이디 저장 및 자동 로그인 활성화 유무 UI
+                EnableLoginInfoUI(
+                    isSaveIdChecked = uiState.value.isSaveIdChecked,
+                    isAutoLoginChecked = uiState.value.isAutoLoginChecked,
+                    onSaveIdClick = {
+                        viewModel.setEvent(AuthContract.Event.UpdateIsSaveId(it))
+                    },
+                    onAutoLoginClick = {
+                        viewModel.setEvent(AuthContract.Event.UpdateIsAutoLogin(it))
+                    }
+                )
+
                 Spacer(modifier = Modifier.height(23.dp))
 
                 // 로그인 버튼 영역
@@ -244,5 +259,56 @@ fun UserLoginScreen(
                 }
             }
         }
+    }
+}
+
+/** 아이디 저장 및 자동 로그인 활성화 유무 UI */
+@Composable
+private fun EnableLoginInfoUI(
+    isSaveIdChecked: Boolean,
+    isAutoLoginChecked: Boolean,
+    onSaveIdClick: (Boolean) -> Unit,
+    onAutoLoginClick: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(
+            checked = isSaveIdChecked,
+            onCheckedChange = {
+                onSaveIdClick.invoke(it)
+            },
+            colors = CheckboxDefaults.colors(
+                checkedColor = Magenta,
+                uncheckedColor = Black,
+                checkmarkColor = White
+            )
+        )
+        Text(
+            text = "아이디 저장",
+            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+            color = Black
+        )
+
+        Spacer(modifier = Modifier.width(21.dp))
+
+        Checkbox(
+            checked = isAutoLoginChecked,
+            onCheckedChange = {
+                onAutoLoginClick.invoke(it)
+            },
+            colors = CheckboxDefaults.colors(
+                checkedColor = Magenta,
+                uncheckedColor = Black,
+                checkmarkColor = White
+            )
+        )
+        Text(
+            text = "자동 로그인",
+            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+            color = Black
+        )
     }
 }

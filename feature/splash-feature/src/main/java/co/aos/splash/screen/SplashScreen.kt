@@ -38,7 +38,8 @@ import co.aos.ui.theme.White
 fun SplashScreen(
     viewModel: SplashViewModel = hiltViewModel(),
     onNotFirstLaunch: () -> Unit,
-    onFirstLaunch: () -> Unit
+    onFirstLaunch: () -> Unit,
+    onMoveHomePage: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val effectFlow = viewModel.effect
@@ -82,6 +83,9 @@ fun SplashScreen(
                 }
                 is SplashContract.Effect.MoveGuidePage -> {
                     onFirstLaunch.invoke()
+                }
+                is SplashContract.Effect.MoveHomePage -> {
+                    onMoveHomePage.invoke()
                 }
             }
         }

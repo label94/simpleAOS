@@ -3,6 +3,8 @@ package co.aos.splash.viewmodel
 import androidx.lifecycle.viewModelScope
 import co.aos.base.BaseViewModel
 import co.aos.domain.usecase.IsAppFirstRunUseCase
+import co.aos.domain.usecase.user.renewal.GetCurrentUserUseCase
+import co.aos.domain.usecase.user.renewal.IsAutoLoginUseCase
 import co.aos.myutils.log.LogUtil
 import co.aos.splash.state.SplashContract
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +15,9 @@ import javax.inject.Inject
 /** 스플래시 관련 ViewModel */
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val isAppFirstRunUseCase: IsAppFirstRunUseCase
+    private val isAppFirstRunUseCase: IsAppFirstRunUseCase,
+    private val currentUserUseCase: GetCurrentUserUseCase,
+    private val isAutoLoginUseCase: IsAutoLoginUseCase,
 ): BaseViewModel<SplashContract.Event, SplashContract.State, SplashContract.Effect>() {
 
     init {
@@ -37,6 +41,9 @@ class SplashViewModel @Inject constructor(
             is SplashContract.Event.MoveGuidePage -> {
                 setEffect(SplashContract.Effect.MoveGuidePage)
             }
+            is SplashContract.Event.MoveHomePage -> {
+                setEffect(SplashContract.Effect.MoveHomePage)
+            }
         }
     }
 
@@ -59,7 +66,17 @@ class SplashViewModel @Inject constructor(
                 // 앱 최초로 한번이라도 실행 되면 로그인 화면으로 이동
                 // 그 외 접근권한 화면으로 이동
                 if (isFirstAppRun) {
-                    setEvent(SplashContract.Event.MoveLoginPage)
+                    if (isAutoLoginUseCase.invoke()) {
+                        // 자동 로그인이 활성화 된 상태 + 로그인 세션이 남아 있을 경우에만 홈으로 이동
+                        if (currentUserUseCase.invoke() != null) {
+                            setEvent(SplashContract.Event.MoveHomePage)
+                        } else {
+                            setEvent(SplashContract.Event.MoveLoginPage)
+                        }
+                    } else {
+                        // 그 외 로그인 화면으로 이동
+                        setEvent(SplashContract.Event.MoveLoginPage)
+                    }
                 } else {
                     setEvent(SplashContract.Event.MoveGuidePage)
                 }

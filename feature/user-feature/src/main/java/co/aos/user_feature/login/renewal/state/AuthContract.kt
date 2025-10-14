@@ -22,6 +22,12 @@ class AuthContract {
 
         /** 회원가입 화면 이동 */
         data object MoveToSignUpScreen : Event()
+
+        /** 아이디 저장 체크박스 클릭 */
+        data class UpdateIsSaveId(val isSaveIdChecked: Boolean) : Event()
+
+        /** 자동 로그인 체크박스 클릭 */
+        data class UpdateIsAutoLogin(val isAutoLoginChecked: Boolean) : Event()
     }
 
     /** 상태 정의 */
@@ -30,6 +36,8 @@ class AuthContract {
         val password: String = "",
         val isLoading: Boolean = false,
         val user: User? = null,
+        val isSaveIdChecked: Boolean = false,
+        val isAutoLoginChecked: Boolean = false
     ): UiState
 
     /** 1회성 이벤트 정의 */
