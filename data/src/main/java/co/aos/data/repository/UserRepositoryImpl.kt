@@ -68,6 +68,11 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun signOut() {
         remote.signOut()
+
+        // 로컬에 저장 된 로그인 관련 preference 값을 전부 초기화
+        preferenceManager.setString(SharedConstants.KEY_LOGIN_ID, "")
+        preferenceManager.setBoolean(SharedConstants.KEY_IS_AUTO_LOGIN, false)
+        preferenceManager.setBoolean(SharedConstants.KEY_SAVE_ID, false)
     }
 
     override suspend fun isNicknameAvailable(nickname: String): Boolean {
