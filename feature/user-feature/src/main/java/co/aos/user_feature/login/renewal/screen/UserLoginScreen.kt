@@ -126,7 +126,14 @@ fun UserLoginScreen(
                         unfocusedIndicatorColor = Black,
                         focusedLabelColor = Magenta,
                         unfocusedLabelColor = Black
-                    )
+                    ),
+                    placeholder = {
+                        Text(
+                            text = "아이디를 입력하세요.",
+                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                            color = Black.copy(alpha = 0.3f)
+                        )
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -159,7 +166,14 @@ fun UserLoginScreen(
                         unfocusedIndicatorColor = Black,
                         focusedLabelColor = Magenta,
                         unfocusedLabelColor = Black
-                    )
+                    ),
+                    placeholder = {
+                        Text(
+                            text = "비밀번호를 입력하세요.",
+                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                            color = Black.copy(alpha = 0.3f)
+                        )
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(23.dp))

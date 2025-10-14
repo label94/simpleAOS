@@ -310,6 +310,13 @@ private fun InputIdFieldLayout(
             label = { Text("아이디", fontSize = MaterialTheme.typography.bodyMedium.fontSize) },
             singleLine = true,
             modifier = Modifier.weight(1f),
+            placeholder = {
+                Text(
+                    text = "ex) sample@example.com",
+                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                    color = Black.copy(alpha = 0.3f)
+                )
+            },
             colors = TextFieldDefaults.colors(
                 focusedTextColor = Black,
                 unfocusedTextColor = Black,
@@ -371,6 +378,13 @@ private fun InputPwdFieldLayout(
             focusedLabelColor = Magenta,
             unfocusedLabelColor = Black
         ),
+        placeholder = {
+            Text(
+                text = "비밀번호 6자리 이상 입력",
+                fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                color = Black.copy(alpha = 0.3f)
+            )
+        },
         modifier = Modifier.fillMaxWidth()
     )
 }
