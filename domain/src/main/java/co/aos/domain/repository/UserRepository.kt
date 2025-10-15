@@ -34,4 +34,16 @@ interface UserRepository {
     fun getLoginId(): String
 
     fun setLoginId(loginId: String)
+
+    suspend fun updateMyProfile(
+        newNick: String,
+        newLocalProfileImgCode: Int
+    ): Result<Unit>
+
+    suspend fun currentId(): String?
+
+    suspend fun updatePassword(
+        currentPassword: String,
+        newPassword: String
+    ): Result<Unit>
 }

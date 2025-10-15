@@ -76,4 +76,24 @@ class FirebaseUserDataSourceImpl @Inject constructor(
     override suspend fun releaseId(id: String) {
         fsDS.releaseId(id)
     }
+
+    override suspend fun updateProfileTransaction(
+        uid: String,
+        newNick: String,
+        newLocalProfileImgCode: Int
+    ) {
+        fsDS.updateProfileTransaction(uid, newNick, newLocalProfileImgCode)
+    }
+
+    override suspend fun currentId(): String? {
+        return authDS.currentId()
+    }
+
+    override suspend fun reauthenticate(id: String, password: String) {
+        authDS.reauthenticate(id, password)
+    }
+
+    override suspend fun updatePassword(newPassword: String) {
+        authDS.updatePassword(newPassword)
+    }
 }

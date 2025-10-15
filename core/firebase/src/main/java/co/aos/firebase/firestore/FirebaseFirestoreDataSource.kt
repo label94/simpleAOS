@@ -118,4 +118,58 @@ class FirebaseFirestoreDataSource @Inject constructor (
     suspend fun releaseId(id: String) {
         userIdsRef(id).delete().await()
     }
+
+    /** 프로필 정보 업데이트 */
+    suspend fun updateProfileTransaction(
+        uid: String,
+        newNick: String,
+        newLocalProfileImgCode: Int
+    ) {
+        val newNickKey = newNick.trim().lowercase()
+        val now = System.currentTimeMillis()
+
+        db.runTransaction { txn ->
+            val userRef = users(uid)
+            val userSnap = txn.get(userRef)
+            if (!userSnap.exists()) throw IllegalStateException("NOT_EXIST_USER")
+
+            val oldNick = userSnap.getString(FirebaseFireStoreKey.UsersCollectionKey.NICK_NAME.key) ?: ""
+            val oldNickKey = oldNick.trim().lowercase()
+
+            if (newNickKey != oldNickKey && newNickKey.isNotEmpty()) {
+                val newNickRef = usernameRef(newNickKey)
+                val newNickSnap = txn.get(newNickRef)
+
+                if (newNickSnap.exists() && newNickSnap.getString(FirebaseFireStoreKey.UsersCollectionKey.UID.key) != uid) {
+                    throw IllegalStateException("NICKNAME_TAKEN")
+                }
+
+                txn.set(
+                    newNickRef,
+                    mapOf(
+                        FirebaseFireStoreKey.UsersCollectionKey.UID.key to uid,
+                        FirebaseFireStoreKey.UsersCollectionKey.UPDATED_AT.key to now
+                    )
+                )
+
+                // 기존 닉네임이 존재하는 경우 삭제
+                if (oldNickKey.isNotEmpty()) {
+                    val oldRef = usernameRef(oldNickKey)
+                    val oldSnap = txn.get(oldRef)
+                    if (oldSnap.exists() && oldSnap.getString(FirebaseFireStoreKey.UsersCollectionKey.UID.key) == uid) {
+                        txn.delete(oldRef)
+                    }
+                }
+            }
+
+            txn.update(
+                userRef,
+                mapOf(
+                    FirebaseFireStoreKey.UsersCollectionKey.NICK_NAME.key to newNick,
+                    FirebaseFireStoreKey.UsersCollectionKey.LOCAL_PROFILE_IMG_CODE.key to newLocalProfileImgCode,
+                    FirebaseFireStoreKey.UsersCollectionKey.UPDATED_AT.key to now
+                )
+            )
+        }.await()
+    }
 }

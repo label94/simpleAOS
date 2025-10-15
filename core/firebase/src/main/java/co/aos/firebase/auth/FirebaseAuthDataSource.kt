@@ -1,5 +1,6 @@
 package co.aos.firebase.auth
 
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -28,5 +29,21 @@ class FirebaseAuthDataSource @Inject constructor (
     suspend fun deleteCurrentUserIfAny() {
         val u = auth.currentUser ?: return
         u.delete().await()
+    }
+
+    /** 현재 로그인 중인 id(email) 가쟈오기 */
+    suspend fun currentId(): String? = auth.currentUser?.email
+
+    /** 계정 재인증 절차 수행 */
+    suspend fun reauthenticate(id: String, password: String) {
+        val user = auth.currentUser ?: throw IllegalStateException("NOT_SIGNED_IN")
+        val cred = EmailAuthProvider.getCredential(id, password)
+        user.reauthenticate(cred).await()
+    }
+
+    /** 패스워드 변경 */
+    suspend fun updatePassword(password: String) {
+        val user = auth.currentUser ?: throw IllegalStateException("NOT_SIGNED_IN")
+        user.updatePassword(password).await()
     }
 }

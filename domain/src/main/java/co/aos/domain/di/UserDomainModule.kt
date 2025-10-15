@@ -1,7 +1,9 @@
 package co.aos.domain.di
 
+import co.aos.domain.usecase.user.renewal.ChangePasswordUseCase
 import co.aos.domain.usecase.user.renewal.CheckNicknameAvailableUseCase
 import co.aos.domain.usecase.user.renewal.CheckUserIdAvailableUseCase
+import co.aos.domain.usecase.user.renewal.CurrentIdUseCase
 import co.aos.domain.usecase.user.renewal.EnableAutoLoginUseCase
 import co.aos.domain.usecase.user.renewal.EnableIsSaveIdUseCase
 import co.aos.domain.usecase.user.renewal.GetCurrentUserUseCase
@@ -12,8 +14,11 @@ import co.aos.domain.usecase.user.renewal.SetLoginIdUseCase
 import co.aos.domain.usecase.user.renewal.SignInUseCase
 import co.aos.domain.usecase.user.renewal.SignOutUseCase
 import co.aos.domain.usecase.user.renewal.SignUpUseCase
+import co.aos.domain.usecase.user.renewal.UpdateMyProfileUseCase
+import co.aos.domain.usecase.user.renewal.impl.ChangePasswordUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.CheckNicknameAvailableUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.CheckUserIdAvailableUseCaseImpl
+import co.aos.domain.usecase.user.renewal.impl.CurrentIdUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.EnableAutoLoginUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.EnableIsSaveIdUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.GetCurrentUserUseCaseImpl
@@ -24,6 +29,7 @@ import co.aos.domain.usecase.user.renewal.impl.SetLoginIdUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.SignInUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.SignOutUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.SignUpUseCaseImpl
+import co.aos.domain.usecase.user.renewal.impl.UpdateMyProfileUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -118,4 +124,25 @@ internal abstract class UserDomainModule {
     abstract fun bindSetLoginIdUseCase(
         setLoginIdUseCaseImpl: SetLoginIdUseCaseImpl
     ): SetLoginIdUseCase
+
+    /** 로그인 id 반환 관련 di 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindCurrentIdUseCase(
+        currentIdUseCaseImpl: CurrentIdUseCaseImpl
+    ): CurrentIdUseCase
+
+    /** 프로필 정보 업데이트 관련 di 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindUpdateMyProfileUseCase(
+        updateMyProfileUseCaseImpl: UpdateMyProfileUseCaseImpl
+    ): UpdateMyProfileUseCase
+
+    /** 비밀번호 변경 관련 di 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindChangePasswordUseCase(
+        changePasswordUseCaseImpl: ChangePasswordUseCaseImpl
+    ): ChangePasswordUseCase
 }

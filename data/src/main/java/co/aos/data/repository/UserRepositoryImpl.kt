@@ -106,4 +106,23 @@ class UserRepositoryImpl @Inject constructor(
     override fun setLoginId(loginId: String) {
         preferenceManager.setString(SharedConstants.KEY_LOGIN_ID, loginId)
     }
+
+    override suspend fun updateMyProfile(
+        newNick: String,
+        newLocalProfileImgCode: Int
+    ): Result<Unit> = runCatching {
+        val uid = remote.currentUid() ?: throw IllegalStateException("NOT_SIGNED_IN")
+        remote.updateProfileTransaction(uid, newNick, newLocalProfileImgCode)
+    }
+
+    override suspend fun currentId(): String? = remote.currentId()
+
+    override suspend fun updatePassword(
+        currentPassword: String,
+        newPassword: String
+    ): Result<Unit> = runCatching {
+        val id = remote.currentId() ?: throw IllegalStateException("ID_NOT_FOUND")
+        remote.reauthenticate(id, currentPassword)
+        remote.updatePassword(newPassword)
+    }
 }

@@ -47,4 +47,20 @@ interface FirebaseUserDataSource {
 
     /** id 컬렉션 제거 */
     suspend fun releaseId(id: String)
+
+    /** 프로필 정보 업데이트 */
+    suspend fun updateProfileTransaction(
+        uid: String,
+        newNick: String,
+        newLocalProfileImgCode: Int
+    )
+
+    /** 로그인 되어 있는 id(email) 정보 반환 */
+    suspend fun currentId(): String?
+
+    /** 재인증 */
+    suspend fun reauthenticate(id: String, password: String)
+
+    /** 비밀번호 변경 */
+    suspend fun updatePassword(newPassword: String)
 }
