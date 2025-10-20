@@ -7,6 +7,8 @@ import co.aos.firebase.firestore.FirebaseFirestoreDataSource
 import co.aos.firebase.model.UserDto
 import javax.inject.Inject
 import androidx.core.net.toUri
+import co.aos.firebase.model.DiaryEntryDto
+import java.time.LocalDate
 
 /**
  * Firebase User 연동 관련 DataSource
@@ -95,5 +97,77 @@ class FirebaseUserDataSourceImpl @Inject constructor(
 
     override suspend fun updatePassword(newPassword: String) {
         authDS.updatePassword(newPassword)
+    }
+
+    override suspend fun addDiaryEntry(
+        uid: String,
+        title: String,
+        body: String,
+        mood: Int?,
+        tags: List<String>,
+        date: LocalDate,
+        pinned: Boolean
+    ): String {
+        return fsDS.addDiaryEntry(uid, title, body, mood, tags, date, pinned)
+    }
+
+    override suspend fun updateDiaryEntry(
+        uid: String,
+        entryId: String,
+        update: Map<String, Any?>
+    ) {
+        fsDS.updateDiaryEntry(uid, entryId, update)
+    }
+
+    override suspend fun deleteDiaryEntry(uid: String, entryId: String) {
+        fsDS.deleteDiaryEntry(uid, entryId)
+    }
+
+    override suspend fun getDiaryEntry(
+        uid: String,
+        entryId: String
+    ): DiaryEntryDto? {
+        return fsDS.getDiaryEntry(uid, entryId)
+    }
+
+    override suspend fun recentDiaryEntries(
+        uid: String,
+        pageSize: Int,
+        cursorId: String?
+    ): Pair<List<Pair<String, DiaryEntryDto>>, String?> {
+        return fsDS.recentDiaryEntries(uid, pageSize, cursorId)
+    }
+
+    override suspend fun entriesByDate(
+        uid: String,
+        day: LocalDate
+    ): List<Pair<String, DiaryEntryDto>> {
+        return fsDS.entriesByDate(uid, day)
+    }
+
+    override suspend fun searchDiaryEntries(
+        uid: String,
+        from: LocalDate?,
+        to: LocalDate?,
+        pinnedOnly: Boolean,
+        pageSize: Int,
+        cursorId: String?
+    ): Pair<List<Pair<String, DiaryEntryDto>>, String?> {
+        return fsDS.searchDiaryEntries(uid, from, to, pinnedOnly, pageSize, cursorId)
+    }
+
+    override suspend fun upsertDailyMood(
+        uid: String,
+        day: LocalDate,
+        mood: Int
+    ) {
+        fsDS.upsertDailyMood(uid, day, mood)
+    }
+
+    override suspend fun loadWeeklyMood(
+        uid: String,
+        end: LocalDate
+    ): Map<String, Int?> {
+        return fsDS.loadWeeklyMood(uid, end)
     }
 }

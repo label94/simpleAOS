@@ -22,8 +22,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import co.aos.home.bottombar.BottomBar
 import co.aos.home.bottombar.BottomIcon
+import co.aos.home.bottombar.Routes
 import co.aos.ui.theme.White
 
 /**
@@ -33,6 +35,8 @@ import co.aos.ui.theme.White
  * @property MAIN_NAV_GRAPH_NAME : 메인 화면 네비게이션 그래프 이름
  * */
 const val MAIN_NAV_GRAPH_NAME = "main_graph"
+
+/** Composable 어디서든 NavController 접근할 수 있도록 Local 제공 */
 val LocalAppNavController = staticCompositionLocalOf<NavHostController> {
     error("NavController not provided")
 }
@@ -65,8 +69,7 @@ fun MainRootUI() {
             }
         }
 
-
-        // Surface 로 감싼 바텀바
+        // Surface 로 감싼 바텀바(고정 하단 바)
         Surface(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -75,7 +78,7 @@ fun MainRootUI() {
                 .navigationBarsPadding(),
             color = White,
         ) {
-            BottomBar()
+            BottomBar(navController)
         }
     }
 }
@@ -93,15 +96,61 @@ private fun BottomNavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = BottomIcon.HOME.route,
+        startDestination = Routes.HOME,
         route = MAIN_NAV_GRAPH_NAME
     ) {
         // 홈 화면
-        composable(BottomIcon.HOME.route) {
+        composable(Routes.HOME) {
             HomeScreen(
-                navController = navController,
-                snackBarHostState = snackBarHostState
+                snackBarHostState = snackBarHostState,
+                onOpenEditor = {
+                    navController.navigate(Routes.EDITOR)
+                },
+                onOpenDetail = { entryId ->
+                    navController.navigate(Routes.detail(entryId))
+                },
+                onOpenSearch = {
+                    navController.navigate(Routes.SEARCH)
+                }
             )
+        }
+
+        // 달력
+        composable(Routes.CALENDAR) {
+
+        }
+
+        // 통계
+        composable(Routes.INSIGHTS) {
+
+        }
+
+        // 프로필(마이페이지)
+        composable(Routes.PROFILE) {
+
+        }
+
+        // 작성/수정 (선택적 entryId)
+        composable(
+            route = "${Routes.EDITOR}?entryId={entryId}",
+            arguments = listOf(navArgument("entryId") { nullable = true; defaultValue = null })
+        ) { backStack ->
+            val entryId = backStack.arguments?.getString("entryId")
+            // todo : Edit 화면 개발 필요
+        }
+
+        // 상세
+        composable(
+            route = Routes.DETAIL,
+            arguments = listOf(navArgument("entryId") { nullable = false })
+        ) { backStack ->
+            val id = backStack.arguments?.getString("entryId")
+            // todo : 상세 화면 개발 필요
+        }
+
+        // 검색
+        composable(Routes.SEARCH) {
+            // todo : 검색 화면 개발 필요
         }
     }
 }

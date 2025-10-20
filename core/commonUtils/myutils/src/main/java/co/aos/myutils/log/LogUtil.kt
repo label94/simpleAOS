@@ -46,6 +46,9 @@ object LogUtil {
     // bottomBar
     const val BOTTOM_BAR_LOG_TAG = "${DEFAULT_TAG}_bottomBar"
 
+    // home
+    const val HOME_LOG_TAG = "${DEFAULT_TAG}_home"
+
     // build.gradle.kts 에 적용 된 build Type 을 확인하기 위한 상수
     private const val BUILD_TYPE_DEBUG = "debug" // 디버그(개발)
 

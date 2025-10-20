@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Leaderboard
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -12,14 +13,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * */
 enum class BottomIcon(val id: Int, val icon: ImageVector, val label: String, val route: String) {
     /** 홈 */
-    HOME(0, Icons.Outlined.Home, "홈", "home"),
+    HOME(0, Icons.Outlined.Home, "홈", Routes.HOME),
 
     /** 달력 */
-    CALENDAR(1, Icons.Outlined.CalendarMonth, "달력", "calendar"),
+    CALENDAR(1, Icons.Outlined.CalendarMonth, "달력", Routes.CALENDAR),
 
     /** 탐색 */
-    EXPLORE(2, Icons.Outlined.Explore, "탐색", "explore"),
+    EXPLORE(2, Icons.Outlined.Leaderboard, "통계", Routes.INSIGHTS),
 
-    /** 마이페이지 */
-    MY_PAGE(3, Icons.Outlined.Person, "마이페이지", "myPage")
+    /** 프로필(마이페이지) */
+    MY_PAGE(3, Icons.Outlined.Person, "프로필", Routes.PROFILE)
 }

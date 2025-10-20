@@ -1,6 +1,8 @@
 package co.aos.data.datasource
 
 import co.aos.domain.model.User
+import co.aos.firebase.model.DiaryEntryDto
+import java.time.LocalDate
 
 /**
  * firebase 연동 관련 dataSource
@@ -63,4 +65,64 @@ interface FirebaseUserDataSource {
 
     /** 비밀번호 변경 */
     suspend fun updatePassword(newPassword: String)
+
+    /** diary 추가 */
+    suspend fun addDiaryEntry(
+        uid: String,
+        title: String,
+        body: String,
+        mood: Int?,
+        tags: List<String>,
+        date: LocalDate,
+        pinned: Boolean
+    ): String
+
+    /** diary 수정 */
+    suspend fun updateDiaryEntry(
+        uid: String,
+        entryId: String,
+        update: Map<String, Any?>
+    )
+
+    /** diary 삭제 */
+    suspend fun deleteDiaryEntry(uid: String, entryId: String)
+
+    /** 특정 diary 조회 */
+    suspend fun getDiaryEntry(uid: String, entryId: String): DiaryEntryDto?
+
+    /** 최근 diary(커서 기반) */
+    suspend fun recentDiaryEntries(
+        uid: String,
+        pageSize: Int,
+        cursorId: String?
+    ): Pair<List<Pair<String, DiaryEntryDto>>, String?>
+
+    /** 날짜 별 조회 */
+    suspend fun entriesByDate(
+        uid: String,
+        day: LocalDate
+    ): List<Pair<String, DiaryEntryDto>>
+
+    /** 간이 검색(서버 범위: 날짜/핀, 나머지(무드/태그/텍스트)는 클라 필터) */
+    suspend fun searchDiaryEntries(
+        uid: String,
+        from: LocalDate?,
+        to: LocalDate?,
+        pinnedOnly: Boolean,
+        pageSize: Int,
+        cursorId: String?
+    ): Pair<List<Pair<String, DiaryEntryDto>>, String?>
+
+    /** 무드 일일 upsert */
+    suspend fun upsertDailyMood(
+        uid: String,
+        day: LocalDate,
+        mood: Int
+    )
+
+    /** 주간 무드 로드 (7개 docId whereIn) */
+    suspend fun loadWeeklyMood(
+        uid: String,
+        end: LocalDate
+    ): Map<String, Int?>
 }

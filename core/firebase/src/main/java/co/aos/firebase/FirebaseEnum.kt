@@ -13,6 +13,17 @@ object FirebaseFireStoreKey {
         LAST_LOGIN_AT("lastLoginAt"),
         LOCAL_PROFILE_IMG_CODE("localProfileImgCode")
     }
+
+    /** DiaryEntries 컬렉션의 Key 정의 */
+    enum class DiaryEntriesCollectionKey(val key: String) {
+        D_TITLE("title"),
+        D_BODY("body"),
+        D_MOOD("mood"),
+        D_TAGS("tags"),
+        D_PINNED("pinned"),
+        D_DATE("date"),
+        D_UPDATED_AT("updatedAt")
+    }
 }
 
 enum class FirebaseCollection(val value: String) {
@@ -23,5 +34,11 @@ enum class FirebaseCollection(val value: String) {
     USER_EMAILS_COLLECTION("emails"),
 
     /** 사용자 닉네임 관리를 위한 usernames 컬렉션 */
-    USER_NAMES_COLLECTION("usernames")
+    USER_NAMES_COLLECTION("usernames"),
+
+    /** 다이어리 컨텐츠 관리를 위한 diaryEntries 컬렉션 */
+    USER_DIARY_ENTRIES_COLLECTION("diaryEntries"),
+
+    /** 무드 컨텐츠 관리를 위한 moodDaily 컬렉션 */
+    USER_MOOD_DAILY_COLLECTION("moodDaily"),
 }
