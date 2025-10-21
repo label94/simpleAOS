@@ -43,3 +43,9 @@ val LightBlack1 = Color(0xF20E1113)
 val DarkGreen = Color(0xFF2E7D32)
 
 val Magenta = Color(0xFFFF0090)
+
+val Orange = Color(0xFFF57C00)
+
+val Amber = Color(0xFFFFC107)
+
+val Blue = Color(0xFF03A9F4)

@@ -5,14 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material3.AssistChip
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,37 +29,37 @@ fun DiaryCard(
     data: DiaryCardUi,
     onClick: () -> Unit
 ) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .noRippleClickable(onClick = onClick),
-        shape = RoundedCornerShape(20.dp)
+    Column(
+        Modifier
+            .padding(16.dp)
+            .noRippleClickable {
+                onClick.invoke()
+        },
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(data.moodEmoji, fontSize = 20.sp)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(data.moodEmoji, fontSize = 20.sp)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(data.title, style = MaterialTheme.typography.titleMedium)
+            if (data.pinned) {
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(data.title, style = MaterialTheme.typography.titleMedium)
-                if (data.pinned) {
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Icon(Icons.Outlined.PushPin, null)
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Text(data.dateText, style = MaterialTheme.typography.labelSmall, color = Black)
+                Icon(Icons.Outlined.PushPin, null)
             }
+            Spacer(modifier = Modifier.weight(1f))
+            Text(data.dateText, style = MaterialTheme.typography.labelSmall, color = Black)
+        }
 
-            if (data.preview.isNotBlank()) {
-                Text(data.preview, maxLines = 2, overflow = TextOverflow.Ellipsis)
-            }
+        if (data.preview.isNotBlank()) {
+            Text(data.preview, maxLines = 2, overflow = TextOverflow.Ellipsis)
+        }
 
-            if (data.tags.isNotEmpty()) {
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    data.tags.forEach { t ->
-                        AssistChip(
-                            onClick = { /* 태그 클릭 확장 */ },
-                            label = { Text("#$t") }
-                        )
-                    }
+        if (data.tags.isNotEmpty()) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                data.tags.forEach { t ->
+                    AssistChip(
+                        onClick = { /* 태그 클릭 확장 */ },
+                        label = { Text("#$t") }
+                    )
                 }
             }
         }

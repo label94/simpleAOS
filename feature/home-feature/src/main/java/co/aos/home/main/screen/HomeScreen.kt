@@ -30,7 +30,6 @@ import co.aos.card.AnimatedCard
 import co.aos.common.showSnackBarMessage
 import co.aos.home.bottomsheet.MoodPickerSheet
 import co.aos.home.main.screen.card.DiaryCard
-import co.aos.home.main.screen.card.QuickActionsRow
 import co.aos.home.main.screen.card.RecentEmptyCard
 import co.aos.home.main.screen.card.TagChipsSection
 import co.aos.home.main.screen.card.TodaySummaryCard
@@ -39,6 +38,7 @@ import co.aos.home.main.state.HomeContract
 import co.aos.home.main.viewmodel.HomeViewModel
 import co.aos.home.topbar.HomeTopBar
 import co.aos.loading.skeleton.ListItemSkeleton
+import java.time.LocalDate
 
 /**
  * 홈 화면
@@ -166,28 +166,20 @@ private fun HomeBody(
             }
         }
 
-        // 2) 빠른 작성
-        item {
-            AnimatedCard {
-                QuickActionsRow(
-                    onQuickAddText = { onEvent(HomeContract.Event.QuickAddText) }
-                )
-            }
-        }
-
-        // 3) 주간 무드
+        // 2) 주간 무드
         item {
             AnimatedCard {
                 WeeklyMoodCard(
                     weekly = uiState.weeklyMood,
                     streak = uiState.streak,
                     bestStreak = uiState.bestStreak,
-                    loading = uiState.loading
+                    loading = uiState.loading,
+                    endDate = LocalDate.now()
                 )
             }
         }
 
-        // 4) 태그 칩
+        // 3) 태그 칩
         item {
             AnimatedCard {
                 TagChipsSection(
@@ -198,7 +190,7 @@ private fun HomeBody(
             }
         }
 
-        // 5) 최근 일기 (로딩/빈/목록)
+        // 4) 최근 일기 (로딩/빈/목록)
         if (uiState.loading) {
             items(3) { ListItemSkeleton() }
         } else if (uiState.recentEntries.isEmpty()) {
