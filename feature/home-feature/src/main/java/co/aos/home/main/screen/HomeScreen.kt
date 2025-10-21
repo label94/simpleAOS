@@ -161,6 +161,7 @@ private fun HomeBody(
                     streak = uiState.streak,
                     bestStreak = uiState.bestStreak,
                     onPickMood = { onEvent(HomeContract.Event.OnPickMoodClick) },
+                    onWrite = { onEvent(HomeContract.Event.QuickAddText) },
                     loading = uiState.loading
                 )
             }

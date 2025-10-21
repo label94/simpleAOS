@@ -1,6 +1,5 @@
 package co.aos.home.main.screen.card
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.aos.loading.skeleton.ShimmerBox
 import co.aos.ui.theme.Black
+import co.aos.ui.theme.White
 
 /** 오늘 요약 카드 */
 @Composable
@@ -29,6 +30,7 @@ fun TodaySummaryCard(
     streak: Int,
     bestStreak: Int,
     onPickMood: () -> Unit,
+    onWrite: () -> Unit,
     loading: Boolean
 ) {
     Column(Modifier
@@ -58,8 +60,28 @@ fun TodaySummaryCard(
                     Text(emoji, fontSize = 26.sp)
                 }
             }
-            val written = if (todayWritten) "작성 완료" else "미작성"
-            Text("오늘 일기 : $written", color = Black, style = MaterialTheme.typography.bodyMedium)
+
+            // 오늘 일기 상태 + (미작성 시) 작성하기 버튼
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                val written = if (todayWritten) "작성 완료" else ""
+                Text("오늘 일기: $written", color = Black)
+                if (!todayWritten) {
+                    // ✅ 미작성인 경우에만 ‘작성하기’ 버튼 노출
+                    Button(
+                        onClick = onWrite,
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Black,
+                            contentColor = White
+                        )
+                    ) {
+                        Text("빠른 작성", style = MaterialTheme.typography.bodyMedium, color = White)
+                    }
+                }
+            }
             Text("연속 작성 : ${streak}일 • 최고: ${bestStreak}일", color = Black, style = MaterialTheme.typography.bodyMedium)
         }
     }
