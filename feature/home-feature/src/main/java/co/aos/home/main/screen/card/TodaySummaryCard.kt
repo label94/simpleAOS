@@ -45,17 +45,17 @@ fun TodaySummaryCard(
         } else {
             if (todayMood == null) {
                 // "오늘의 무드" 컨텐츠가 없을 경우
-                Text("오늘의 무드를 선택해주세요.", style = MaterialTheme.typography.bodyMedium)
+                Text("오늘의 무드를 선택해주세요.", color = Black, style = MaterialTheme.typography.bodyMedium)
                 OutlinedButton(
                     onClick = onPickMood,
                     shape = RoundedCornerShape(14.dp)
                 ) {
-                    Text("기분 기록하기")
+                    Text("기분 기록하기", color = Black, style = MaterialTheme.typography.bodyMedium)
                 }
             } else {
                 val emoji = listOf("😣","😕","🙂","😊","🤩")[todayMood - 1]
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("오늘의 기분:", style = MaterialTheme.typography.bodyMedium)
+                    Text("오늘의 기분:", color = Black, style = MaterialTheme.typography.bodyMedium)
                     Spacer(Modifier.width(8.dp))
                     Text(emoji, fontSize = 26.sp)
                 }
@@ -67,7 +67,7 @@ fun TodaySummaryCard(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 val written = if (todayWritten) "작성 완료" else ""
-                Text("오늘 일기: $written", color = Black)
+                Text("오늘 일기: $written", color = Black, style = MaterialTheme.typography.bodyMedium)
                 if (!todayWritten) {
                     // ✅ 미작성인 경우에만 ‘작성하기’ 버튼 노출
                     Button(
