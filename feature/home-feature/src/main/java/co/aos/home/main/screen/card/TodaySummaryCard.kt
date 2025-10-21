@@ -101,7 +101,7 @@ fun TodaySummaryCard(
                                     Icon(
                                         imageVector = Icons.Outlined.CheckCircleOutline,
                                         contentDescription = "작성 완료",
-                                        tint = MaterialTheme.colorScheme.primary
+                                        tint = Black
                                     )
                                     Spacer(Modifier.width(8.dp))
                                     Text("오늘 일기: 작성 완료", style = MaterialTheme.typography.bodyMedium)
