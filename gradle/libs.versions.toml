@@ -11,6 +11,9 @@ composeBom = "2025.10.00"
 ksp = "2.2.20-2.0.3"
 gmsPlugin = "4.4.4"
 
+# secrets-gradle-plugin
+secretsGradle = "2.0.1"
+
 # androidx ui
 androidxSwiperefreshlayout = "1.1.0"
 composeIconExtended = "1.7.8"
@@ -41,11 +44,11 @@ appcompat = "1.7.1"
 material = "1.13.0"
 
 # network
-okhttpBom = "5.1.0"
+okhttpBom = "5.2.1"
 retrofit = "3.0.0"
 okhttpProfiler = "1.0.8"
 retrofitKotlinxSerializationJson = "1.0.0"
-mock = "5.1.0"
+mock = "5.2.1"
 
 # gson
 gson = "2.13.2"
@@ -54,7 +57,7 @@ gson = "2.13.2"
 adapterRx2 = "3.0.0"
 
 # room
-room = "2.8.1"
+room = "2.8.2"
 roomCompiler = "2.7.2"
 roomGradlePlugin = "2.7.2"
 
@@ -69,7 +72,7 @@ mlkit = "16.0.1"
 mlkit-barcode = "17.3.0"
 
 # CameraX
-camera = "1.5.0"
+camera = "1.5.1"
 
 # firebase
 firebase = "33.1.0"
@@ -224,5 +227,7 @@ multi-module-android-room = { id = "multi.module.android.room", version = "unspe
 multi-module-jvm-library = { id = "multi.module.jvm.library", version = "unspecified" }
 multi-module-hilt = { id = "multi.module.hilt", version = "unspecified" }
 
+# scerets Gradle Plugin
+secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradle" }
 
 
