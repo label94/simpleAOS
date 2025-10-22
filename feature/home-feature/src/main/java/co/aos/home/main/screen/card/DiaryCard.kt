@@ -27,38 +27,39 @@ import co.aos.ui.theme.Black
 @Composable
 fun DiaryCard(
     data: DiaryCardUi,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onTagClick: (String) -> Unit
 ) {
     Column(
         Modifier
-            .padding(16.dp)
-            .noRippleClickable {
-                onClick.invoke()
-        },
+            .noRippleClickable { onClick() }
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(data.moodEmoji, fontSize = 20.sp)
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(data.title, style = MaterialTheme.typography.titleMedium)
+            Spacer(Modifier.width(8.dp))
+            Text(data.title, color = Black, style = MaterialTheme.typography.titleMedium)
             if (data.pinned) {
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(Modifier.width(6.dp))
                 Icon(Icons.Outlined.PushPin, null)
             }
-            Spacer(modifier = Modifier.weight(1f))
-            Text(data.dateText, style = MaterialTheme.typography.labelSmall, color = Black)
+            Spacer(Modifier.weight(1f))
+            Text(
+                data.dateText,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
-
         if (data.preview.isNotBlank()) {
             Text(data.preview, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
-
         if (data.tags.isNotEmpty()) {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 data.tags.forEach { t ->
                     AssistChip(
-                        onClick = { /* 태그 클릭 확장 */ },
-                        label = { Text("#$t") }
+                        onClick = { onTagClick(t) },   // ✅ 카드 내 태그 → 필터 추가
+                        label = { Text("#$t" , color = Black, style = MaterialTheme.typography.bodySmall) }
                     )
                 }
             }

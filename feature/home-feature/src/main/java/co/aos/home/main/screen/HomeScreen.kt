@@ -30,6 +30,7 @@ import co.aos.card.AnimatedCard
 import co.aos.common.showSnackBarMessage
 import co.aos.home.bottomsheet.MoodPickerSheet
 import co.aos.home.main.screen.card.DiaryCard
+import co.aos.home.main.screen.card.FilterEmptyCard
 import co.aos.home.main.screen.card.RecentEmptyCard
 import co.aos.home.main.screen.card.TagChipsSection
 import co.aos.home.main.screen.card.TodaySummaryCard
@@ -186,23 +187,48 @@ private fun HomeBody(
                 TagChipsSection(
                     tags = listOf("직장","운동","감사","독서","산책","개발","요리"),
                     selected = uiState.selectedTags,
-                    onToggle = { onEvent(HomeContract.Event.OnTagToggled(it)) }
+                    onToggle = { onEvent(HomeContract.Event.OnTagToggled(it)) },
+                    onClear = { onEvent(HomeContract.Event.OnClearTagFilters) }
                 )
             }
         }
 
         // 4) 최근 일기 (로딩/빈/목록)
-        if (uiState.loading) {
-            items(3) { ListItemSkeleton() }
-        } else if (uiState.recentEntries.isEmpty()) {
-            item {
-                AnimatedCard {
-                    RecentEmptyCard { onEvent(HomeContract.Event.QuickAddText) }
+        when {
+            uiState.loading -> {
+                // 로딩 UI 표시
+                items(3) { ListItemSkeleton() }
+            }
+            uiState.recentEntries.isEmpty() && uiState.selectedTags.isNotEmpty() -> {
+                // 필터는 있는데 결과 없을 경우 "Empty Card UI" 표시
+                item {
+                    AnimatedCard {
+                        FilterEmptyCard(
+                            selectedCount = uiState.selectedTags.size,
+                            onClear = { onEvent(HomeContract.Event.OnClearTagFilters) }
+                        )
+                    }
                 }
             }
-        } else {
-            items(uiState.recentEntries, key = { it.id }) { e ->
-                AnimatedCard { DiaryCard(e) { onEvent(HomeContract.Event.OnEntryClick(e.id)) } }
+            uiState.filteredEntries.isEmpty() || uiState.recentEntries.isEmpty() -> {
+                // 전체도 비어 있을 경우
+                item {
+                    AnimatedCard {
+                        RecentEmptyCard { onEvent(HomeContract.Event.QuickAddText) }
+                    }
+                }
+            }
+            else -> {
+                // 필터에 맞는 데이터 표시
+                items(uiState.filteredEntries, key = { it.id }) { e ->
+                    AnimatedCard {
+                        DiaryCard(
+                            data = e,
+                            onClick =  { onEvent(HomeContract.Event.OnEntryClick(e.id)) },
+                            onTagClick = { tag -> onEvent(HomeContract.Event.OnTagFromCardClicked(tag)) }
+                        )
+                    }
+                }
             }
         }
         item { Spacer(Modifier.height(60.dp)) }

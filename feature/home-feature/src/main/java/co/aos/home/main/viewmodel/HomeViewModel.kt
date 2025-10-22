@@ -43,6 +43,7 @@ class HomeViewModel @Inject constructor(
                 setState { copy(query = event.q) }
             }
             is HomeContract.Event.OnTagToggled -> {
+                // 선택 토글 후 필터 적용
                 val next = currentState.selectedTags.toMutableSet().apply {
                     if (contains(event.tag)) {
                         remove(event.tag)
@@ -50,9 +51,16 @@ class HomeViewModel @Inject constructor(
                         add(event.tag)
                     }
                 }
-                setState {
-                    copy(selectedTags = next)
-                }
+                applyTagFilter(next)
+
+            }
+            is HomeContract.Event.OnTagFromCardClicked -> {
+                // 카드 내부 태그 클릭 -> 무조건 추가(이미 있으면 무시)
+                val next = currentState.selectedTags.toMutableSet().apply { add(event.tag) }
+                applyTagFilter(next)
+            }
+            is HomeContract.Event.OnClearTagFilters -> {
+                applyTagFilter(emptySet())
             }
             is HomeContract.Event.QuickAddText -> {
                 setEffect(HomeContract.Effect.NavigateToEditor)
@@ -82,15 +90,31 @@ class HomeViewModel @Inject constructor(
                setState { copy(loading = true, error = null) }
                val today = LocalDate.now()
                val weekly = loadWeeklyMoodUseCase.invoke(uid, today) // List<Int?>
+
+               // 최근 20개의 데이터를 가져온다.
                val page = getRecent.invoke(uid, pageSize = 20, cursor = null) // List<DiaryCardUi>
-               val recent = page.items.map { it.toCardUi() }
+               val recents = page.items.map { it.toCardUi() }
+
+               // 태그 수집(빈도 높은 순 -> 가나다 정렬)
+               val tagFreq = mutableMapOf<String, Int>()
+               recents.forEach { card ->
+                   card.tags.forEach { t ->
+                       tagFreq[t] = (tagFreq[t] ?: 0) + 1
+                   }
+               }
+               val allTagSorted = tagFreq.entries
+                   .sortedWith(compareByDescending<Map.Entry<String, Int>> { it.value }
+                       .thenBy { it.key })
+                   .map { it.key }
 
                // 상태 업데이트
                setState {
                    copy(
                        weeklyMood = weekly,
-                       recentEntries = recent,
-                       todayWritten = recent.any { it.dateText == today.toString() },
+                       recentEntries = recents,
+                       filteredEntries = recents, // 초기엔 필터 없이 원본 그대로
+                       allTags = allTagSorted,
+                       todayWritten = recents.any { it.dateText == today.toString() },
                        todayMood = weekly.lastOrNull(),
                        loading = false
                    )
@@ -126,5 +150,16 @@ class HomeViewModel @Inject constructor(
                 setEffect(HomeContract.Effect.Toast("오늘 무드 저장 실패"))
             }
         }
+    }
+
+    /** 태그 필터 적용(AND 조건) */
+    private fun applyTagFilter(nextSelected: Set<String>) {
+        val base = currentState.recentEntries
+        val filtered = if (nextSelected.isEmpty()) {
+            base
+        } else {
+            base.filter { card -> nextSelected.all { it in card.tags } }
+        }
+        setState { copy(selectedTags = nextSelected, filteredEntries = filtered) }
     }
 }

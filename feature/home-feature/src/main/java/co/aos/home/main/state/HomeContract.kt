@@ -15,9 +15,6 @@ class HomeContract {
         /** 상단 검색창 텍스트 변경 */
         data class OnSearchChanged(val q: String) : Event()
 
-        /** 태그 칩 토글(선택/해제) */
-        data class OnTagToggled(val tag: String) : Event()
-
         /** "빠른 작성" 영역의 텍스트 버튼 클릭 */
         data object QuickAddText : Event()
 
@@ -32,15 +29,21 @@ class HomeContract {
 
         /** 최근 일기 카드 클릭 → 상세로 이동 */
         data class OnEntryClick(val id: String) : Event()
+
+        /** 추천 태그 칩 토글(선택/해제) */
+        data class OnTagToggled(val tag: String) : Event()
+
+        /** 카드 내부 태그(#tag) 클릭 시 필터에 추가 */
+        data class OnTagFromCardClicked(val tag: String) : Event()
+
+        /** 선택 된 태그 필터 전부 초기화 */
+        data object OnClearTagFilters : Event()
     }
 
     /** 상태 정의 */
     data class State(
         /** 상단 검색창의 현재 입력값 */
         val query: String = "",
-
-        /** 선택된 태그들의 집합 (필터링용) */
-        val selectedTags: Set<String> = emptySet(),
 
         /** 오늘 기록한 무드 (1..5) : 없으면 null */
         val todayMood: Int? = null,
@@ -57,9 +60,6 @@ class HomeContract {
         /** 최근 7일 무드 (과거→오늘 순서), 값이 없으면 null */
         val weeklyMood: List<Int?> = List(7) { null },
 
-        /** 최근 일기 카드 리스트 (요약용) */
-        val recentEntries: List<DiaryCardUi> = emptyList(),
-
         /** 네트워크/DB 동작 중 로딩 플래그 */
         val loading: Boolean = false,
 
@@ -68,6 +68,18 @@ class HomeContract {
 
         /** 무드 선택 시트 표시 여부 */
         val showMoodPicker: Boolean = false,
+
+        /** 현재 선택된 태그들(AND 조건) */
+        val selectedTags: Set<String> = emptySet(),
+
+        /** 최근 일기에서 수집한 추천 태그(빈도 순→가나다) */
+        val allTags: List<String> = emptyList(),
+
+        /** 필터 결과(선택된 태그가 있을 때 사용) */
+        val filteredEntries: List<DiaryCardUi> = emptyList(),
+
+        /** 원본 최근 일기 목록(필터 전) */
+        val recentEntries: List<DiaryCardUi> = emptyList(),
     ): UiState
 
     /** 1회성 이벤트 정의 */
