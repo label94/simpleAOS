@@ -13,7 +13,6 @@ class SearchDiaryUseCaseImpl @Inject constructor(
     override suspend fun invoke(
         uid: String,
         query: String?,
-        moods: Set<Int>,
         from: LocalDate?,
         to: LocalDate?,
         tags: Set<String>,
@@ -21,6 +20,6 @@ class SearchDiaryUseCaseImpl @Inject constructor(
         pageSize: Int,
         cursor: String?
     ): PagedResult<DiarySummary> {
-        return diaryRepository.search(uid, query, moods, from, to, tags, pinnedOnly, pageSize, cursor)
+        return diaryRepository.search(uid, query, from, to, tags, pinnedOnly, pageSize, cursor)
     }
 }

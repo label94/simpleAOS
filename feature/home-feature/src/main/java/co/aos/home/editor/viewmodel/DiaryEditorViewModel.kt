@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import co.aos.base.BaseViewModel
 import co.aos.domain.model.DiaryEntry
 import co.aos.domain.usecase.diary.AddDiaryUseCase
-import co.aos.domain.usecase.diary.UpsertDailyMoodUseCase
 import co.aos.domain.usecase.user.renewal.GetCurrentUserUseCase
 import co.aos.home.editor.state.DiaryEditorContract
 import co.aos.myutils.log.LogUtil
@@ -20,7 +19,6 @@ import javax.inject.Inject
 class DiaryEditorViewModel  @Inject constructor(
     private val authUseCase: GetCurrentUserUseCase,
     private val addDiaryUseCase: AddDiaryUseCase,
-    private val upsertDailyMoodUseCase: UpsertDailyMoodUseCase
 ): BaseViewModel<DiaryEditorContract.Event, DiaryEditorContract.State, DiaryEditorContract.Effect>() {
 
     /** 초기 상태 설정 */
@@ -33,7 +31,6 @@ class DiaryEditorViewModel  @Inject constructor(
         when (event) {
             is DiaryEditorContract.Event.OnTitleChange -> { setState { copy(title = event.title) } }
             is DiaryEditorContract.Event.OnBodyChange -> { setState { copy(body = event.body) } }
-            is DiaryEditorContract.Event.OnMoodPick -> { setState { copy(mood = event.mood) } }
             is DiaryEditorContract.Event.OnToggleTag -> {
                 // 선택/해제 토글 (다중 선택)
                 val next = currentState.selectedTags.toMutableSet().apply {
@@ -85,7 +82,6 @@ class DiaryEditorViewModel  @Inject constructor(
                 val entry = DiaryEntry(
                     title = computedTitle,
                     body = currentState.body,
-                    mood = currentState.mood,
                     tags = currentState.selectedTags.toList(),
                     date = date,
                     pinned = currentState.pinned,
@@ -93,11 +89,6 @@ class DiaryEditorViewModel  @Inject constructor(
 
                 // 유스케이스 호출 -> Firestore 생성 -> 새 문서 ID 반환
                 addDiaryUseCase.invoke(uid, entry)
-
-                // 무드를 관리하는 doc에도 저장
-                currentState.mood?.let {
-                    upsertDailyMoodUseCase.invoke(uid, date, it)
-                }
 
                 // 상세 화면으로 네비게이션
                 setEffect(DiaryEditorContract.Effect.SavedAndClose)

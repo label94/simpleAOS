@@ -9,7 +9,6 @@ import java.util.Date
 data class DiaryEntryDto(
     val title: String = "",
     val body: String = "",
-    val mood: Int? = null,                 // 1..5 or null
     val tags: List<String> = emptyList(),
     val pinned: Boolean = false,
     @ServerTimestamp val date: Date? = null,       // 컨텐츠 기준 날짜(0시 고정 권장)

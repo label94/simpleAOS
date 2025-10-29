@@ -199,15 +199,6 @@ fun DiaryEditorScreen(
                 textStyle = MaterialTheme.typography.bodyMedium.copy(color = Black)
             )
 
-            // 무드 UI 영역
-            MoodSelector(
-                selected = uiState.mood,
-                onPick = {
-                    dismissKeyboard() // 무드 선택 시에도 ime 키보드 숨김 처리
-                    viewModel.setEvent(DiaryEditorContract.Event.OnMoodPick(it))
-                }
-            )
-
             // 태그 UI 영역
             TagSelector(
                 all = uiState.availableTags,

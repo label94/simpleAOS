@@ -247,15 +247,6 @@ private fun DetailBody(
                 color = Black
             )
 
-            // 무드
-            if (data.mood != null) {
-                val emoji = MoodCatalog.findMood(data.mood)
-                AssistChip(
-                    onClick = {},
-                    label = { Text(text = "무드 : $emoji", style = MaterialTheme.typography.labelMedium) }
-                )
-            }
-
             // 핀
             if (data.pinned) {
                 AssistChip(

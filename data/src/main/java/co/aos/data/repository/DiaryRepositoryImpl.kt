@@ -19,7 +19,7 @@ class DiaryRepositoryImpl @Inject constructor(
         uid: String,
         entry: DiaryEntry
     ): String =
-        fs.addDiaryEntry(uid, entry.title, entry.body, entry.mood, entry.tags, entry.date, entry.pinned)
+        fs.addDiaryEntry(uid, entry.title, entry.body, entry.tags, entry.date, entry.pinned)
 
     override suspend fun update(
         uid: String,
@@ -29,7 +29,6 @@ class DiaryRepositoryImpl @Inject constructor(
         val map = mapOf(
             FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_TITLE.key to update.title,
             FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_BODY.key to update.body,
-            FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_MOOD.key to update.mood,
             FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_TAGS.key to update.tags,
             FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_DATE.key to update.date,
             FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_PINNED.key to update.pinned
@@ -66,7 +65,6 @@ class DiaryRepositoryImpl @Inject constructor(
     override suspend fun search(
         uid: String,
         query: String?,
-        moods: Set<Int>,
         from: LocalDate?,
         to: LocalDate?,
         tags: Set<String>,
@@ -78,9 +76,6 @@ class DiaryRepositoryImpl @Inject constructor(
 
         // 클라 필터
         var list = serverList.map { it.toSummary() }
-        if (moods.isNotEmpty()) {
-            list = list.filter { it.mood != null && it.mood in moods }
-        }
         if (tags.isNotEmpty()) {
             list = list.filter { it.tags.any { t -> t in tags } }
         }

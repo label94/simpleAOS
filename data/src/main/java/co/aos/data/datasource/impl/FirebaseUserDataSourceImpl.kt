@@ -103,12 +103,11 @@ class FirebaseUserDataSourceImpl @Inject constructor(
         uid: String,
         title: String,
         body: String,
-        mood: Int?,
         tags: List<String>,
         date: LocalDate,
         pinned: Boolean
     ): String {
-        return fsDS.addDiaryEntry(uid, title, body, mood, tags, date, pinned)
+        return fsDS.addDiaryEntry(uid, title, body, tags, date, pinned)
     }
 
     override suspend fun updateDiaryEntry(

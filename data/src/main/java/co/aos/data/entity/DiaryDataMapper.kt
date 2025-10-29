@@ -17,7 +17,6 @@ fun Pair<String, DiaryEntryDto>.toSummary(): DiarySummary {
         id = id,
         title = dto.title,
         preview = dto.body.take(120),
-        mood = dto.mood,
         tags = dto.tags,
         date = (dto.date ?: java.util.Date()).toLocalDate()
     )
@@ -29,7 +28,6 @@ fun Pair<String, DiaryEntryDto>.toEntry(): DiaryEntry {
         id = id,
         title = dto.title,
         body = dto.body,
-        mood = dto.mood,
         tags = dto.tags,
         date = (dto.date ?: java.util.Date()).toLocalDate(),
         pinned = dto.pinned

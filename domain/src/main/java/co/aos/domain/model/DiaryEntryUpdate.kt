@@ -6,7 +6,6 @@ import java.time.LocalDate
 data class DiaryEntryUpdate(
     val title: String? = null,
     val body: String? = null,
-    val mood: Int? = null,
     val tags: List<String>? = null,
     val date: LocalDate? = null,
     val pinned: Boolean? = null

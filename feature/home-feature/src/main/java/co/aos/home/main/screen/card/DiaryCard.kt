@@ -37,12 +37,11 @@ fun DiaryCard(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(data.moodEmoji, fontSize = 20.sp)
             Spacer(Modifier.width(8.dp))
             Text(data.title, color = Black, style = MaterialTheme.typography.titleMedium)
             if (data.pinned) {
                 Spacer(Modifier.width(6.dp))
-                Icon(Icons.Outlined.PushPin, null)
+                Icon(Icons.Outlined.PushPin, null, tint = Black)
             }
             Spacer(Modifier.weight(1f))
             Text(

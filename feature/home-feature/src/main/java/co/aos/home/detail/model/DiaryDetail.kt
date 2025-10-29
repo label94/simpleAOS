@@ -8,7 +8,6 @@ data class DiaryDetail(
     val id: String,            // 문서 ID
     val title: String,
     val body: String,
-    val mood: Int?,            // 1..5 or null
     val tags: List<String>,
     val date: LocalDate,       // 일기 날짜(로컬 의미, 저장은 UTC 자정 Date)
     val pinned: Boolean,

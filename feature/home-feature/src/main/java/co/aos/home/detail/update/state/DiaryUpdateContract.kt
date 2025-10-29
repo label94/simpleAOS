@@ -18,9 +18,6 @@ class DiaryUpdateContract {
         /** 내용 변경 */
         data class OnBodyChange(val v: String) : Event()
 
-        /** 무드 선택 */
-        data class OnMoodPick(val v: Int?) : Event()
-
         /** 태그 선택 */
         data class OnToggleTag(val tag: String) : Event()
 
@@ -43,7 +40,6 @@ class DiaryUpdateContract {
         val dateText: String = "",                  // yyyy-MM-dd (표시용)
         val title: String = "",
         val body: String = "",
-        val mood: Int? = null,                      // 1..5 or null
         val availableTags: List<String> = TagCatalog.ALL, // 전체 선택지(카탈로그)
         val selectedTags: Set<String> = emptySet(),    // 현재 선택된 태그들
         val pinned: Boolean = false,                // 상단 고정 여부

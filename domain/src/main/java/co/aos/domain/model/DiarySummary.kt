@@ -7,7 +7,6 @@ data class DiarySummary(
     val id: String,
     val title: String,
     val preview: String,
-    val mood: Int?,
     val tags: List<String>,
     val date: LocalDate
 )

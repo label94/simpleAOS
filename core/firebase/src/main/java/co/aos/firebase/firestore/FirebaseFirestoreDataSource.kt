@@ -199,7 +199,6 @@ class FirebaseFirestoreDataSource @Inject constructor (
         uid: String,
         title: String,
         body: String,
-        mood: Int?,
         tags: List<String>,
         date: LocalDate,
         pinned: Boolean
@@ -208,7 +207,6 @@ class FirebaseFirestoreDataSource @Inject constructor (
         val data = mapOf(
             FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_TITLE.key to title,
             FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_BODY.key to body,
-            FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_MOOD.key to mood,
             FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_TAGS.key to tags,
             FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_DATE.key to tsOf(date),
             FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_PINNED.key to pinned,
@@ -232,9 +230,6 @@ class FirebaseFirestoreDataSource @Inject constructor (
         }
         update[FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_BODY.key]?.let {
             patch[FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_BODY.key] = it
-        }
-        update[FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_MOOD.key]?.let {
-            patch[FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_MOOD.key] = it
         }
         update[FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_TAGS.key]?.let {
             patch[FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_TAGS.key] = it as List<*>

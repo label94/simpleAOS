@@ -23,7 +23,6 @@ interface DiaryRepository {
     suspend fun search(
         uid: String,
         query: String?,
-        moods: Set<Int>,
         from: LocalDate?,
         to: LocalDate?,
         tags: Set<String>,

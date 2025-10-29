@@ -5,7 +5,6 @@ import co.aos.base.BaseViewModel
 import co.aos.domain.model.DiaryEntryUpdate
 import co.aos.domain.usecase.diary.GetDiaryUseCase
 import co.aos.domain.usecase.diary.UpdateDiaryUseCase
-import co.aos.domain.usecase.diary.UpsertDailyMoodUseCase
 import co.aos.domain.usecase.user.renewal.GetCurrentUserUseCase
 import co.aos.home.detail.update.state.DiaryUpdateContract
 import co.aos.myutils.log.LogUtil
@@ -21,7 +20,6 @@ class DiaryUpdateViewModel @Inject constructor(
     private val authUseCase: GetCurrentUserUseCase,
     private val getDetailUseCase: GetDiaryUseCase,
     private val updateDiaryUseCase: UpdateDiaryUseCase,
-    private val upsertDailyMoodUseCase: UpsertDailyMoodUseCase
 ): BaseViewModel<DiaryUpdateContract.Event, DiaryUpdateContract.State, DiaryUpdateContract.Effect>() {
 
     /** 초기 상태 설정 */
@@ -43,9 +41,6 @@ class DiaryUpdateViewModel @Inject constructor(
             }
             is DiaryUpdateContract.Event.OnBodyChange -> {
                 setState { copy(body = event.v) }
-            }
-            is DiaryUpdateContract.Event.OnMoodPick -> {
-                setState { copy(mood = event.v) }
             }
             is DiaryUpdateContract.Event.OnToggleTag -> {
                 val next = currentState.selectedTags.toMutableSet().apply {
@@ -98,7 +93,6 @@ class DiaryUpdateViewModel @Inject constructor(
                         dateText = detail.date.toString(),
                         title = detail.title,
                         body = detail.body,
-                        mood = detail.mood,
                         selectedTags = detail.tags.toSet(),
                         pinned = detail.pinned
                     )
@@ -152,7 +146,6 @@ class DiaryUpdateViewModel @Inject constructor(
                 val updateModel = DiaryEntryUpdate(
                     title = computedTitle,
                     body = currentState.body,
-                    mood = currentState.mood,
                     tags = currentState.selectedTags.toList(),
                     date = date,
                     pinned = currentState.pinned
@@ -164,11 +157,6 @@ class DiaryUpdateViewModel @Inject constructor(
                     entryId = currentState.entryId,
                     update = updateModel
                 )
-
-                // mood doc에도 업데이트 실행
-                currentState.mood?.let {
-                    upsertDailyMoodUseCase.invoke(uid, date, it)
-                }
 
                 setEffect(DiaryUpdateContract.Effect.Toast("수정되었어요."))
                 setEffect(DiaryUpdateContract.Effect.Saved) // 저장 완료 이벤트

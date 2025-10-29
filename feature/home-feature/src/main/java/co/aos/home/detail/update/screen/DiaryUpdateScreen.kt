@@ -219,15 +219,6 @@ fun DiaryUpdateScreen(
                         textStyle = MaterialTheme.typography.bodyMedium.copy(color = Black)
                     )
 
-                    // 무드 UI 영역
-                    MoodSelector(
-                        selected = uiState.mood,
-                        onPick = {
-                            dismissKeyboard
-                            viewModel.setEvent(DiaryUpdateContract.Event.OnMoodPick(it))
-                        }
-                    )
-
                     // 태그 UI 영역
                     TagSelector(
                         all = uiState.availableTags,

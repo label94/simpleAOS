@@ -83,7 +83,6 @@ class DiaryDetailViewModel @Inject constructor(
                         id = detail.id ?: "",
                         title = detail.title,
                         body = detail.body,
-                        mood = detail.mood,
                         pinned = detail.pinned,
                         date = detail.date,
                         tags = detail.tags,

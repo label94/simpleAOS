@@ -71,7 +71,6 @@ interface FirebaseUserDataSource {
         uid: String,
         title: String,
         body: String,
-        mood: Int?,
         tags: List<String>,
         date: LocalDate,
         pinned: Boolean
