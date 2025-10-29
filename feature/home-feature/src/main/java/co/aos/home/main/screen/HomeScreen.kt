@@ -26,8 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import co.aos.card.AnimatedCard
 import co.aos.common.showSnackBarMessage
+import co.aos.home.bottombar.Routes
 import co.aos.home.bottomsheet.MoodPickerSheet
 import co.aos.home.main.screen.card.DiaryCard
 import co.aos.home.main.screen.card.FilterEmptyCard
@@ -38,7 +40,10 @@ import co.aos.home.main.screen.card.WeeklyMoodCard
 import co.aos.home.main.state.HomeContract
 import co.aos.home.main.viewmodel.HomeViewModel
 import co.aos.home.topbar.HomeTopBar
+import co.aos.home.utils.TagCatalog
 import co.aos.loading.skeleton.ListItemSkeleton
+import co.aos.ui.theme.GhostWhite
+import co.aos.ui.theme.Red
 import java.time.LocalDate
 
 /**
@@ -56,6 +61,7 @@ fun HomeScreen(
     onOpenEditor: () -> Unit,
     onOpenDetail: (String) -> Unit,
     onOpenSearch: () -> Unit,
+    navController: NavHostController
 ) {
     // ui Sate
     val uiState by viewModel.uiState.collectAsState()
@@ -90,6 +96,23 @@ fun HomeScreen(
         }
     }
 
+    // 다시 홈으로 돌아 왔을 때 목록 갱신을 위해 사용
+    val currentBackStackEntry = navController.currentBackStackEntry
+    val refreshFlag = currentBackStackEntry
+        ?.savedStateHandle
+        ?.getStateFlow(Routes.REFRESH_LIST, false)
+        ?.collectAsState()
+
+    LaunchedEffect(refreshFlag) {
+        if (refreshFlag?.value == true) {
+            // 홈 데이터 리프레시
+            viewModel.setEvent(HomeContract.Event.Load)
+
+            // 플래그를 다시 false로 설정(반복호출을 막기 위함)
+            currentBackStackEntry.savedStateHandle[Routes.REFRESH_LIST] = false
+        }
+    }
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -99,10 +122,10 @@ fun HomeScreen(
                 onQuery = {
                     viewModel.setEvent(HomeContract.Event.OnSearchChanged(it))
                 },
-                onBell = {},
                 onSettings = {}
             )
-        }
+        },
+        containerColor = GhostWhite
     ) { innerPadding ->
         HomeBody(
             modifier = Modifier
@@ -112,16 +135,6 @@ fun HomeScreen(
             list = rememberLazyListState(),
             onEvent = viewModel::setEvent
         )
-
-//        LazyColumn(
-//            modifier = Modifier
-//                .padding(innerPadding)
-//                .fillMaxSize()
-//        ) {
-//            items(60) { index ->
-//                Text("Item $index", modifier = Modifier.padding(16.dp))
-//            }
-//        }
     }
 
     // 무드 선택 시트
@@ -185,7 +198,7 @@ private fun HomeBody(
         item {
             AnimatedCard {
                 TagChipsSection(
-                    tags = listOf("직장","운동","감사","독서","산책","개발","요리"),
+                    tags = TagCatalog.ALL,
                     selected = uiState.selectedTags,
                     onToggle = { onEvent(HomeContract.Event.OnTagToggled(it)) },
                     onClear = { onEvent(HomeContract.Event.OnClearTagFilters) }

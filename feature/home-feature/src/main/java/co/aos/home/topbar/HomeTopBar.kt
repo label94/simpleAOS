@@ -54,7 +54,6 @@ fun HomeTopBar(
     scrollBehavior: TopAppBarScrollBehavior,
     query: String,
     onQuery: (String) -> Unit,
-    onBell: () -> Unit,
     onSettings: () -> Unit,
 ) {
     var isSearchActive by rememberSaveable { mutableStateOf(false) }
@@ -73,7 +72,6 @@ fun HomeTopBar(
         } else {
             DefaultAppBar(
                 onSearchClick = { isSearchActive = true },
-                onBellClick = onBell,
                 onSettingsClick = onSettings,
                 scrollBehavior = scrollBehavior
             )
@@ -85,7 +83,6 @@ fun HomeTopBar(
 @Composable
 private fun DefaultAppBar(
     onSearchClick: () -> Unit,
-    onBellClick: () -> Unit,
     onSettingsClick: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior
 ) {
@@ -103,9 +100,6 @@ private fun DefaultAppBar(
         actions = {
             IconButton(onClick = onSearchClick) {
                 Icon(Icons.Outlined.Search, contentDescription = "검색", tint = Black)
-            }
-            IconButton(onClick = onBellClick) {
-                Icon(Icons.Outlined.Notifications, contentDescription = "알림", tint = Black)
             }
             IconButton(onClick = onSettingsClick) {
                 Icon(Icons.Outlined.DocumentScanner, contentDescription = "설정", tint = Black)

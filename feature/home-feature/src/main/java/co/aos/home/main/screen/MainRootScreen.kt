@@ -26,6 +26,9 @@ import androidx.navigation.navArgument
 import co.aos.home.bottombar.BottomBar
 import co.aos.home.bottombar.BottomIcon
 import co.aos.home.bottombar.Routes
+import co.aos.home.detail.load.screen.DiaryDetailScreen
+import co.aos.home.detail.update.screen.DiaryUpdateScreen
+import co.aos.home.editor.screen.DiaryEditorScreen
 import co.aos.ui.theme.White
 
 /**
@@ -111,7 +114,8 @@ private fun BottomNavigationGraph(
                 },
                 onOpenSearch = {
                     navController.navigate(Routes.SEARCH)
-                }
+                },
+                navController = navController
             )
         }
 
@@ -130,13 +134,15 @@ private fun BottomNavigationGraph(
 
         }
 
-        // 작성/수정 (선택적 entryId)
-        composable(
-            route = "${Routes.EDITOR}?entryId={entryId}",
-            arguments = listOf(navArgument("entryId") { nullable = true; defaultValue = null })
-        ) { backStack ->
-            val entryId = backStack.arguments?.getString("entryId")
-            // todo : Edit 화면 개발 필요
+        // 작성
+        composable(Routes.EDITOR) {
+            DiaryEditorScreen(
+                onClose = { navController.popBackStack() },
+                onSaved = {
+                    navController.previousBackStackEntry?.savedStateHandle?.set(Routes.REFRESH_LIST, true)
+                    navController.popBackStack()
+                }
+            )
         }
 
         // 상세
@@ -144,9 +150,46 @@ private fun BottomNavigationGraph(
             route = Routes.DETAIL,
             arguments = listOf(navArgument("entryId") { nullable = false })
         ) { backStack ->
-            val id = backStack.arguments?.getString("entryId")
-            // todo : 상세 화면 개발 필요
+            val id = backStack.arguments?.getString("entryId") ?: ""
+            DiaryDetailScreen(
+                entryId = id,
+                onClose = {
+                    navController.popBackStack()
+                },
+                onEdit = { id ->
+                    navController.navigate(Routes.update(id))
+                },
+                onRefreshRequest = {
+                    // 상세 화면에서 데이터 갱신이 발생한 경우, 이전 화면에서도 데이터 갱신을 위해 Flag 설정
+                    navController.previousBackStackEntry?.savedStateHandle?.set(Routes.REFRESH_LIST, true)
+                    navController.popBackStack()
+                },
+                navController = navController
+            )
         }
+
+        // 수정
+        composable(
+            route = Routes.UPDATE,
+            arguments = listOf(navArgument("entryId") { nullable = false })
+        ) { backStack ->
+            val id = backStack.arguments?.getString("entryId") ?: ""
+
+            DiaryUpdateScreen(
+                entryId = id,
+                onClose = {
+                    navController.popBackStack()
+                },
+                onSaved = {
+                    // 저장 후 상세 화면도 업데이트를 위해 요청
+                    navController.previousBackStackEntry?.savedStateHandle?.set(Routes.REFRESH_DETAIL, true)
+
+                    // 수정 화면 닫기
+                    navController.popBackStack()
+                }
+            )
+        }
+
 
         // 검색
         composable(Routes.SEARCH) {

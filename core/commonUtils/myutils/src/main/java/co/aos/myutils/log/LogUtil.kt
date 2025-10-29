@@ -46,6 +46,15 @@ object LogUtil {
     // bottomBar
     const val BOTTOM_BAR_LOG_TAG = "${DEFAULT_TAG}_bottomBar"
 
+    // diaryEditor 작성
+    const val DIARY_EDITOR_LOG_TAG = "${DEFAULT_TAG}_diaryEditor"
+
+    // diary detail
+    const val DIARY_DETAIL_LOG_TAG = "${DEFAULT_TAG}_diaryDetail"
+
+    // diary update
+    const val DIARY_UPDATE_LOG_TAG = "${DEFAULT_TAG}_diaryUpdate"
+
     // home
     const val HOME_LOG_TAG = "${DEFAULT_TAG}_home"
 

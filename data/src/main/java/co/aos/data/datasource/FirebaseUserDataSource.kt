@@ -125,4 +125,11 @@ interface FirebaseUserDataSource {
         uid: String,
         end: LocalDate
     ): Map<String, Int?>
+
+    /** 다이어리 핀 토글 업데이트 */
+    suspend fun setDiaryPinned(
+        uid: String,
+        entryId: String,
+        pinned: Boolean
+    )
 }

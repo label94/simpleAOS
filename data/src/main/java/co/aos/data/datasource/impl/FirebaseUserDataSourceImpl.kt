@@ -170,4 +170,12 @@ class FirebaseUserDataSourceImpl @Inject constructor(
     ): Map<String, Int?> {
         return fsDS.loadWeeklyMood(uid, end)
     }
+
+    override suspend fun setDiaryPinned(
+        uid: String,
+        entryId: String,
+        pinned: Boolean
+    ) {
+        fsDS.setDiaryPinned(uid, entryId, pinned)
+    }
 }

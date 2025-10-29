@@ -7,6 +7,7 @@ import co.aos.domain.usecase.diary.GetDiaryUseCase
 import co.aos.domain.usecase.diary.GetRecentDiaryUseCase
 import co.aos.domain.usecase.diary.LoadWeeklyMoodUseCase
 import co.aos.domain.usecase.diary.SearchDiaryUseCase
+import co.aos.domain.usecase.diary.SetDiaryPinnedUseCase
 import co.aos.domain.usecase.diary.UpdateDiaryUseCase
 import co.aos.domain.usecase.diary.UpsertDailyMoodUseCase
 import co.aos.domain.usecase.diary.impl.AddDiaryUseCaseImpl
@@ -16,6 +17,7 @@ import co.aos.domain.usecase.diary.impl.GetDiaryUseCaseImpl
 import co.aos.domain.usecase.diary.impl.GetRecentDiaryUseCaseImpl
 import co.aos.domain.usecase.diary.impl.LoadWeeklyMoodUseCaseImpl
 import co.aos.domain.usecase.diary.impl.SearchDiaryUseCaseImpl
+import co.aos.domain.usecase.diary.impl.SetDiaryPinnedUseCaseImpl
 import co.aos.domain.usecase.diary.impl.UpdateDiaryUseCaseImpl
 import co.aos.domain.usecase.diary.impl.UpsertDailyMoodUseCaseImpl
 import dagger.Binds
@@ -91,4 +93,11 @@ internal abstract class DiaryDomainModule {
     abstract fun bindUpsertDailyMoodUseCase(
         upsertDailyMoodUseCaseImpl: UpsertDailyMoodUseCaseImpl
     ): UpsertDailyMoodUseCase
+
+    /** diary 핀 관련 di 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindSetDiaryPinUseCase(
+        setPinDiaryUseCaseImpl: SetDiaryPinnedUseCaseImpl
+    ): SetDiaryPinnedUseCase
 }

@@ -35,4 +35,10 @@ interface DiaryRepository {
     suspend fun upsertDailyMood(uid: String, day: LocalDate, mood: Int)
 
     suspend fun weeklyMood(uid: String, endInclusive: LocalDate): List<Int?>
+
+    suspend fun setDiaryPinned(
+        uid: String,
+        entryId: String,
+        pinned: Boolean
+    )
 }

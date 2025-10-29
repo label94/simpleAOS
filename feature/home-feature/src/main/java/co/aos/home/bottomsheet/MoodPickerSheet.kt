@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import co.aos.home.utils.MoodCatalog
 
 /** 무드 선택 바텀 시트 */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,9 +41,9 @@ fun MoodPickerSheet(
                 modifier = Modifier.horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                val moods = listOf("😣","😕","🙂","😊","🤩")
-                moods.forEachIndexed { idx, emoji ->
-                    ElevatedButton(onClick = { onPick(idx + 1) }) { Text(emoji) }
+                val moods = MoodCatalog.MOOD_DATA_LIST
+                moods.forEach { (idx, emoji) ->
+                    ElevatedButton(onClick = { onPick(idx) }) { Text(emoji) }
                 }
             }
             Spacer(Modifier.height(8.dp))

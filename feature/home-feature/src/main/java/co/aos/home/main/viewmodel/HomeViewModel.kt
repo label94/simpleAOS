@@ -1,5 +1,6 @@
 package co.aos.home.main.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import co.aos.base.BaseViewModel
 import co.aos.domain.usecase.diary.GetRecentDiaryUseCase
@@ -52,7 +53,6 @@ class HomeViewModel @Inject constructor(
                     }
                 }
                 applyTagFilter(next)
-
             }
             is HomeContract.Event.OnTagFromCardClicked -> {
                 // 카드 내부 태그 클릭 -> 무조건 추가(이미 있으면 무시)
@@ -75,7 +75,7 @@ class HomeViewModel @Inject constructor(
                 saveTodayMood(event.score)
             }
             is HomeContract.Event.OnEntryClick -> {
-                setEffect(HomeContract.Effect.NavigateToEditor)
+                setEffect(HomeContract.Effect.NavigateToDetail(event.id))
             }
         }
     }
@@ -91,8 +91,8 @@ class HomeViewModel @Inject constructor(
                val today = LocalDate.now()
                val weekly = loadWeeklyMoodUseCase.invoke(uid, today) // List<Int?>
 
-               // 최근 20개의 데이터를 가져온다.
-               val page = getRecent.invoke(uid, pageSize = 20, cursor = null) // List<DiaryCardUi>
+               // 최근 5개의 데이터를 가져온다.
+               val page = getRecent.invoke(uid, pageSize = 5, cursor = null) // List<DiaryCardUi>
                val recents = page.items.map { it.toCardUi() }
 
                // 태그 수집(빈도 높은 순 -> 가나다 정렬)

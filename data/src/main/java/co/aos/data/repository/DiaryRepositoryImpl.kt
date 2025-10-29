@@ -107,4 +107,12 @@ class DiaryRepositoryImpl @Inject constructor(
         val days = (0..6).map { endInclusive.minusDays( (6 - it).toLong() ) }
         return days.map { map[it.toString()] }
     }
+
+    override suspend fun setDiaryPinned(
+        uid: String,
+        entryId: String,
+        pinned: Boolean
+    ) {
+        fs.setDiaryPinned(uid, entryId, pinned)
+    }
 }

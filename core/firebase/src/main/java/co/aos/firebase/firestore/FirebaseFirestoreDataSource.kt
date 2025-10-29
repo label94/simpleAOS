@@ -365,4 +365,18 @@ class FirebaseFirestoreDataSource @Inject constructor (
             .whereIn(FieldPath.documentId(), ids).get().await()
         return snap.documents.associate { it.id to (it.getLong(FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_MOOD.key)?.toInt()) }
     }
+
+    /** 다이어리 핀 토글 업데이트 */
+    suspend fun setDiaryPinned(
+        uid: String,
+        entryId: String,
+        pinned: Boolean
+    ) {
+        diaryDoc(uid, entryId).update(
+            mapOf(
+                FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_PINNED.key to pinned,
+                FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_UPDATED_AT.key to FieldValue.serverTimestamp()
+            )
+        ).await()
+    }
 }
