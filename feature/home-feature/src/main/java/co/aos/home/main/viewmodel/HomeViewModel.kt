@@ -114,6 +114,7 @@ class HomeViewModel @Inject constructor(
                        recentEntries = recents,
                        filteredEntries = recents, // 초기엔 필터 없이 원본 그대로
                        allTags = allTagSorted,
+                       selectedTags = emptySet(), // 선택 한 태그 초기화
                        todayWritten = recents.any { it.dateText == today.toString() },
                        todayMood = weekly.lastOrNull(),
                        loading = false
