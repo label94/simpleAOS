@@ -6,18 +6,31 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.PushPin
-import androidx.compose.material3.AssistChip
+import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,8 +40,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import co.aos.common.showSnackBarMessage
@@ -37,12 +55,16 @@ import co.aos.home.detail.load.state.DiaryDetailContract
 import co.aos.home.detail.load.viewmodel.DiaryDetailViewModel
 import co.aos.home.detail.model.DiaryDetail
 import co.aos.home.topbar.DiaryDetailTopBar
-import co.aos.home.utils.MoodCatalog
-import co.aos.myutils.log.LogUtil
 import co.aos.popup.CommonDialog
 import co.aos.ui.theme.Black
+import co.aos.ui.theme.DarkGray
+import co.aos.ui.theme.GhostWhite
+import co.aos.ui.theme.Red
+import co.aos.ui.theme.White
+import java.time.format.DateTimeFormatter
 
 /** 다이어리 상세 화면 UI */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DiaryDetailScreen(
     entryId: String,
@@ -61,7 +83,6 @@ fun DiaryDetailScreen(
     // 뒤로 가기 이벤트
     BackHandler {
         if (uiState.isRefresh) {
-            // 이전 화면 리프래시 일 경우에 호출
             onRefreshRequest.invoke()
         } else {
             onClose.invoke()
@@ -83,13 +104,8 @@ fun DiaryDetailScreen(
 
     LaunchedEffect(refreshFlag) {
         if (refreshFlag?.value == true) {
-            // 상세 데이터 리프레시
             viewModel.setEvent(DiaryDetailContract.Event.Load(entryId))
-
-            // 수정, 상세 화면 업데이트 시 이전 화면 업데이트를 위한 flag 설정 이벤트 호출
             viewModel.setEvent(DiaryDetailContract.Event.UpdateRequestRefresh(true))
-
-            // 플래그를 다시 false로 설정(반복호출을 막기 위함)
             currentBackStackEntry.savedStateHandle[Routes.REFRESH_DETAIL] = false
         }
     }
@@ -99,17 +115,9 @@ fun DiaryDetailScreen(
         effectFlow.collect { effect ->
             when(effect) {
                 is DiaryDetailContract.Effect.Toast -> {
-                    showSnackBarMessage(
-                        snackBarHostState = snackBarHostState,
-                        coroutineScope = coroutineScope,
-                        message = effect.msg
-                    )
+                    showSnackBarMessage(snackBarHostState, coroutineScope, effect.msg)
                 }
                 is DiaryDetailContract.Effect.Close -> {
-                    // 닫기 버튼 눌렸을 때, 이전 화면 업데이트 Flag 유무에 따른 별도 처리
-
-                    LogUtil.e("TestLog", "test : ${uiState.isRefresh}")
-
                     if (uiState.isRefresh) {
                         onRefreshRequest.invoke()
                     } else {
@@ -120,7 +128,6 @@ fun DiaryDetailScreen(
                     onEdit(effect.entryId)
                 }
                 is DiaryDetailContract.Effect.ShareText -> {
-                    // 텍스트 공유
                     val intent = Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
                         putExtra(Intent.EXTRA_TEXT, effect.text)
@@ -143,67 +150,50 @@ fun DiaryDetailScreen(
     Scaffold(
         topBar = {
             DiaryDetailTopBar(
-                title = uiState.entry?.title ?: "상세 화면",
-                onBack = {
-                    viewModel.setEvent(DiaryDetailContract.Event.OnBackClick)
-                },
-                onEdit = {
-                    viewModel.setEvent(DiaryDetailContract.Event.OnEditClick)
-                },
-                onShare = {
-                    viewModel.setEvent(DiaryDetailContract.Event.OnShareClick)
-                },
-                onDelete = {
-                    viewModel.setEvent(DiaryDetailContract.Event.OnDeleteClick)
-                },
+                title = "다이어리 상세",
+                onBack = { viewModel.setEvent(DiaryDetailContract.Event.OnBackClick) },
+                onEdit = { viewModel.setEvent(DiaryDetailContract.Event.OnEditClick) },
+                onDelete = { viewModel.setEvent(DiaryDetailContract.Event.OnDeleteClick) },
+                onShare = { viewModel.setEvent(DiaryDetailContract.Event.OnShareClick) }
             )
         },
-        snackbarHost = { snackBarHostState },
         floatingActionButton = {
-            // 핀 토글 FAB
-            ExtendedFloatingActionButton(
-                onClick = {
-                    viewModel.setEvent(DiaryDetailContract.Event.OnTogglePinned)
-                },
-                icon = {
-                    Icon(imageVector = Icons.Outlined.PushPin, contentDescription = "핀 토글")
-                },
-                text = {
-                    Text(
-                        text = if (uiState.entry?.pinned == true) "고정 해제" else "상단 고정",
-                        style = MaterialTheme.typography.bodyMedium
+            uiState.entry?.let {
+                val isPinned = it.pinned
+                FloatingActionButton(
+                    onClick = {},
+                    containerColor = if (isPinned) Black else DarkGray,
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PushPin,
+                        contentDescription = "상단 고정",
+                        tint = White
                     )
                 }
-            )
-        }
+            }
+        },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
+        containerColor = GhostWhite
     ) { innerPadding ->
         when {
             uiState.loading -> {
-                Box(
-                    modifier = Modifier
-                        .padding(innerPadding)
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
             }
             uiState.error != null -> {
-                Box(
-                    modifier = Modifier
-                        .padding(innerPadding)
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "페이지 오류 입니다.\n잠시후 다시 이용해주세요.", style = MaterialTheme.typography.titleMedium, color = Black)
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(
+                        text = "페이지 오류 입니다.\n잠시후 다시 이용해주세요.",
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleMedium
+                    )
                 }
             }
             uiState.entry != null -> {
                 DetailBody(
                     data = uiState.entry!!,
-                    modifier = Modifier
-                        .padding(innerPadding)
-                        .fillMaxSize()
+                    modifier = Modifier.padding(innerPadding).fillMaxSize()
                 )
             }
         }
@@ -233,55 +223,102 @@ private fun DetailBody(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(14.dp)
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(PaddingValues(top = 16.dp, bottom = 100.dp))
     ) {
-        // 날짜 + 무드
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            // 날짜
-            Text(
-                text = data.date.toString(),
-                style = MaterialTheme.typography.labelLarge,
-                color = Black
-            )
+        // --- Header ---
+        Column(modifier = Modifier.padding(horizontal = 24.dp)) {
+            val dateFormatter = remember { DateTimeFormatter.ofPattern("yyyy. MM. dd.") }
+            val createdDateText = remember(data.date) { data.date.format(dateFormatter) }
 
-            // 핀
-            if (data.pinned) {
-                AssistChip(
-                    onClick = {},
-                    label = { Text(text = "고정", style = MaterialTheme.typography.labelMedium) }
-                )
+            // 작성일과 수정일이 다를 경우 '수정일'을 표시하기 위한 플래그
+            val hasBeenUpdated = remember(data.date, data.updateDate) {
+                data.date != data.updateDate
             }
-        }
 
-        // 태그 칩
-        if (data.tags.isNotEmpty()) {
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                data.tags.forEach { t ->
-                    AssistChip(
-                        onClick = {},
-                        label = { Text(text = "#$t", style = MaterialTheme.typography.labelMedium) }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = createdDateText,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(Modifier.width(10.dp))
+
+                if (hasBeenUpdated) {
+                    Text(
+                        text = "(최종 수정일 : ${data.updateDate})",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Red,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
+
+            Spacer(Modifier.height(12.dp))
+
+            Text(
+                text = data.title,
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = Black
+            )
         }
 
-        // 제목
-        Text(
-            text = data.title,
-            style = MaterialTheme.typography.headlineSmall,
-            color = Black
-        )
+        Spacer(modifier = Modifier.height(24.dp))
 
-        // 본문
+        // --- Body ---
         Text(
             text = data.body,
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .fillMaxWidth()
+                .heightIn(max = 400.dp)
+                .verticalScroll(rememberScrollState()),
             style = MaterialTheme.typography.bodyLarge,
-            color = Black
+            color = Black.copy(alpha = 0.9f),
+            lineHeight = 28.sp
         )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // --- Tags ---
+        if (data.tags.isNotEmpty()) {
+            Column(modifier = Modifier.padding(horizontal = 24.dp)) {
+                HorizontalDivider(
+                    modifier = Modifier.padding(bottom = 24.dp),
+                    thickness = DividerDefaults.Thickness,
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+                )
+                Text(
+                    text = "관련 태그",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    data.tags.forEach { tag ->
+                        Surface(
+                            shape = RoundedCornerShape(16.dp),
+                            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
+                            contentColor = Black
+                        ) {
+                            Text(
+                                text = "#$tag",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = White,
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }

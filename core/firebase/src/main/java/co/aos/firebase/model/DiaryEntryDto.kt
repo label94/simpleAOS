@@ -11,6 +11,6 @@ data class DiaryEntryDto(
     val body: String = "",
     val tags: List<String> = emptyList(),
     val pinned: Boolean = false,
-    @ServerTimestamp val date: Date? = null,       // 컨텐츠 기준 날짜(0시 고정 권장)
-    @ServerTimestamp val updatedAt: Date? = null
+    @ServerTimestamp val date: Date? = null,       // 컨텐츠 기준 날짜(0시 고정 권장) - 최초 작성 날짜
+    @ServerTimestamp val updatedAt: Date? = null   // 업데이트 한 날짜
 )

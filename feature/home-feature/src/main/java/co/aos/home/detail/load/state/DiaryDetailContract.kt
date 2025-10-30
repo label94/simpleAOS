@@ -28,9 +28,6 @@ class DiaryDetailContract {
         /** 삭제 취소 */
         data object OnDeleteCancel : Event()
 
-        /** 핀 토글 이벤트 */
-        data object OnTogglePinned : Event()
-
         /** 공유 클릭 */
         data object OnShareClick : Event()
 

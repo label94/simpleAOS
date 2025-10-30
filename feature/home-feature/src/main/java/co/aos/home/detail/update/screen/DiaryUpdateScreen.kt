@@ -161,9 +161,9 @@ fun DiaryUpdateScreen(
                 ) {
                     // 날짜 (읽기 용)
                     Text(
-                        text = "날짜 : ${uiState.dateText}",
+                        text = "작성일 : ${uiState.dateText}",
                         color = Black,
-                        style = MaterialTheme.typography.titleLarge
+                        style = MaterialTheme.typography.titleMedium
                     )
 
                     // 제목

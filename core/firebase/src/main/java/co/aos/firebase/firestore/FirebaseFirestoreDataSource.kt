@@ -295,7 +295,7 @@ class FirebaseFirestoreDataSource @Inject constructor (
         }
     }
 
-    /** 간이 검색(서버 범위: 날짜/핀, 나머지(무드/태그/텍스트)는 클라 필터) */
+    /** 간이 검색(서버 범위: 날짜/핀, 나머지(태그/텍스트)는 클라 필터) */
     suspend fun searchDiaryEntries(
         uid: String,
         from: LocalDate?,

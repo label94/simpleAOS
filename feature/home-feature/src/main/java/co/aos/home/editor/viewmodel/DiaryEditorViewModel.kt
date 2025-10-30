@@ -84,6 +84,7 @@ class DiaryEditorViewModel  @Inject constructor(
                     body = currentState.body,
                     tags = currentState.selectedTags.toList(),
                     date = date,
+                    updateDate = date,
                     pinned = currentState.pinned,
                 )
 

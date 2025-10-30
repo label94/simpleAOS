@@ -49,3 +49,7 @@ val Orange = Color(0xFFF57C00)
 val Amber = Color(0xFFFFC107)
 
 val Blue = Color(0xFF03A9F4)
+
+val DarkGray = Color(0xFF808080)
+
+val LightGray = Color(0xFFD3D3D3)

@@ -9,6 +9,7 @@ data class DiaryDetail(
     val title: String,
     val body: String,
     val tags: List<String>,
-    val date: LocalDate,       // 일기 날짜(로컬 의미, 저장은 UTC 자정 Date)
+    val date: LocalDate,       // 최초 작성한 일기 날짜(로컬 의미, 저장은 UTC 자정 Date)
+    val updateDate: LocalDate, // 업데이트 날짜
     val pinned: Boolean,
 )

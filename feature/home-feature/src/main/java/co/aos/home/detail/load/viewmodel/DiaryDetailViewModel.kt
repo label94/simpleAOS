@@ -52,9 +52,6 @@ class DiaryDetailViewModel @Inject constructor(
             is DiaryDetailContract.Event.OnDeleteConfirm -> {
                 confirmDelete()
             }
-            is DiaryDetailContract.Event.OnTogglePinned -> {
-                togglePinned()
-            }
             is DiaryDetailContract.Event.OnShareClick -> {
                 share()
             }
@@ -85,6 +82,7 @@ class DiaryDetailViewModel @Inject constructor(
                         body = detail.body,
                         pinned = detail.pinned,
                         date = detail.date,
+                        updateDate = detail.updateDate,
                         tags = detail.tags,
                     )
 

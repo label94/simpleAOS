@@ -134,8 +134,6 @@ class DiaryUpdateViewModel @Inject constructor(
                     currentState.body.lineSequence().firstOrNull()?.take(50)?.trim().orEmpty()
                 }.ifBlank { "제목 없음" }
 
-                // 날짜는 이미 state.dateText(yyyy-MM-dd) 형태로 들어있음
-                // LocalDate로 다시 변환해서 전달
                 val date = try {
                     LocalDate.parse(currentState.dateText)
                 } catch (_: Throwable) {
