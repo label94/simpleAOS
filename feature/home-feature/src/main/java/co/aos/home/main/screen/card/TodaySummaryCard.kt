@@ -227,7 +227,7 @@ private fun MonthSummarySection(
 
         // 2. 태그 통계
         Text(
-            text = "나의 한 달 관심사",
+            text = "이달의 관심사",
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold
         )

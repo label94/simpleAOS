@@ -94,8 +94,8 @@ class HomeViewModel @Inject constructor(
                val today = LocalDate.now()
                val weekly = loadWeeklyMoodUseCase.invoke(uid, today) // List<Int?>
 
-               // 최근 5개의 데이터를 가져온다.
-               val page = getRecent.invoke(uid, pageSize = 5, cursor = null) // List<DiaryCardUi>
+               // 최근 3개의 데이터를 가져온다.
+               val page = getRecent.invoke(uid, pageSize = 3, cursor = null) // List<DiaryCardUi>
                val recents = page.items.map { it.toCardUi() } // 최근 다이어리 데이터
 
                // 태그 수집(빈도 높은 순 -> 가나다 정렬)
