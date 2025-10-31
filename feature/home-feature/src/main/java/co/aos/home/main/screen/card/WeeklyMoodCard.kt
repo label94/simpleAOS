@@ -33,16 +33,12 @@ import java.time.LocalDate
  * @param weekly   지난 7일 무드 (길이 7 권장, 값: 1..5, null=기록없음)
  *                 리스트가 과거→오늘/오늘→과거든 상관 없음.
  *                 (아래 normalize 로직으로 '지난 7일 날짜'에 매핑해서 월~일 순서로 재배열)
- * @param streak   연속 작성
- * @param bestStreak 최고 연속
  * @param loading  로딩 여부
  * @param endDate  "오늘" 날짜 (보통 LocalDate.now())
  */
 @Composable
 fun WeeklyMoodCard(
     weekly: List<Int?>,                 // 지난 7일 (길이 7 권장, 값: 1..5, null=기록없음)
-    streak: Int,                        // (표시는 안 하지만 파라미터 유지)
-    bestStreak: Int,                    // (표시는 안 하지만 파라미터 유지)
     loading: Boolean,
     endDate: LocalDate        // 오늘 날짜 (요일 강조용)
 ) {

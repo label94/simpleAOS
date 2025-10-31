@@ -3,6 +3,7 @@ package co.aos.domain.di
 import co.aos.domain.usecase.diary.AddDiaryUseCase
 import co.aos.domain.usecase.diary.DeleteDiaryUseCase
 import co.aos.domain.usecase.diary.GetDiaryByDateUseCase
+import co.aos.domain.usecase.diary.GetDiaryByMonthUseCase
 import co.aos.domain.usecase.diary.GetDiaryUseCase
 import co.aos.domain.usecase.diary.GetRecentDiaryUseCase
 import co.aos.domain.usecase.diary.LoadWeeklyMoodUseCase
@@ -13,6 +14,7 @@ import co.aos.domain.usecase.diary.UpsertDailyMoodUseCase
 import co.aos.domain.usecase.diary.impl.AddDiaryUseCaseImpl
 import co.aos.domain.usecase.diary.impl.DeleteDiaryUseCaseImpl
 import co.aos.domain.usecase.diary.impl.GetDiaryByDateUseCaseImpl
+import co.aos.domain.usecase.diary.impl.GetDiaryByMonthUseCaseImpl
 import co.aos.domain.usecase.diary.impl.GetDiaryUseCaseImpl
 import co.aos.domain.usecase.diary.impl.GetRecentDiaryUseCaseImpl
 import co.aos.domain.usecase.diary.impl.LoadWeeklyMoodUseCaseImpl
@@ -100,4 +102,11 @@ internal abstract class DiaryDomainModule {
     abstract fun bindSetDiaryPinUseCase(
         setPinDiaryUseCaseImpl: SetDiaryPinnedUseCaseImpl
     ): SetDiaryPinnedUseCase
+
+    /** 임의의 날짜가 속한 '그 달'의 일기 조회 관련 di 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindGetDiaryByMonthUseCase(
+        getDiaryByMonthUseCaseImpl: GetDiaryByMonthUseCaseImpl
+    ): GetDiaryByMonthUseCase
 }

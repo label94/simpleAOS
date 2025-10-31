@@ -12,6 +12,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.ZoneId
 import javax.inject.Inject
 
@@ -373,5 +374,44 @@ class FirebaseFirestoreDataSource @Inject constructor (
                 FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_UPDATED_AT.key to FieldValue.serverTimestamp()
             )
         ).await()
+    }
+
+    /**
+     * 특정 월에 맞는 다이어리 데이터 조회
+     * - 범위: [해당월 1일 00:00, 다음달 1일 00:00)
+     * - 정렬: 날짜 내림차순
+     * */
+    suspend fun entriesByMonth(
+        uid: String,
+        yearMonth: YearMonth
+    ): List<Pair<String, DiaryEntryDto>> {
+        // 해당 월의 시작일(1일), 다음달 1일
+        val startOfMonth: LocalDate = yearMonth.atDay(1)
+        val startOfNextMonth: LocalDate = yearMonth.plusMonths(1).atDay(1)
+
+        val start = tsOf(startOfMonth)           // UTC 00:00
+        val end = tsOf(startOfNextMonth)         // UTC 00:00 (미만)
+
+        val snap = diaryCol(uid)
+            .whereGreaterThanOrEqualTo(FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_DATE.key, start)
+            .whereLessThan(FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_DATE.key, end)
+            .orderBy(FirebaseFireStoreKey.DiaryEntriesCollectionKey.D_DATE.key, Query.Direction.DESCENDING)
+            .get()
+            .await()
+
+        return snap.documents.mapNotNull { d ->
+            d.toObject(DiaryEntryDto::class.java)?.let { d.id to it }
+        }
+    }
+
+    /**
+     * ✅ 임의의 날짜가 속한 '그 달'의 일기 조회 (현재 날짜 포함 용도로 사용)
+     * - 사용 예) entriesByMonth(uid, LocalDate.now())
+     */
+    suspend fun entriesByMonth(
+        uid: String,
+        dayInMonth: LocalDate
+    ): List<Pair<String, DiaryEntryDto>> {
+        return entriesByMonth(uid, YearMonth.from(dayInMonth))
     }
 }

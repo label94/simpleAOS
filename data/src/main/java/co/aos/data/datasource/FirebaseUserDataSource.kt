@@ -3,6 +3,7 @@ package co.aos.data.datasource
 import co.aos.domain.model.User
 import co.aos.firebase.model.DiaryEntryDto
 import java.time.LocalDate
+import java.time.YearMonth
 
 /**
  * firebase 연동 관련 dataSource
@@ -131,4 +132,16 @@ interface FirebaseUserDataSource {
         entryId: String,
         pinned: Boolean
     )
+
+    /** 특정 월에 맞는 다이어리 데이터 조회 */
+    suspend fun entriesByMonth(
+        uid: String,
+        yearMonth: YearMonth
+    ): List<Pair<String, DiaryEntryDto>>
+
+    /** 임의의 날짜가 속한 '그 달'의 다이어리 조회 */
+    suspend fun entriesByMonth(
+        uid: String,
+        dayInMonth: LocalDate
+    ): List<Pair<String, DiaryEntryDto>>
 }

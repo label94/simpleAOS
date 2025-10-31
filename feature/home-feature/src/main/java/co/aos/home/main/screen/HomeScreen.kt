@@ -172,8 +172,8 @@ private fun HomeBody(
                 TodaySummaryCard(
                     todayMood = uiState.todayMood,
                     todayWritten = uiState.todayWritten,
-                    streak = uiState.streak,
-                    bestStreak = uiState.bestStreak,
+                    randomTitleFromMonth = uiState.randomTitleFromMonth,
+                    monthTagStats = uiState.monthTagStats,
                     onPickMood = { onEvent(HomeContract.Event.OnPickMoodClick) },
                     onWrite = { onEvent(HomeContract.Event.QuickAddText) },
                     loading = uiState.loading
@@ -186,8 +186,6 @@ private fun HomeBody(
             AnimatedCard {
                 WeeklyMoodCard(
                     weekly = uiState.weeklyMood,
-                    streak = uiState.streak,
-                    bestStreak = uiState.bestStreak,
                     loading = uiState.loading,
                     endDate = LocalDate.now()
                 )

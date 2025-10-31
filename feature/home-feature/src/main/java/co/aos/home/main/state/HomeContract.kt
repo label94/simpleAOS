@@ -51,11 +51,11 @@ class HomeContract {
         /** 오늘 일기 작성 여부 (간이 체크) */
         val todayWritten: Boolean = false,
 
-        /** 연속 작성 일수 */
-        val streak: Int = 0,
+        /** 이번 달의 랜덤 일기 제목 */
+        val randomTitleFromMonth: String? = null,
 
-        /** 최고 연속 작성 일수 */
-        val bestStreak: Int = 0,
+        /** 이번 달의 태그 통계 (태그, 비율) */
+        val monthTagStats: Map<String, Float> = emptyMap(),
 
         /** 최근 7일 무드 (과거→오늘 순서), 값이 없으면 null */
         val weeklyMood: List<Int?> = List(7) { null },

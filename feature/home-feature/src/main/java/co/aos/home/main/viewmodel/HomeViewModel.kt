@@ -3,6 +3,8 @@ package co.aos.home.main.viewmodel
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import co.aos.base.BaseViewModel
+import co.aos.domain.model.DiarySummary
+import co.aos.domain.usecase.diary.GetDiaryByMonthUseCase
 import co.aos.domain.usecase.diary.GetRecentDiaryUseCase
 import co.aos.domain.usecase.diary.LoadWeeklyMoodUseCase
 import co.aos.domain.usecase.diary.UpsertDailyMoodUseCase
@@ -23,7 +25,8 @@ class HomeViewModel @Inject constructor(
     private val authUseCase: GetCurrentUserUseCase,
     private val getRecent: GetRecentDiaryUseCase,
     private val loadWeeklyMoodUseCase: LoadWeeklyMoodUseCase,
-    private val upsertDailyMoodUseCase: UpsertDailyMoodUseCase
+    private val upsertDailyMoodUseCase: UpsertDailyMoodUseCase,
+    private val getDiaryByMonthUseCase: GetDiaryByMonthUseCase
 ): BaseViewModel<HomeContract.Event, HomeContract.State, HomeContract.Effect>() {
 
     init {
@@ -93,7 +96,7 @@ class HomeViewModel @Inject constructor(
 
                // 최근 5개의 데이터를 가져온다.
                val page = getRecent.invoke(uid, pageSize = 5, cursor = null) // List<DiaryCardUi>
-               val recents = page.items.map { it.toCardUi() }
+               val recents = page.items.map { it.toCardUi() } // 최근 다이어리 데이터
 
                // 태그 수집(빈도 높은 순 -> 가나다 정렬)
                val tagFreq = mutableMapOf<String, Int>()
@@ -107,6 +110,11 @@ class HomeViewModel @Inject constructor(
                        .thenBy { it.key })
                    .map { it.key }
 
+               // 이달의 데이터 조회
+               val monthDiaryList = getDiaryByMonthUseCase.invoke(uid, today)
+               val dayOfMonthTitle = randomTitle(monthDiaryList) // 이달의 일기 제목
+               val monthTagStats = monthlyTagStatistics(monthDiaryList) // 태그 통계 계산
+
                // 상태 업데이트
                setState {
                    copy(
@@ -117,7 +125,9 @@ class HomeViewModel @Inject constructor(
                        selectedTags = emptySet(), // 선택 한 태그 초기화
                        todayWritten = recents.any { it.dateText == today.toString() },
                        todayMood = weekly.lastOrNull(),
-                       loading = false
+                       loading = false,
+                       randomTitleFromMonth = dayOfMonthTitle,
+                       monthTagStats = monthTagStats
                    )
                }
            } catch (t: Throwable) {
@@ -162,5 +172,33 @@ class HomeViewModel @Inject constructor(
             base.filter { card -> nextSelected.all { it in card.tags } }
         }
         setState { copy(selectedTags = nextSelected, filteredEntries = filtered) }
+    }
+
+    /** 이달의 데이터 중 타이틀을 랜덤으로 반환 */
+    private fun randomTitle(list: List<DiarySummary>): String? {
+        if (list.isEmpty()) return null
+
+        val randomTitle = list.filter { it.title.isNotEmpty() }.randomOrNull()?.title
+        return randomTitle
+    }
+
+    /** 이달의 태그 통계 계산 */
+    private fun monthlyTagStatistics(list: List<DiarySummary>): Map<String, Float> {
+        if (list.isEmpty()) return emptyMap()
+
+        val monthTagCounts = mutableMapOf<String, Int>()
+        list.forEach { entry ->
+            entry.tags.forEach { tag ->
+                monthTagCounts[tag] = (monthTagCounts[tag] ?: 0) + 1
+            }
+        }
+        val totalTagCount = monthTagCounts.values.sum()
+        val monthTagStats = if (totalTagCount > 0) {
+            monthTagCounts.mapValues { it.value.toFloat() / totalTagCount }
+        } else {
+            emptyMap()
+        }
+        LogUtil.d(LogUtil.HOME_LOG_TAG, "monthTagStats => $monthTagStats")
+        return monthTagStats
     }
 }

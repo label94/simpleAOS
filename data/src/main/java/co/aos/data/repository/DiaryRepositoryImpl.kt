@@ -10,6 +10,7 @@ import co.aos.domain.model.PagedResult
 import co.aos.domain.repository.DiaryRepository
 import co.aos.firebase.FirebaseFireStoreKey
 import java.time.LocalDate
+import java.time.YearMonth
 import javax.inject.Inject
 
 class DiaryRepositoryImpl @Inject constructor(
@@ -109,5 +110,19 @@ class DiaryRepositoryImpl @Inject constructor(
         pinned: Boolean
     ) {
         fs.setDiaryPinned(uid, entryId, pinned)
+    }
+
+    override suspend fun entriesByMonth(
+        uid: String,
+        yearMonth: YearMonth
+    ): List<DiarySummary> {
+        return fs.entriesByMonth(uid, yearMonth).map { it.toSummary() }
+    }
+
+    override suspend fun entriesByMonth(
+        uid: String,
+        dayInMonth: LocalDate
+    ): List<DiarySummary> {
+        return fs.entriesByMonth(uid, dayInMonth).map { it.toSummary() }
     }
 }

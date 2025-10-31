@@ -5,6 +5,7 @@ import co.aos.domain.model.DiaryEntryUpdate
 import co.aos.domain.model.DiarySummary
 import co.aos.domain.model.PagedResult
 import java.time.LocalDate
+import java.time.YearMonth
 
 /** diary 관련 repository */
 interface DiaryRepository {
@@ -40,4 +41,14 @@ interface DiaryRepository {
         entryId: String,
         pinned: Boolean
     )
+
+    suspend fun entriesByMonth(
+        uid: String,
+        yearMonth: YearMonth
+    ): List<DiarySummary>
+
+    suspend fun entriesByMonth(
+        uid: String,
+        dayInMonth: LocalDate
+    ): List<DiarySummary>
 }

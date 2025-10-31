@@ -9,6 +9,7 @@ import javax.inject.Inject
 import androidx.core.net.toUri
 import co.aos.firebase.model.DiaryEntryDto
 import java.time.LocalDate
+import java.time.YearMonth
 
 /**
  * Firebase User 연동 관련 DataSource
@@ -176,5 +177,19 @@ class FirebaseUserDataSourceImpl @Inject constructor(
         pinned: Boolean
     ) {
         fsDS.setDiaryPinned(uid, entryId, pinned)
+    }
+
+    override suspend fun entriesByMonth(
+        uid: String,
+        yearMonth: YearMonth
+    ): List<Pair<String, DiaryEntryDto>> {
+        return fsDS.entriesByMonth(uid, yearMonth)
+    }
+
+    override suspend fun entriesByMonth(
+        uid: String,
+        dayInMonth: LocalDate
+    ): List<Pair<String, DiaryEntryDto>> {
+        return fsDS.entriesByMonth(uid, dayInMonth)
     }
 }
