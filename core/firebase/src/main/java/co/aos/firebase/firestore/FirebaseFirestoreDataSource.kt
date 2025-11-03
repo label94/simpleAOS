@@ -4,6 +4,7 @@ import co.aos.firebase.FirebaseCollection
 import co.aos.firebase.FirebaseFireStoreKey
 import co.aos.firebase.model.DiaryEntryDto
 import co.aos.firebase.model.UserDto
+import co.aos.myutils.log.LogUtil
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
@@ -356,6 +357,8 @@ class FirebaseFirestoreDataSource @Inject constructor (
         end: LocalDate
     ): Map<String, Int?> {
         val days = (0..6).map { end.minusDays((6 - it).toLong()) }
+        LogUtil.d(LogUtil.FIREBASE_LOG_TAG, "days => $days")
+
         val ids = days.map { it.toString() } // yyyy-MM-dd
         val snap = users(uid).collection(FirebaseCollection.USER_MOOD_DAILY_COLLECTION.value)
             .whereIn(FieldPath.documentId(), ids).get().await()
