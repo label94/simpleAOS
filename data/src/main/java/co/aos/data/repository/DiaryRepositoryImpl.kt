@@ -2,9 +2,11 @@ package co.aos.data.repository
 
 import co.aos.data.datasource.FirebaseUserDataSource
 import co.aos.data.entity.toEntry
+import co.aos.data.entity.toListItemOrNull
 import co.aos.data.entity.toSummary
 import co.aos.domain.model.DiaryEntry
 import co.aos.domain.model.DiaryEntryUpdate
+import co.aos.domain.model.DiaryListItem
 import co.aos.domain.model.DiarySummary
 import co.aos.domain.model.PagedResult
 import co.aos.domain.repository.DiaryRepository
@@ -124,5 +126,23 @@ class DiaryRepositoryImpl @Inject constructor(
         dayInMonth: LocalDate
     ): List<DiarySummary> {
         return fs.entriesByMonth(uid, dayInMonth).map { it.toSummary() }
+    }
+
+    override suspend fun listByMonth(
+        uid: String,
+        yearMonth: YearMonth
+    ): List<DiaryListItem> {
+        val pairs = fs.entriesByMonth(uid, yearMonth)
+        return pairs.mapNotNull { (id, dto) -> dto.toListItemOrNull(id) }
+            .sortedByDescending { it.date }
+    }
+
+    override suspend fun listByDate(
+        uid: String,
+        day: LocalDate
+    ): List<DiaryListItem> {
+        val pairs = fs.entriesByDate(uid, day)
+        return pairs.mapNotNull { (id, dto) -> dto.toListItemOrNull(id) }
+            .sortedByDescending { it.date }
     }
 }

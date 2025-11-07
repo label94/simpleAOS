@@ -54,6 +54,8 @@ val DarkGray = Color(0xFF808080)
 
 val LightGray = Color(0xFFD3D3D3)
 
+val MediumBlue = Color(0xFF0000CD)
+
 // Chart Colors
 val ChartPink = Color(0xFF880E4F) // Dark Maroon
 val ChartPurple = Color(0xFF9C27B0)

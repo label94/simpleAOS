@@ -21,6 +21,7 @@ import co.aos.home.main.screen.LocalAppNavController
 import co.aos.home.main.screen.MAIN_NAV_GRAPH_NAME
 import co.aos.myutils.log.LogUtil
 import co.aos.ui.theme.Black
+import co.aos.ui.theme.Magenta
 import co.aos.ui.theme.Red
 import co.aos.ui.theme.White
 
@@ -85,7 +86,7 @@ fun BottomItemView(
     onItemSelect: (BottomIcon) -> Unit
 ) {
     val tint = if (selected) {
-        Red
+        Magenta
     } else {
         Black
     }

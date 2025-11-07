@@ -2,6 +2,7 @@ package co.aos.domain.repository
 
 import co.aos.domain.model.DiaryEntry
 import co.aos.domain.model.DiaryEntryUpdate
+import co.aos.domain.model.DiaryListItem
 import co.aos.domain.model.DiarySummary
 import co.aos.domain.model.PagedResult
 import java.time.LocalDate
@@ -51,4 +52,22 @@ interface DiaryRepository {
         uid: String,
         dayInMonth: LocalDate
     ): List<DiarySummary>
+
+    /**
+     * 월별 리스트 요약
+     * - 정렬 및 DiaryListItem 으로 Mapper
+     * */
+    suspend fun listByMonth(
+        uid: String,
+        yearMonth: YearMonth
+    ): List<DiaryListItem>
+
+    /**
+     * 일자별 리스트 요약
+     * - 정렬 및 DiaryListItem 으로 Mapper
+     * */
+    suspend fun listByDate(
+        uid: String,
+        day: LocalDate
+    ): List<DiaryListItem>
 }

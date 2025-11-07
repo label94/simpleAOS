@@ -18,14 +18,15 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import co.aos.home.bottombar.BottomBar
-import co.aos.home.bottombar.BottomIcon
 import co.aos.home.bottombar.Routes
+import co.aos.home.calendar.screen.CalendarScreen
 import co.aos.home.detail.load.screen.DiaryDetailScreen
 import co.aos.home.detail.update.screen.DiaryUpdateScreen
 import co.aos.home.editor.screen.DiaryEditorScreen
@@ -121,7 +122,23 @@ private fun BottomNavigationGraph(
 
         // 달력
         composable(Routes.CALENDAR) {
-
+            CalendarScreen(
+                onBack = {
+                    navController.navigate(Routes.HOME) {
+                        // 백 스택의 시작점(HOME)까지 모든 스택을 제거합니다.
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        // 이미 HOME에 있다면 새 화면을 만들지 않습니다.
+                        launchSingleTop = true
+                        // HOME 화면의 이전 상태를 복원합니다.
+                        restoreState = true
+                    }
+                },
+                onOpenDetail = { entryId ->
+                    navController.navigate(Routes.detail(entryId))
+                },
+            )
         }
 
         // 통계

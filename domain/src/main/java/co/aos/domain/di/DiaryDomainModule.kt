@@ -4,6 +4,8 @@ import co.aos.domain.usecase.diary.AddDiaryUseCase
 import co.aos.domain.usecase.diary.DeleteDiaryUseCase
 import co.aos.domain.usecase.diary.GetDiaryByDateUseCase
 import co.aos.domain.usecase.diary.GetDiaryByMonthUseCase
+import co.aos.domain.usecase.diary.GetDiarySortListByDateUseCase
+import co.aos.domain.usecase.diary.GetDiarySortListByMonthUseCase
 import co.aos.domain.usecase.diary.GetDiaryUseCase
 import co.aos.domain.usecase.diary.GetRecentDiaryUseCase
 import co.aos.domain.usecase.diary.LoadWeeklyMoodUseCase
@@ -15,6 +17,8 @@ import co.aos.domain.usecase.diary.impl.AddDiaryUseCaseImpl
 import co.aos.domain.usecase.diary.impl.DeleteDiaryUseCaseImpl
 import co.aos.domain.usecase.diary.impl.GetDiaryByDateUseCaseImpl
 import co.aos.domain.usecase.diary.impl.GetDiaryByMonthUseCaseImpl
+import co.aos.domain.usecase.diary.impl.GetDiarySortListByDateUseCaseImpl
+import co.aos.domain.usecase.diary.impl.GetDiarySortListByMonthUseCaseImpl
 import co.aos.domain.usecase.diary.impl.GetDiaryUseCaseImpl
 import co.aos.domain.usecase.diary.impl.GetRecentDiaryUseCaseImpl
 import co.aos.domain.usecase.diary.impl.LoadWeeklyMoodUseCaseImpl
@@ -109,4 +113,18 @@ internal abstract class DiaryDomainModule {
     abstract fun bindGetDiaryByMonthUseCase(
         getDiaryByMonthUseCaseImpl: GetDiaryByMonthUseCaseImpl
     ): GetDiaryByMonthUseCase
+
+    /** 월별 리스트 요약(정렬) 관련 di 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindGetDiarySortedByMonthUseCase(
+        getDiaryByMonthUseCaseImpl: GetDiarySortListByMonthUseCaseImpl
+    ): GetDiarySortListByMonthUseCase
+
+    /** 일자별 리스트 요약(정렬) 관련 di 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindGetDiarySortByDateUseCase(
+        getDiaryByMonthUseCaseImpl: GetDiarySortListByDateUseCaseImpl
+    ): GetDiarySortListByDateUseCase
 }
