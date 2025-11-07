@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -21,6 +22,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowLeft
 import androidx.compose.material.icons.automirrored.filled.ArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -45,6 +48,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import co.aos.common.noRippleClickable
@@ -55,6 +59,8 @@ import co.aos.home.calendar.viewmodel.CalendarViewModel
 import co.aos.home.topbar.CalendarTopBar
 import co.aos.ui.theme.Black
 import co.aos.ui.theme.GhostWhite
+import co.aos.ui.theme.Lavender
+import co.aos.ui.theme.LightGray
 import co.aos.ui.theme.Magenta
 import co.aos.ui.theme.MediumBlue
 import co.aos.ui.theme.Red
@@ -134,18 +140,14 @@ fun CalendarScreen(
             HorizontalDivider()
 
             // 하단 리스트 UI
-            Column(
+            DayEntriesList(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                DayEntriesList(
-                    items = uiState.entriesOfSelectedDay,
-                    onItemClick = { id -> viewModel.setEvent(CalendarContract.Event.OnEntryClick(id)) }
-                )
-            }
+                    .padding(vertical = 12.dp),
+                items = uiState.entriesOfSelectedDay,
+                onItemClick = { id -> viewModel.setEvent(CalendarContract.Event.OnEntryClick(id)) }
+            )
         }
     }
 }
@@ -334,46 +336,66 @@ private fun DayCell(
 /** 하단 : 선택된 날짜에 맞는 일기 리스트 */
 @Composable
 private fun DayEntriesList(
+    modifier: Modifier = Modifier,
     items: List<DiaryListItem>,
     onItemClick: (String) -> Unit
 ) {
     if (items.isEmpty()) {
-        Text(
-            "이 날 작성한 일기가 없습니다.",
-            color = Black,
-            style = MaterialTheme.typography.bodyMedium
-        )
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "이 날 작성한 일기가 없습니다.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Black
+            )
+        }
         return
     }
 
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp)
     ) {
         items(items, key = { it.id }) { item ->
             Surface(
-                tonalElevation = if (item.pinned) 4.dp else 1.dp,
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.fillMaxWidth()
+                onClick = { onItemClick(item.id) },
+                shape = MaterialTheme.shapes.large,
+                tonalElevation = 2.dp,
+                modifier = Modifier.fillMaxWidth(),
+                color = Lavender
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp)
-                        .noRippleClickable { onItemClick(item.id) },
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    val tagList = item.tags
-                    if (tagList.isNotEmpty()) {
-                        tagList.forEach { tag ->
-                            Text("#${tag} ", style = MaterialTheme.typography.bodyMedium)
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = item.title,
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Black
+                        )
+                        if (item.tags.isNotEmpty()) {
+                            Spacer(Modifier.height(4.dp))
+                            Text(
+                                text = item.tags.joinToString(" ") { "#$it" },
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Magenta,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
                     }
-
-                    Text(
-                        text = item.title,
-                        color = Black,
-                        style = MaterialTheme.typography.bodyMedium,
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                        contentDescription = "상세 보기",
+                        tint = Black,
+                        modifier = Modifier.padding(start = 12.dp)
                     )
                 }
             }
