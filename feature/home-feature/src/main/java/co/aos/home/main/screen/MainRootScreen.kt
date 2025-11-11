@@ -30,6 +30,7 @@ import co.aos.home.calendar.screen.CalendarScreen
 import co.aos.home.detail.load.screen.DiaryDetailScreen
 import co.aos.home.detail.update.screen.DiaryUpdateScreen
 import co.aos.home.editor.screen.DiaryEditorScreen
+import co.aos.home.inspiration.screen.InspirationScreen
 import co.aos.ui.theme.White
 
 /**
@@ -141,9 +142,23 @@ private fun BottomNavigationGraph(
             )
         }
 
-        // 통계
-        composable(Routes.INSIGHTS) {
-
+        // 영감
+        composable(Routes.INSPIRATION) {
+            InspirationScreen(
+                onBack = {
+                    navController.navigate(Routes.HOME) {
+                        // 백 스택의 시작점(HOME)까지 모든 스택을 제거합니다.
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        // 이미 HOME에 있다면 새 화면을 만들지 않습니다.
+                        launchSingleTop = true
+                        // HOME 화면의 이전 상태를 복원합니다.
+                        restoreState = true
+                    }
+                },
+                onNavigateToWrite = {}
+            )
         }
 
         // 프로필(마이페이지)

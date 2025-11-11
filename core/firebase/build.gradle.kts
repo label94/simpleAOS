@@ -31,6 +31,7 @@ dependencies {
     }
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.ai.ktx) // firebase ai logic
 
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))

@@ -2,7 +2,8 @@ package co.aos.home.bottombar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Explore
+import androidx.compose.material.icons.outlined.Create
+import androidx.compose.material.icons.outlined.ElectricBolt
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Leaderboard
 import androidx.compose.material.icons.outlined.Person
@@ -18,8 +19,8 @@ enum class BottomIcon(val id: Int, val icon: ImageVector, val label: String, val
     /** 달력 */
     CALENDAR(1, Icons.Outlined.CalendarMonth, "달력", Routes.CALENDAR),
 
-    /** 탐색 */
-    EXPLORE(2, Icons.Outlined.Leaderboard, "통계", Routes.INSIGHTS),
+    /** 영감 */
+    INSPIRATION(2, Icons.Outlined.Create, "영감", Routes.INSPIRATION),
 
     /** 프로필(마이페이지) */
     MY_PAGE(3, Icons.Outlined.Person, "프로필", Routes.PROFILE)

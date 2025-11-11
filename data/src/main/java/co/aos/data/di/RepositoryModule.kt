@@ -3,6 +3,7 @@ package co.aos.data.di
 import co.aos.data.repository.BarcodeScannerRepositoryImpl
 import co.aos.data.repository.DiaryRepositoryImpl
 import co.aos.data.repository.FileChooserRepositoryImpl
+import co.aos.data.repository.FireBaseAIRepositoryImpl
 import co.aos.data.repository.GuideRepositoryImpl
 import co.aos.data.repository.NetworkStatusRepositoryImpl
 import co.aos.data.repository.NewOcrRepositoryImpl
@@ -16,6 +17,7 @@ import co.aos.data.repository.WishRepositoryImpl
 import co.aos.domain.repository.BarcodeScannerRepository
 import co.aos.domain.repository.DiaryRepository
 import co.aos.domain.repository.FileChooserRepository
+import co.aos.domain.repository.FireBaseAIRepository
 import co.aos.domain.repository.GuideRepository
 import co.aos.domain.repository.NetworkStatusRepository
 import co.aos.domain.repository.NewOcrRepository
@@ -129,4 +131,11 @@ internal abstract class RepositoryModule {
     abstract fun bindDiaryRepository(
         diaryRepositoryImpl: DiaryRepositoryImpl
     ): DiaryRepository
+
+    /** Firebase AI Repository 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindFirebaseAIRepository(
+        firebaseAIRepositoryImpl: FireBaseAIRepositoryImpl
+    ): FireBaseAIRepository
 }

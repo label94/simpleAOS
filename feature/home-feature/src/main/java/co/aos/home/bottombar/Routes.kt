@@ -5,7 +5,7 @@ object Routes {
     // ====== Bottom tabs ======
     const val HOME = "home" // 홈
     const val CALENDAR = "calendar" // 달력
-    const val INSIGHTS = "leaderboard"   // 통계
+    const val INSPIRATION = "inspiration"   // 영감
     const val PROFILE = "myPage"         // 마이페이지
 
     // ====== Sub Page ======
