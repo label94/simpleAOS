@@ -43,6 +43,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import co.aos.common.noRippleClickable
 import co.aos.common.showSnackBarMessage
 import co.aos.home.editor.state.DiaryEditorContract
@@ -64,6 +65,7 @@ import co.aos.ui.theme.White
 @Composable
 fun DiaryEditorScreen(
     viewModel: DiaryEditorViewModel = hiltViewModel(),
+    bodyText: String = "",
     onClose: () -> Unit,
     onSaved: () -> Unit,
 ) {
@@ -106,6 +108,13 @@ fun DiaryEditorScreen(
                     )
                 }
             }
+        }
+    }
+
+    // 전달되는 body(본문) 데이터가 존재할 경우에는 해당 값으로 업데이트 이벤트 요청
+    LaunchedEffect(Unit) {
+        if (bodyText.isNotEmpty()) {
+            viewModel.setEvent(DiaryEditorContract.Event.OnBodyChange(bodyText))
         }
     }
 

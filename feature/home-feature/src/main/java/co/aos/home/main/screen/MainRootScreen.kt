@@ -157,7 +157,9 @@ private fun BottomNavigationGraph(
                         restoreState = true
                     }
                 },
-                onNavigateToWrite = {}
+                onNavigateToWrite = { body ->
+                    navController.navigate(Routes.editor(body))
+                }
             )
         }
 
@@ -167,13 +169,19 @@ private fun BottomNavigationGraph(
         }
 
         // 작성
-        composable(Routes.EDITOR) {
+        composable(
+            route = Routes.EDITOR,
+            arguments = listOf(navArgument("body") { nullable = false })
+        ) { backStack ->
+            val body = backStack.arguments?.getString("body") ?: ""
+
             DiaryEditorScreen(
                 onClose = { navController.popBackStack() },
                 onSaved = {
                     navController.previousBackStackEntry?.savedStateHandle?.set(Routes.REFRESH_LIST, true)
                     navController.popBackStack()
-                }
+                },
+                bodyText = body
             )
         }
 
@@ -183,6 +191,7 @@ private fun BottomNavigationGraph(
             arguments = listOf(navArgument("entryId") { nullable = false })
         ) { backStack ->
             val id = backStack.arguments?.getString("entryId") ?: ""
+
             DiaryDetailScreen(
                 entryId = id,
                 onClose = {

@@ -149,8 +149,8 @@ fun InspirationScreen(
                     items(uiState.prompts) { line ->
                         PromptCard(
                             text = line,
-                            onClick = {
-                                viewModel.setEvent(InspirationContract.Event.OnPromptResultClicked(line))
+                            onClick = { body ->
+                                viewModel.setEvent(InspirationContract.Event.OnPromptResultClicked(body))
                             }
                         )
                     }
@@ -324,7 +324,7 @@ private fun MoodSelectorRow(
 @Composable
 private fun PromptCard(
     text: String,
-    onClick: () -> Unit
+    onClick: (String) -> Unit
 ) {
     // "프롬프트 — 예시" 형식 분리
     val parts = text.split("—", limit = 2)
@@ -339,7 +339,7 @@ private fun PromptCard(
         modifier = Modifier
             .fillMaxWidth()
             .noRippleClickable {
-                onClick.invoke()
+                onClick.invoke(example)
             }
     ) {
         Column(
