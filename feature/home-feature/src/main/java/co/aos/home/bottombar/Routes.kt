@@ -25,5 +25,6 @@ object Routes {
     // 수정 모드 일 때 에디터 경로 생성기
     fun update(entryId: String) = "update/$entryId"
 
+    // 작성 화면 경로 생성기
     fun editor(body: String) = "editor/$body"
 }
