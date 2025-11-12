@@ -12,6 +12,9 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
+    // icon
+    implementation(libs.androidx.compose.material.icons)
+
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

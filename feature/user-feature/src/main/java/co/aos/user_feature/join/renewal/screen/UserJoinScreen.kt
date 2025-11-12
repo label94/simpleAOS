@@ -59,6 +59,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import co.aos.common.noRippleClickable
 import co.aos.common.showSnackBarMessage
+import co.aos.custom.ProfilePickerDialog
 import co.aos.popup.CommonDialog
 import co.aos.ui.theme.Black
 import co.aos.ui.theme.LightGreen2
@@ -66,10 +67,9 @@ import co.aos.ui.theme.LightRed
 import co.aos.ui.theme.Magenta
 import co.aos.ui.theme.Transparent
 import co.aos.ui.theme.White
-import co.aos.user_feature.detail.dialog.ProfilePickerDialog
 import co.aos.user_feature.join.renewal.state.SignUpContract
 import co.aos.user_feature.join.renewal.viewmodel.SignUpViewModel
-import co.aos.user_feature.utils.LocalProfileImgVector
+import co.aos.utils.LocalProfileImgVector
 
 /**
  * 회원가입 화면 UI

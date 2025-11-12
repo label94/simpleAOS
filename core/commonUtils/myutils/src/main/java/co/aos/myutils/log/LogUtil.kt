@@ -67,6 +67,9 @@ object LogUtil {
     // Inspiration
     const val INSPIRATION_LOG_TAG = "${DEFAULT_TAG}_inspiration"
 
+    // myPage
+    const val MY_PAGE_LOG_TAG = "${DEFAULT_TAG}_myPage"
+
     // build.gradle.kts 에 적용 된 build Type 을 확인하기 위한 상수
     private const val BUILD_TYPE_DEBUG = "debug" // 디버그(개발)
 

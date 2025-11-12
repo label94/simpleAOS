@@ -1,4 +1,4 @@
-package co.aos.user_feature.detail.dialog
+package co.aos.custom
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,9 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,12 +32,11 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import co.aos.common.noRippleClickable
 import co.aos.ui.theme.Black
-import co.aos.ui.theme.DarkGreen
 import co.aos.ui.theme.Magenta
 import co.aos.ui.theme.Transparent
 import co.aos.ui.theme.White
-import co.aos.user_feature.utils.LocalProfileImgVector
-import co.aos.user_feature.utils.UserConst
+import co.aos.utils.LocalProfileImgVector
+import co.aos.utils.UserProfileImage
 
 /**
  * 로컬 용 프로필 이미지 피커 팝업
@@ -103,12 +99,12 @@ fun ProfilePickerDialog(
 
                 // 컨텐츠 영역
                 val items = listOf(
-                    UserConst.UserProfileImage.PROFILE_FIRST,
-                    UserConst.UserProfileImage.PROFILE_SECOND,
-                    UserConst.UserProfileImage.PROFILE_THIRD,
-                    UserConst.UserProfileImage.PROFILE_FOURTH,
-                    UserConst.UserProfileImage.PROFILE_FIFTH,
-                    UserConst.UserProfileImage.PROFILE_SIXTH,
+                    UserProfileImage.PROFILE_FIRST,
+                    UserProfileImage.PROFILE_SECOND,
+                    UserProfileImage.PROFILE_THIRD,
+                    UserProfileImage.PROFILE_FOURTH,
+                    UserProfileImage.PROFILE_FIFTH,
+                    UserProfileImage.PROFILE_SIXTH,
                 )
 
                 Column(
