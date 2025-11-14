@@ -33,6 +33,10 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.ai.ktx) // firebase ai logic
 
+    // firebase app check 용도
+    implementation(libs.firebase.appcheck)
+    implementation(libs.firebase.appcheck.debug) // 디버그 토큰 생성을 위함
+
     // 모듈 추가
     implementation(project(":core:commonUtils:myutils"))
 }
