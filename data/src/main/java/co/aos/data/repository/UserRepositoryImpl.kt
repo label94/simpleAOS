@@ -125,4 +125,31 @@ class UserRepositoryImpl @Inject constructor(
         remote.reauthenticate(id, currentPassword)
         remote.updatePassword(newPassword)
     }
+
+    override suspend fun deleteAllUserData(
+        currentPassword: String
+    ) {
+        val uid = remote.currentUid() ?: throw IllegalStateException("ID_NOT_FOUND")
+        val email = remote.currentId() ?: throw IllegalStateException("EMAIL_NOT_FOUND")
+
+        // 1. 현재 uid / email 확인
+        val user = remote.fetchUser(uid) ?: throw IllegalStateException("USER_NOT_FOUND")
+
+        // 2. 닉네임, id 정보를 읽고 lowercase 변형
+        val nickName = user.nickName.trim().lowercase().ifBlank { null }
+        val id = user.id.trim().lowercase().ifBlank { null }
+
+        // 3. 재인증
+        remote.reauthenticate(email, currentPassword)
+
+        // 4. Firestore에서 현재 user와 맵핑되는 컬렉션 제거
+        remote.deleteAllUserData(uid, id, nickName)
+
+        // 5. FirebaseAuth 사용자 삭제
+        remote.deleteCurrentUserIfAny()
+    }
+
+    override suspend fun reauthenticate(id: String, password: String) {
+        remote.reauthenticate(id, password)
+    }
 }

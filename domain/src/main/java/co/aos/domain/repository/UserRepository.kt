@@ -46,4 +46,12 @@ interface UserRepository {
         currentPassword: String,
         newPassword: String
     ): Result<Unit>
+
+    suspend fun deleteAllUserData(
+        currentPassword: String
+    )
+
+    suspend fun reauthenticate(
+        id: String, password: String
+    )
 }

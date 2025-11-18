@@ -90,7 +90,13 @@ fun AppNavHost(
 
         // Main
         composable(MAIN_SCREEN) {
-            MainRootUI()
+            MainRootUI(
+                moveLoginPage = {
+                    navController.navigate(LOGIN_SCREEN) {
+                        popUpTo(MAIN_SCREEN) { inclusive = true } // 스택 제거
+                    }
+                }
+            )
         }
     }
 }

@@ -18,6 +18,13 @@ import java.time.ZoneId
 import javax.inject.Inject
 
 /**
+ * 한번에 처리할 PageSize 정의
+ * - Batch 명령어 경우 최대 500개의 작업만 들어갈 수 있기 때문에 반드시 pageSize는 500개 이하로 정의!
+ * - 네트워크 및 메모리 안정성 때문에 300으로 지정
+ * */
+private const val DEFAULT_DELETE_PAGE_SIZE = 300
+
+/**
  * Firebase Firestore 관련 DataSource
  * */
 class FirebaseFirestoreDataSource @Inject constructor (
@@ -416,5 +423,44 @@ class FirebaseFirestoreDataSource @Inject constructor (
         dayInMonth: LocalDate
     ): List<Pair<String, DiaryEntryDto>> {
         return entriesByMonth(uid, YearMonth.from(dayInMonth))
+    }
+
+    /**
+     * 컬렉션 하위 문서 일괄 삭제 (페이지 단위)
+     * - Firestore는 컬렉션 직접 삭제 없음 -> 문서 쿼리 후 batch로 삭제
+     * */
+    private suspend fun deleteAllInCollectionPaged(
+        query: Query,
+        pageSize: Int = DEFAULT_DELETE_PAGE_SIZE
+    ) {
+        while (true) {
+            val snap = query.limit(pageSize.toLong()).get().await()
+            if (snap.isEmpty) break
+
+            val batch = db.batch()
+            snap.documents.forEach { d -> batch.delete(d.reference) }
+            batch.commit().await()
+            if (snap.size() < pageSize) break
+        }
+    }
+
+    /** 사용자 데이터 전체 삭제 */
+    suspend fun deleteAllUserData(
+        uid: String,
+        idLower: String?,
+        nickLower: String?
+    ) {
+        // 1. 하위 서브 컬렉션 삭제
+        deleteAllInCollectionPaged(diaryCol(uid))
+        deleteAllInCollectionPaged(
+            users(uid).collection(FirebaseCollection.USER_MOOD_DAILY_COLLECTION.value)
+        )
+
+        // 2. users 삭제
+        users(uid).delete().await()
+
+        // 3. 매핑 컬렉션 삭제
+        idLower?.let { releaseId(it) }
+        nickLower?.let { releaseNickName(it) }
     }
 }

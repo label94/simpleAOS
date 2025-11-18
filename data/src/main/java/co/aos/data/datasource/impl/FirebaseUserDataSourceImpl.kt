@@ -192,4 +192,12 @@ class FirebaseUserDataSourceImpl @Inject constructor(
     ): List<Pair<String, DiaryEntryDto>> {
         return fsDS.entriesByMonth(uid, dayInMonth)
     }
+
+    override suspend fun deleteAllUserData(
+        uid: String,
+        idLower: String?,
+        nickLower: String?
+    ) {
+        fsDS.deleteAllUserData(uid, idLower, nickLower)
+    }
 }

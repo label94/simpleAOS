@@ -31,6 +31,7 @@ import co.aos.home.detail.load.screen.DiaryDetailScreen
 import co.aos.home.detail.update.screen.DiaryUpdateScreen
 import co.aos.home.editor.screen.DiaryEditorScreen
 import co.aos.home.inspiration.screen.InspirationScreen
+import co.aos.home.mypage.screen.MyPageScreen
 import co.aos.ui.theme.White
 
 /**
@@ -50,7 +51,9 @@ val LocalAppNavController = staticCompositionLocalOf<NavHostController> {
  * Main Root
  * */
 @Composable
-fun MainRootUI() {
+fun MainRootUI(
+    moveLoginPage: () -> Unit
+) {
     val navController = rememberNavController()
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -69,7 +72,10 @@ fun MainRootUI() {
             CompositionLocalProvider(LocalAppNavController provides navController) {
                 BottomNavigationGraph(
                     navController = navController,
-                    snackBarHostState = snackBarHostState
+                    snackBarHostState = snackBarHostState,
+                    moveLoginPage = {
+                        moveLoginPage.invoke()
+                    }
                 )
             }
         }
@@ -98,6 +104,7 @@ fun MainRootUI() {
 private fun BottomNavigationGraph(
     navController: NavHostController,
     snackBarHostState: SnackbarHostState,
+    moveLoginPage: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -165,7 +172,21 @@ private fun BottomNavigationGraph(
 
         // 프로필(마이페이지)
         composable(Routes.PROFILE) {
-
+            MyPageScreen(
+                onBack = {
+                    navController.navigate(Routes.HOME) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavigateToLogin = {
+                    navController.popBackStack()
+                    moveLoginPage.invoke()
+                }
+            )
         }
 
         // 작성

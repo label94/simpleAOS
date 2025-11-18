@@ -144,4 +144,11 @@ interface FirebaseUserDataSource {
         uid: String,
         dayInMonth: LocalDate
     ): List<Pair<String, DiaryEntryDto>>
+
+    /** 사용자 계정 탈퇴 */
+    suspend fun deleteAllUserData(
+        uid: String,
+        idLower: String?,
+        nickLower: String?
+    )
 }
