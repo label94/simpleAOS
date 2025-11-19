@@ -151,4 +151,7 @@ interface FirebaseUserDataSource {
         idLower: String?,
         nickLower: String?
     )
+
+    /** 구글 로그인 추가 */
+    suspend fun signInWithGoogle(): User?
 }

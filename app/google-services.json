@@ -12,7 +12,20 @@
           "package_name": "co.aos.myjetpack"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "614635550035-hdh34qg9dq2qdfuvma86vsm8eek40sdr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.aos.myjetpack",
+            "certificate_hash": "5fe7757f0d2ac746a3fe1a7074e5f083914fab28"
+          }
+        },
+        {
+          "client_id": "614635550035-t0rarc8lipserjel0fck5bmjro09l9jl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDrrKB8-tSaxaOoBHWjVcjWKy6qYz431G8"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614635550035-t0rarc8lipserjel0fck5bmjro09l9jl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

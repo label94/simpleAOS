@@ -54,4 +54,6 @@ interface UserRepository {
     suspend fun reauthenticate(
         id: String, password: String
     )
+
+    suspend fun signWithGoogle(): User?
 }

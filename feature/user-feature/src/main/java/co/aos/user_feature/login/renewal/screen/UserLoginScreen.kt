@@ -1,5 +1,6 @@
 package co.aos.user_feature.login.renewal.screen
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -36,17 +38,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import co.aos.common.R
 import co.aos.common.noRippleClickable
 import co.aos.common.showSnackBarMessage
 import co.aos.ui.theme.Black
+import co.aos.ui.theme.Blue
 import co.aos.ui.theme.Magenta
 import co.aos.ui.theme.Transparent
 import co.aos.ui.theme.White
@@ -220,6 +226,16 @@ fun UserLoginScreen(
                     }
                 }
 
+                Spacer(modifier = Modifier.height(23.dp))
+
+                GoogleLoginButton(
+                    enabled = !uiState.value.isLoading,
+                    onClick = {
+                        focusManager.clearFocus()
+                        viewModel.setEvent(AuthContract.Event.ClickGoogleSignIn)
+                    }
+                )
+
                 // 회원가입 버튼 영역
                 TextButton(
                     onClick = {
@@ -228,7 +244,7 @@ fun UserLoginScreen(
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
-                    Text(text = "아직 계정이 없으신가요? 지금 회원가입 하세요!", color = Black, fontSize = 13.sp)
+                    Text(text = "아직 계정이 없으신가요? 지금 회원가입 하세요!", color = Magenta, fontSize = 13.sp)
                 }
             }
         }
@@ -310,5 +326,51 @@ private fun EnableLoginInfoUI(
             fontSize = MaterialTheme.typography.bodyMedium.fontSize,
             color = Black
         )
+    }
+}
+
+/** 구글 로그인 버튼 UI */
+@Composable
+private fun GoogleLoginButton(
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = { onClick.invoke() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .border(
+                width = 1.dp,
+                color = Black,
+                shape = RectangleShape
+            ),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = White,
+            disabledContainerColor = Black.copy(alpha = 0.5f),
+        ),
+        shape = RectangleShape,
+        enabled = enabled
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.icons_google),
+                contentDescription = "구글 로그인",
+                modifier = Modifier.size(32.dp),
+                tint = Color.Unspecified // 원본 이미지 색상 그대로 적용
+            )
+
+            Spacer(modifier = Modifier.width(10.dp))
+
+            Text(
+                text = "Google 계정으로 로그인",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Black
+            )
+        }
     }
 }

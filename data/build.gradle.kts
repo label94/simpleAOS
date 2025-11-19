@@ -46,4 +46,5 @@ dependencies {
     implementation(project(":core:roomDB"))
     implementation(project(":core:local"))
     implementation(project(":core:firebase"))
+    implementation(project(":core:googleLogin"))
 }

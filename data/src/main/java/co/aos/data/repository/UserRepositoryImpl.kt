@@ -152,4 +152,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun reauthenticate(id: String, password: String) {
         remote.reauthenticate(id, password)
     }
+
+    override suspend fun signWithGoogle(): User? {
+        return remote.signInWithGoogle()
+    }
 }

@@ -13,6 +13,7 @@ import co.aos.domain.usecase.user.renewal.IsAutoLoginUseCase
 import co.aos.domain.usecase.user.renewal.IsSaveIdUseCase
 import co.aos.domain.usecase.user.renewal.ReauthenticateUseCase
 import co.aos.domain.usecase.user.renewal.SetLoginIdUseCase
+import co.aos.domain.usecase.user.renewal.SignInGoogleLoginUseCase
 import co.aos.domain.usecase.user.renewal.SignInUseCase
 import co.aos.domain.usecase.user.renewal.SignOutUseCase
 import co.aos.domain.usecase.user.renewal.SignUpUseCase
@@ -30,6 +31,7 @@ import co.aos.domain.usecase.user.renewal.impl.IsAutoLoginUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.IsSaveIdUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.ReauthenticateUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.SetLoginIdUseCaseImpl
+import co.aos.domain.usecase.user.renewal.impl.SignInGoogleLoginUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.SignInUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.SignOutUseCaseImpl
 import co.aos.domain.usecase.user.renewal.impl.SignUpUseCaseImpl
@@ -163,4 +165,11 @@ internal abstract class UserDomainModule {
     abstract fun bindReauthenticateUseCase(
         reauthenticateUseCaseImpl: ReauthenticateUseCaseImpl
     ): ReauthenticateUseCase
+
+    /** 구글 로그인 관련 di 주입 */
+    @Binds
+    @Singleton
+    abstract fun bindSignInGoogleLoginUseCase(
+        signInGoogleLoginUseCaseImpl: SignInGoogleLoginUseCaseImpl
+    ): SignInGoogleLoginUseCase
 }

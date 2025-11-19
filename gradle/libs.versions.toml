@@ -44,11 +44,11 @@ appcompat = "1.7.1"
 material = "1.13.0"
 
 # network
-okhttpBom = "5.3.0"
+okhttpBom = "5.3.1"
 retrofit = "3.0.0"
 okhttpProfiler = "1.0.8"
 retrofitKotlinxSerializationJson = "1.0.0"
-mock = "5.3.0"
+mock = "5.3.1"
 
 # gson
 gson = "2.13.2"
@@ -76,12 +76,16 @@ camera = "1.5.1"
 
 # firebase
 firebase = "33.1.0"
-firebase-ai = "17.5.0"
+firebase-ai = "17.6.0"
 firebase-appcheck = "19.0.1"
 
 # guava
 guava = "31.1-android"
 listenablefuture = "1.0"
+
+# google Login
+credentials = "1.5.0"
+google-id = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -192,6 +196,10 @@ firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debu
 # guaba
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 listenablefuture = { group = "com.google.guava", name = "listenablefuture", version.ref = "listenablefuture" }
+
+# gogole login
+credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+google-id = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "google-id" }
 
 [bundles]
 compose = [

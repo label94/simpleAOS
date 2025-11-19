@@ -2,6 +2,8 @@ package co.aos.firebase.auth
 
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthCredential
+import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -45,5 +47,12 @@ class FirebaseAuthDataSource @Inject constructor (
     suspend fun updatePassword(password: String) {
         val user = auth.currentUser ?: throw IllegalStateException("NOT_SIGNED_IN")
         user.updatePassword(password).await()
+    }
+
+    /** 구글 ID Token으로 Firebase 로그인 */
+    suspend fun signInWithGoogle(idToken: String): String {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        val result = auth.signInWithCredential(credential).await()
+        return result.user?.uid ?: error("signInWithGoogle No UID")
     }
 }

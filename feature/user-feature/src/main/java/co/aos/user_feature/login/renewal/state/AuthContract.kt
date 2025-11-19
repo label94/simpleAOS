@@ -28,6 +28,9 @@ class AuthContract {
 
         /** 자동 로그인 체크박스 클릭 */
         data class UpdateIsAutoLogin(val isAutoLoginChecked: Boolean) : Event()
+
+        /** 구글 로그인 버튼 클릭 */
+        data object ClickGoogleSignIn: Event()
     }
 
     /** 상태 정의 */

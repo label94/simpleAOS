@@ -7,6 +7,7 @@ import co.aos.domain.usecase.user.renewal.EnableIsSaveIdUseCase
 import co.aos.domain.usecase.user.renewal.GetLoginIdUseCase
 import co.aos.domain.usecase.user.renewal.IsSaveIdUseCase
 import co.aos.domain.usecase.user.renewal.SetLoginIdUseCase
+import co.aos.domain.usecase.user.renewal.SignInGoogleLoginUseCase
 import co.aos.domain.usecase.user.renewal.SignInUseCase
 import co.aos.myutils.log.LogUtil
 import co.aos.user_feature.login.renewal.state.AuthContract
@@ -27,6 +28,7 @@ class AuthViewModel @Inject constructor(
     private val setLoginIdUseCase: SetLoginIdUseCase,
     private val getLoginIdUseCase: GetLoginIdUseCase,
     private val enableAutoLoginUseCase: EnableAutoLoginUseCase,
+    private val googleLoginUseCase: SignInGoogleLoginUseCase
 ) : BaseViewModel<AuthContract.Event, AuthContract.State, AuthContract.Effect>() {
 
     init {
@@ -52,6 +54,9 @@ class AuthViewModel @Inject constructor(
             }
             is AuthContract.Event.UpdateIsAutoLogin -> {
                 setState { copy(isAutoLoginChecked = event.isAutoLoginChecked) }
+            }
+            is AuthContract.Event.ClickGoogleSignIn -> {
+                handleGoogleSignIn()
             }
         }
     }
@@ -111,6 +116,35 @@ class AuthViewModel @Inject constructor(
         if (isSaveId && loginId.isNotEmpty()) {
             setEvent(AuthContract.Event.UpdateID(loginId))
             setEvent(AuthContract.Event.UpdateIsSaveId(true))
+        }
+    }
+
+    /** 구글 로그인 처리 */
+    private fun handleGoogleSignIn() {
+        setState { copy(isLoading = true) }
+
+        viewModelScope.launch {
+            delay(500)
+
+            val result = runCatching { googleLoginUseCase.invoke() }
+            setState { copy(isLoading = false) }
+
+            result.onSuccess { user ->
+                if (user != null) {
+                    // 로그인 성공 시 자동 로그인 flag가 활성화 된 상태인 경우에만 저장
+                    if (currentState.isAutoLoginChecked) {
+                        enableAutoLoginUseCase.invoke(true)
+                    }
+
+                    setEffect(AuthContract.Effect.LoginSuccess(user = user))
+                } else {
+                    setEffect(AuthContract.Effect.ShowSnackBar("구글 로그인 실패했습니다."))
+                }
+            }.onFailure { e->
+                e.printStackTrace()
+                LogUtil.e(LogUtil.GOOGLE_LOGIN_LOG_TAG, "google login error : $e")
+                setEffect(AuthContract.Effect.ShowSnackBar("구글 로그인 실패했습니다."))
+            }
         }
     }
 }

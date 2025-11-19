@@ -7,7 +7,11 @@ import co.aos.firebase.firestore.FirebaseFirestoreDataSource
 import co.aos.firebase.model.UserDto
 import javax.inject.Inject
 import androidx.core.net.toUri
+import co.aos.data.entity.toDomain
+import co.aos.data.utils.CreateRandomInfo
 import co.aos.firebase.model.DiaryEntryDto
+import co.aos.googlelogin.auth.GoogleLoginDataSource
+import co.aos.myutils.log.LogUtil
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -16,7 +20,8 @@ import java.time.YearMonth
  * */
 class FirebaseUserDataSourceImpl @Inject constructor(
     private val authDS: FirebaseAuthDataSource,
-    private val fsDS: FirebaseFirestoreDataSource
+    private val fsDS: FirebaseFirestoreDataSource,
+    private val googleLoginDataSource: GoogleLoginDataSource
 ): FirebaseUserDataSource {
     override suspend fun createUser(id: String, password: String): String =
         authDS.signUp(id, password)
@@ -199,5 +204,68 @@ class FirebaseUserDataSourceImpl @Inject constructor(
         nickLower: String?
     ) {
         fsDS.deleteAllUserData(uid, idLower, nickLower)
+    }
+
+    override suspend fun signInWithGoogle(): User? {
+        val googleAuthInfoData = googleLoginDataSource.requestGoogleIdToken()
+        val idToken = googleAuthInfoData.first
+
+        // 비어있는 토큰인지 검사
+        if (idToken.isEmpty()) {
+            LogUtil.e(LogUtil.FIREBASE_LOG_TAG, "id token empty")
+            return null
+        }
+
+        // google 인증을 통한 uid 가져오기
+        val uid = authDS.signInWithGoogle(idToken)
+
+        // uid에 맞는 프로필 데이터가 fireStore 내에 있는지 확인
+        val profile = fsDS.fetchUser(uid)
+        if (profile == null) {
+            // FireStore 내 해당 uid로 된 프로필 정보가 없으면 신규 생성 후 저장(회원가입과 동일)
+
+            // 1. 사용 가능한 ID(이메일)를 찾습니다.
+            val googleEmail = googleAuthInfoData.second
+            val finalEmail = if (googleEmail.isNotEmpty() && isIdAvailable(googleEmail)) {
+                googleEmail
+            } else {
+                // 구글 이메일이 없거나 이미 사용 중이면, 사용 가능한 랜덤 ID가 나올 때까지 계속 생성합니다.
+                var tempId: String
+                while (true) {
+                    tempId = CreateRandomInfo.createRandomID(idToken)
+                    if (isIdAvailable(tempId)) {
+                        break
+                    }
+                }
+                tempId
+            }
+
+            // 2. 사용 가능한 닉네임을 찾습니다.
+            var finalNickName: String
+            while (true) {
+                finalNickName = CreateRandomInfo.createRandomNickName(idToken)
+                if (isNicknameAvailable(finalNickName.lowercase())) {
+                    break
+                }
+            }
+
+            val dto = UserDto(
+                uid = uid,
+                id = finalEmail,
+                nickName = finalNickName,
+                localProfileImgCode = 0,
+            )
+
+            fsDS.upsertUserTransaction(dto)
+            fsDS.reserveId(uid, finalEmail)
+            fsDS.reserveNickName(uid, finalNickName.lowercase())
+            fsDS.updateLastLogin(uid)
+
+            return dto.toDomain()
+        }
+
+        // 기존에 있으면 해당 값 리턴
+        fsDS.updateLastLogin(uid)
+        return profile.toDomain()
     }
 }

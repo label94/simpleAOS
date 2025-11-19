@@ -124,7 +124,11 @@ class FirebaseFirestoreDataSource @Inject constructor (
         usernameRef(nicknameLower).delete().await()
     }
 
-    /** id 유효성 검사 */
+    /**
+     * id 유효성 검사
+     * @return true : 사용가능
+     * @return false : 사용 불가능
+     * */
     suspend fun isIdAvailable(id: String) : Boolean =
         !userIdsRef(id).get().await().exists()
 
