@@ -1,5 +1,6 @@
 package co.aos.webview_renewal_feature.view
 
+import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -36,13 +37,25 @@ fun RefreshSwipeWebView(
         factory = { con ->
             // 최초 1회만 실행
             SwipeRefreshLayout(con).apply {
+                // 웹 css height 100% 먹지 않는 현상 해결을 위해 viewGroup 내 속성을 MATCH_PARENT로 설정
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
                 isEnabled = enableSwipe // pull to refresh 비활성화/활성화 설정 유무
 
                 setOnRefreshListener {
                     // 스와이프 되었을 때 작업 수행
                     onRefresh.invoke()
                 }
-                addView(baseWebView)
+                addView(
+                    baseWebView,
+                    // 웹 css height 100% 먹지 않는 현상 해결을 위해 viewGroup 내 속성을 MATCH_PARENT로 설정
+                    ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                )
             }
         },
         update = { swipeRefreshLayout ->
