@@ -73,6 +73,9 @@ object LogUtil {
     // google Login
     const val GOOGLE_LOGIN_LOG_TAG = "${DEFAULT_TAG}_googleLogin"
 
+    // widget
+    const val WIDGET_LOG_TAG = "${DEFAULT_TAG}_widget"
+
     // build.gradle.kts 에 적용 된 build Type 을 확인하기 위한 상수
     private const val BUILD_TYPE_DEBUG = "debug" // 디버그(개발)
 

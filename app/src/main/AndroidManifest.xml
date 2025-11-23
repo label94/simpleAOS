@@ -93,6 +93,20 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <!-- App Widget 실행을 위해 리시버 등록 -->
+        <receiver android:name="co.aos.widget_feature.receiver.MoodWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <!-- Glance 위젯 기본 액션 -->
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/mood_widget_info"
+                />
+        </receiver>
     </application>
 
 </manifest>

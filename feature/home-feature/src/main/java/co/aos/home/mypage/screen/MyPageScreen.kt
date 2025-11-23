@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LockReset
@@ -134,7 +135,7 @@ fun MyPageScreen(
                     HorizontalDivider(color = GhostWhite)
                     MenuListItem(
                         title = "로그아웃",
-                        icon = Icons.Outlined.Logout,
+                        icon = Icons.AutoMirrored.Outlined.Logout,
                         onClick = { if (!uiState.loading) viewModel.setEvent(MyPageContract.Event.OnClickLogout) }
                     )
                     HorizontalDivider(color = GhostWhite)
