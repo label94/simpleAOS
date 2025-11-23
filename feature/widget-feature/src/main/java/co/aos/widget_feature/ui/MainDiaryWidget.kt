@@ -41,8 +41,6 @@ class MainDiaryWidget: GlanceAppWidget() {
                 emptyList()
             }
 
-            LogUtil.e("TestLog", "weeklyMoods today mood : ${weeklyMoods.lastOrNull()}")
-
             // 위젯을 표시할 UI 정의
             provideContent {
                 GlanceTheme {

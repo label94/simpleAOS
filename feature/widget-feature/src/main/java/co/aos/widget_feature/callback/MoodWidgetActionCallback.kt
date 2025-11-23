@@ -30,9 +30,6 @@ class MoodWidgetActionCallback : ActionCallback {
 
         // 오늘 기록된 무드를 저장하기 위한 키
         val TODAY_MOOD_KEY = intPreferencesKey("today_mood")
-
-        // 오늘 기록된 무드를 저장하기 위한 키
-        val WEEKLY_MOOD_KEY = intPreferencesKey("weekly_mood")
     }
 
     override suspend fun onAction(
