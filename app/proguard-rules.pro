@@ -101,3 +101,57 @@
 -keep public class com.google.mlkit.vision.barcode.common.** { *; }
 -keep public class com.google.mlkit.vision.common.** { *; }
 
+# Firestore가 내부적으로 사용하는 grpc-okhttp 관련 규칙
+# 오래된 com.squareup.okhttp 클래스를 유지 (CipherSuite 오류 해결)
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.** { *; }
+-dontwarn com.squareup.okhttp.**
+
+# grpc-okhttp의 내부 클래스도 유지
+-keep class io.grpc.okhttp.internal.** { *; }
+
+# Guava 라이브러리 관련 규칙 추가
+# Guava 라이브러리가 사용하는 일부 내부 클래스들을 유지합니다.
+-keep class com.google.common.base.** { *; }
+-dontwarn com.google.common.base.**
+-dontwarn java.lang.reflect.AnnotatedType
+-dontwarn com.google.firebase.ktx.Firebase
+
+#==============================================================
+# ▼▼▼ Firebase & Google Play Services (최종 수정본) ▼▼▼
+#==============================================================
+
+# 1. Firebase와 Google Play Services의 핵심 공개 클래스 및 멤버를 유지합니다.
+#    이 규칙 하나로 대부분의 인증, Firestore, gRPC 관련 클래스 유지 문제가 해결됩니다.
+-keep public class com.google.firebase.** {
+    public *;
+}
+-keep public class com.google.android.gms.** {
+    public *;
+}
+
+# 2. Firestore 데이터 모델(POJO) 클래스의 내용이 제거되거나 이름이 바뀌는 것을 방지합니다.
+#    'your.package.models.**'는 반드시 실제 프로젝트의 데이터 모델 패키지 경로로 수정해주세요.
+#    예시: -keep class co.aos.data.model.** { *; }
+-keep class co.aos.data.model.** { *; }
+-keep class co.aos.domain.model.** { *; }
+-keep class co.aos.firebase.** { *; }
+-keep class com.google.firebase.ktx.** { *; }
+-keep class com.google.firebase.auth.** { *; }
+-keep class com.google.firebase.firestore.** { *; }
+
+# 3. Firestore가 내부적으로 참조하는 오래된 OkHttp 클래스를 유지합니다. (CipherSuite 오류 방지)
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.** { *; }
+-dontwarn com.squareup.okhttp.**
+#==============================================================
+# ▲▲▲ Firebase & Google Play Services (최종 수정본) ▲▲▲
+#==============================================================
+
+
+
+
+
+
+
+

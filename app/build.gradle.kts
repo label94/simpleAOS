@@ -108,3 +108,11 @@ dependencies {
     implementation(project(":feature:barcode-feature"))
     implementation(project(":feature:widget-feature"))
 }
+
+// ./gradlew clean 실행 시 app 모듈 루트의 debug, release 폴더도 함께 삭제
+tasks.named<Delete>("clean") {
+    delete(
+        layout.projectDirectory.dir("debug"),
+        layout.projectDirectory.dir("release")
+    )
+}
