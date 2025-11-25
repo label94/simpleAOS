@@ -30,8 +30,8 @@ internal fun Project.configureKotlinAndroid(
             isCoreLibraryDesugaringEnabled = true
 
             // toolchain 적용하면 해당 부분 없어도 되지만, 호환성을 위해 명시
-            sourceCompatibility = JavaVersion.VERSION_21
-            targetCompatibility = JavaVersion.VERSION_21
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
         }
 
         // kotlin ToolChain 설정
@@ -56,7 +56,7 @@ internal fun Project.configureKotlinAndroid(
 internal fun Project.configureKotlinJvm() {
     project.plugins.withId("org.jetbrains.kotlin.android") {
         project.extensions.configure<KotlinProjectExtension> {
-            jvmToolchain(21)
+            jvmToolchain(17)
         }
     }
 }
