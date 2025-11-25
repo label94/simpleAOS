@@ -1,6 +1,5 @@
 package co.aos.home.main.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import co.aos.base.BaseViewModel
 import co.aos.domain.model.DiarySummary

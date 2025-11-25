@@ -1,8 +1,10 @@
 package co.aos.domain.model
 
+import androidx.annotation.Keep
 import java.time.LocalDate
 
 /** diary data model */
+@Keep
 data class DiaryEntry(
     val id: String? = null,
     val title: String,

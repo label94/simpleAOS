@@ -1,8 +1,11 @@
 package co.aos.domain.model
 
+import androidx.annotation.Keep
+
 /**
  * Wish 관련 data set
  * */
+@Keep
 data class Wish(
     val wishId: Long,
     val ownerId: String,

@@ -1,5 +1,6 @@
 package co.aos.data.entity
 
+import androidx.annotation.Keep
 import co.aos.domain.model.DiaryEntry
 import co.aos.domain.model.DiaryListItem
 import co.aos.domain.model.DiarySummary
@@ -9,9 +10,11 @@ import java.time.ZoneId
 
 /** diary data 관련 mapper */
 
+@Keep
 private fun java.util.Date.toLocalDate(): LocalDate =
     this.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 
+@Keep
 fun Pair<String, DiaryEntryDto>.toSummary(): DiarySummary {
     val (id, dto) = this
     return DiarySummary(
@@ -23,6 +26,7 @@ fun Pair<String, DiaryEntryDto>.toSummary(): DiarySummary {
     )
 }
 
+@Keep
 fun Pair<String, DiaryEntryDto>.toEntry(): DiaryEntry {
     val (id, dto) = this
     return DiaryEntry(
@@ -36,6 +40,7 @@ fun Pair<String, DiaryEntryDto>.toEntry(): DiaryEntry {
     )
 }
 
+@Keep
 fun DiaryEntryDto.toListItemOrNull(id: String): DiaryListItem? {
     val d = date ?: return null
     val local = d.toLocalDate()

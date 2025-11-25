@@ -1,10 +1,12 @@
 package co.aos.domain.model
 
+import androidx.annotation.Keep
 import java.time.LocalDate
 
 /**
  * 캘린더/리스트에서 가볍게 보여줄 요약 모델
  */
+@Keep
 data class DiaryListItem(
     val id: String,
     val title: String,

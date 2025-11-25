@@ -1,5 +1,6 @@
 package co.aos.data.entity
 
+import androidx.annotation.Keep
 import co.aos.domain.model.WebViewConfig
 
 /**
@@ -7,6 +8,7 @@ import co.aos.domain.model.WebViewConfig
  *
  * @param userAgent 웹뷰에 설정한 UserAgent
  * */
+@Keep
 data class WebViewConfigEntity(
     val userAgent: String
 ) {

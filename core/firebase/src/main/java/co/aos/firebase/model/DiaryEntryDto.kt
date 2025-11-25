@@ -1,10 +1,12 @@
 package co.aos.firebase.model
 
+import androidx.annotation.Keep
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.ServerTimestamp
 import java.util.Date
 
 /** 다이어리 관련 컨텐츠 Entry */
+@Keep
 @IgnoreExtraProperties
 data class DiaryEntryDto(
     val title: String = "",

@@ -86,6 +86,8 @@
 # Keep Dagger Hilt classes and annotations
 -keep class dagger.hilt.** { *; }
 -keep class androidx.hilt.** { *; }
+-keepnames class * extends android.app.Application
+-keepnames class * extends androidx.lifecycle.ViewModel
 
 # coil3 코드 관련 난독화 방지
 -keep class coil3.** { *; }
@@ -93,8 +95,8 @@
 
 # 특정 패키지 코드 난독화 방지
 -keep class co.aos.network.** { *; }
--keep class co.aos.domain.** { *; }
--keep class co.aos.data.** { *; }
+-keep class co.aos.myutils.** { *; }
+-keep class co.aos.base.** { *; }
 
 # Google ML Kit Barcode Scanning
 -keep public class com.google.mlkit.vision.barcode.** { *; }
@@ -133,8 +135,6 @@
 # 2. Firestore 데이터 모델(POJO) 클래스의 내용이 제거되거나 이름이 바뀌는 것을 방지합니다.
 #    'your.package.models.**'는 반드시 실제 프로젝트의 데이터 모델 패키지 경로로 수정해주세요.
 #    예시: -keep class co.aos.data.model.** { *; }
--keep class co.aos.data.model.** { *; }
--keep class co.aos.domain.model.** { *; }
 -keep class co.aos.firebase.** { *; }
 -keep class com.google.firebase.ktx.** { *; }
 -keep class com.google.firebase.auth.** { *; }

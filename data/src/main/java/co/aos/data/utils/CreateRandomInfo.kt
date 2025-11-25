@@ -1,8 +1,11 @@
 package co.aos.data.utils
 
+import androidx.annotation.Keep
+
 /**
  * 구글 로그인 후 랜덤 ID 및 닉네임 생성 용도
  * */
+@Keep
 object CreateRandomInfo {
     /** 랜덤 이메일(ID) 생성 */
     fun createRandomID(str: String): String {

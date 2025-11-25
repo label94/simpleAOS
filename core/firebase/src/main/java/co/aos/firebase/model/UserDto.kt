@@ -1,10 +1,12 @@
 package co.aos.firebase.model
 
+import androidx.annotation.Keep
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.ServerTimestamp
 import java.util.Date
 
 /** firebase 내 User Dto */
+@Keep
 @IgnoreExtraProperties
 data class UserDto(
     val uid: String = "", // 회원 등록 시 발급 되는 uid
