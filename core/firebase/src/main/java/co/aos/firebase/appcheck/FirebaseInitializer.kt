@@ -12,33 +12,6 @@ import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 
-// --- 고정 토큰 로직에 필요한 private 헬퍼 클래스들 ---
-
-/**
- * 항상 고정된 "가짜" 토큰을 반환하는 커스텀 AppCheckProvider.
- */
-private class SingleTokenDebugProvider(private val staticToken: String) : AppCheckProvider {
-    override fun getToken(): Task<AppCheckToken> {
-        val token = object : AppCheckToken() {
-            override fun getToken() = staticToken
-            override fun getExpireTimeMillis() = System.currentTimeMillis() + 3600000 // 1 hour
-        }
-        // AppCheckToken을 즉시 성공한 Task로 래핑하여 반환합니다.
-        return Tasks.forResult(token)
-    }
-}
-
-/**
- * 위에서 만든 Provider를 생성하는 커스텀 팩토리.
- */
-private class SingleTokenDebugProviderFactory(private val staticToken: String) :
-    AppCheckProviderFactory {
-    override fun create(firebaseApp: FirebaseApp): AppCheckProvider {
-        return SingleTokenDebugProvider(staticToken)
-    }
-}
-
-
 /**
  * Firebase 관련 SDK 초기화를 담당하는 싱글톤 객체
  * - Application 내에 한번 만 호출하기 때문에 굳이 Hilt 로 DI 관리를 하지 않음.
@@ -70,21 +43,15 @@ object FirebaseInitializer {
         )
     }
 
-    /**
-     * [앱체크 디버그 용도] 고정된 디버그 토큰으로 App Check을 초기화합니다.
-     * - 어떤 기기나 재설치 시에도 항상 동일한 토큰을 사용합니다.
-     * @param context Application Context
-     */
-    fun initializeWithStaticToken(context: Context) {
-        LogUtil.d(LogUtil.DEFAULT_TAG, "FirebaseInitializer.initializeWithStaticToken()")
-
-        // Firebase 초기화
-        FirebaseApp.initializeApp(context)
-
-        // Firebase App Check 초기화
-        val firebaseAppCheck = FirebaseAppCheck.getInstance()
-        firebaseAppCheck.installAppCheckProviderFactory(
-            SingleTokenDebugProviderFactory("35d8cab9-7e67-4c27-9336-4fe87ab6b831")
-        )
+    /** 앱체크 유효성 확인 용 출력 로그 */
+    fun testLogToken() {
+        // 토큰 유효성 확인 용도
+        FirebaseAppCheck.getInstance().getAppCheckToken(false)
+            .addOnSuccessListener { token ->
+                LogUtil.d(LogUtil.DEFAULT_TAG, "token = ${token.token}")
+            }
+            .addOnFailureListener {
+                LogUtil.e(LogUtil.DEFAULT_TAG, "getAppCheckToken error = $it")
+            }
     }
 }

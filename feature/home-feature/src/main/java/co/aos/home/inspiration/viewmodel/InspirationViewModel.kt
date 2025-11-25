@@ -83,7 +83,7 @@ class InspirationViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                LogUtil.e(LogUtil.INSPIRATION_LOG_TAG, "error : ${e.printStackTrace()}")
+                LogUtil.e(LogUtil.INSPIRATION_LOG_TAG, "launchedPrompts error : $e")
 
                 setState { copy(loading = false, error = e.message, isShowLaunchedPromptsBtn = true) }
                 setEffect(InspirationContract.Effect.Toast("실행 오류가 발생하였습니다."))
