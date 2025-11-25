@@ -1,0 +1,108 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+
+# # 🔹 모든 lane 실행 전에 공통으로 한 번만 JDK 설정
+# before_all do
+#     # JDK 버전
+#     java_home = `/usr/libexec/java_home -v17`.strip
+#
+#     ENV["JAVA_HOME"] = java_home
+#     ENV["PATH"] = "#{java_home}/bin:#{ENV["PATH"]}"
+#
+#     UI.message("👉 fastlane 실행용 JAVA_HOME: #{ENV["JAVA_HOME"]}")
+# end
+
+  ##############################################################
+  # Firebase App Distribution 배포 lane
+  # 실행 명령어(디버그) : bundle exec fastlane android firebase_debug
+  # 실행 명령어(릴리즈) : bundle exec fastlane android firebase_beta
+  ##############################################################
+  # 🔹 Debug 빌드 + Firebase 배포
+    desc "Build DEBUG apk and distribute to Firebase (internal/dev testers)"
+    lane :firebase_debug do
+      #1) debug 빌드
+      gradle(task: "clean")
+      gradle(task: "assembleDebug")
+
+      # 2) debug APK 경로 동적으로 찾기
+      debug_apk_path = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+      UI.user_error!("APK 경로를 찾지 못했습니다") unless debug_apk_path
+
+      UI.message("선택 된 DEBUG APK 경로 : #{debug_apk_path}")
+
+      UI.message("FIREBASE_APP_ID_ANDROID_DEBUG = #{ENV['FIREBASE_APP_ID_ANDROID_DEBUG']}")
+      UI.message("FIREBASE_TESTERS_DEBUG = #{ENV['FIREBASE_TESTERS_DEBUG']}")
+      UI.message("FIREBASE_GROUPS_DEBUG = #{ENV['FIREBASE_GROUPS_DEBUG']}")
+
+      # 3) Firebase App Distribution 업로드
+      firebase_app_distribution(
+        app: ENV["FIREBASE_APP_ID_ANDROID_DEBUG"],        # 🔹 필요하면 debug용 앱 ID 따로
+        android_artifact_type: "APK",
+        android_artifact_path: debug_apk_path,
+        service_credentials_file: "fastlane/my-diary-d2e3c-a76bbe0dd228.json", # 이 파일은 구글 클라우드 콘솔에서 다운을 받으면 됨!!
+
+        testers: ENV["FIREBASE_TESTERS_DEBUG"],          # debug 전용 테스터
+        release_notes: "DEBUG 빌드 (개발/내부 테스트용)"
+      )
+    end
+
+  desc "Build and distribute to Firebase App Distribution (beta/prod testers)"
+  lane :firebase_beta do
+    gradle(task: "clean")
+    gradle(task: "assembleRelease")
+
+    # 2) debug APK 경로 동적으로 찾기
+    apk_path = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    UI.user_error!("APK 경로를 찾지 못했습니다") unless apk_path
+
+    UI.message("선택 된 DEBUG APK 경로 : #{apk_path}")
+
+    UI.message("FIREBASE_APP_ID_ANDROID_DEBUG = #{ENV['FIREBASE_APP_ID_ANDROID_DEBUG']}")
+    UI.message("FIREBASE_TESTERS_DEBUG = #{ENV['FIREBASE_TESTERS_DEBUG']}")
+    UI.message("FIREBASE_GROUPS_DEBUG = #{ENV['FIREBASE_GROUPS_DEBUG']}")
+
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID_ANDROID"],
+      android_artifact_type: "APK",
+      android_artifact_path: apk_path,
+      service_credentials_file: "fastlane/my-diary-d2e3c-a76bbe0dd228.json",
+
+      testers: ENV["FIREBASE_TESTERS"],
+      release_notes: "자동 배포 테스트 빌드입니다."
+    )
+  end
+end

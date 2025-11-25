@@ -33,3 +33,7 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# fastlane
+fastlane/my-diary-d2e3c-a76bbe0dd228.json
+
