@@ -1,2 +1,3 @@
+# 구글 스토어 배포 시 스토어 배포 용 계정 Key json 파일이 필요함! (ex => fastlane/xxxxx.json)
 json_key_file("") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
 package_name("co.aos.myjetpack") # e.g. com.krausefx.app

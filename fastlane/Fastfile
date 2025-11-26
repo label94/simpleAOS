@@ -66,14 +66,13 @@ platform :android do
 
       UI.message("FIREBASE_APP_ID_ANDROID_DEBUG = #{ENV['FIREBASE_APP_ID_ANDROID_DEBUG']}")
       UI.message("FIREBASE_TESTERS_DEBUG = #{ENV['FIREBASE_TESTERS_DEBUG']}")
-      UI.message("FIREBASE_GROUPS_DEBUG = #{ENV['FIREBASE_GROUPS_DEBUG']}")
 
       # 3) Firebase App Distribution 업로드
       firebase_app_distribution(
         app: ENV["FIREBASE_APP_ID_ANDROID_DEBUG"],        # 🔹 필요하면 debug용 앱 ID 따로
         android_artifact_type: "APK",
         android_artifact_path: debug_apk_path,
-        service_credentials_file: "fastlane/my-diary-d2e3c-a76bbe0dd228.json", # 이 파일은 구글 클라우드 콘솔에서 다운을 받으면 됨!!
+        service_credentials_file: "fastlane/account-firebase-app-distribution.json", # 이 파일은 구글 클라우드 콘솔에서 다운을 받으면 됨!!
 
         testers: ENV["FIREBASE_TESTERS_DEBUG"],          # debug 전용 테스터
         release_notes: "DEBUG 빌드 (개발/내부 테스트용)"
@@ -93,16 +92,96 @@ platform :android do
 
     UI.message("FIREBASE_APP_ID_ANDROID_DEBUG = #{ENV['FIREBASE_APP_ID_ANDROID_DEBUG']}")
     UI.message("FIREBASE_TESTERS_DEBUG = #{ENV['FIREBASE_TESTERS_DEBUG']}")
-    UI.message("FIREBASE_GROUPS_DEBUG = #{ENV['FIREBASE_GROUPS_DEBUG']}")
 
     firebase_app_distribution(
       app: ENV["FIREBASE_APP_ID_ANDROID"],
       android_artifact_type: "APK",
       android_artifact_path: apk_path,
-      service_credentials_file: "fastlane/my-diary-d2e3c-a76bbe0dd228.json",
+      service_credentials_file: "fastlane/account-firebase-app-distribution.json",
 
       testers: ENV["FIREBASE_TESTERS"],
       release_notes: "자동 배포 테스트 빌드입니다."
     )
+  end
+
+  #####################################
+  # 추후 스토어 배포가 필요할 경우에 사용 설정
+  # 명령어 : bundle exec fastlane production
+  #####################################
+  desc "프로덕션 트랙(실제 심사용)으로 바로 업로드"
+  lane :production do
+    gradle(task: "clean")
+    gradle(
+        task: "bundle",
+        build_type: "Release"
+    ) # ./gradlew bundleRelease 와 동일
+
+    aab_path = Actions.lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    UI.user_error!("ABB 경로를 찾지 못했습니다") unless aab_path
+
+    UI.message("선택 된 aab 경로 : #{aab_path}")
+
+    # Play Store 프로덕트 트랙에 업로드
+    upload_to_play_store(
+        track: "production", # 실제 프로덕트 트랙
+        aab: aab_path,
+        skip_upload_images: true, # 이미지/스크린샷은 콘솔에서 관리하면 true
+        skip_upload_screenshots: true,
+        skip_upload_changelogs: false, # changelog 올리면 true/false 선택
+        release_status: "draft" # 심사 전/검토용이면 draft, 바로 배포면 completed
+    )
+  end
+
+  #####################################
+  # 추후 내부 테스트 필요할 경우에 사용 설정(aab)
+  # 명령어 : bundle exec fastlane internal_test_aab
+  #####################################
+  desc "내부 테스트 트랙에 업로드(App Bundle)"
+  lane :internal_test_aab do
+    gradle(task: "clean")
+    gradle(
+        task: "bundle",
+        build_type: "Release"
+    )
+
+    aab_path = Actions.lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    UI.user_error!("ABB 경로를 찾지 못했습니다") unless aab_path
+
+    UI.message("선택 된 aab 경로 : #{aab_path}")
+
+    # Play Store 내부 테스트 트랙에 업로드
+    upload_to_play_store(
+        track: "internal", # 내부 테스트 트랙
+        aab: aab_path,
+        skip_upload_images: true, # 이미지/스크린샷은 콘솔에서 관리하면 true
+        skip_upload_screenshots: true,
+        skip_upload_changelogs: false, # changelog 올리면 true/false 선택
+        release_status: "completed" # internal은 그냥 completed로 바로 배포해도 됨
+    )
+  end
+
+  #####################################
+  # 추후 내부 테스트 필요할 경우에 사용 설정(apk)
+  # 명령어 : bundle exec fastlane internal_test_apk
+  #####################################
+  desc "내부 테스트 트랙에 업로드(Apk)"
+  lane :internal_test_apk do
+      gradle(task: "clean")
+      gradle(task: "assembleRelease")
+
+      apk_path = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+      UI.user_error!("APK 경로를 찾지 못했습니다") unless apk_path
+
+      UI.message("선택 된 DEBUG APK 경로 : #{apk_path}")
+
+      # Play Store 내부 테스트 트랙에 업로드
+      upload_to_play_store(
+        track: "internal", # 내부 테스트 트랙
+        apk: apk_path,
+        skip_upload_images: true, # 이미지/스크린샷은 콘솔에서 관리하면 true
+        skip_upload_screenshots: true,
+        skip_upload_changelogs: false, # changelog 올리면 true/false 선택
+        release_status: "completed" # internal은 그냥 completed로 바로 배포해도 됨
+      )
   end
 end
