@@ -67,6 +67,11 @@ platform :android do
       UI.message("FIREBASE_APP_ID_ANDROID_DEBUG = #{ENV['FIREBASE_APP_ID_ANDROID_DEBUG']}")
       UI.message("FIREBASE_TESTERS_DEBUG = #{ENV['FIREBASE_TESTERS_DEBUG']}")
 
+      # 제목 설정
+      version_name = sh("grep versionName app/build.gradle | awk '{print $2}'").strip.gsub('"','')
+      version_code = sh("grep versionCode app/build.gradle | awk '{print $2}'").strip
+      release_title = "[내부 테스트] v#{version_name} (#{version_code})"
+
       # 3) Firebase App Distribution 업로드
       firebase_app_distribution(
         app: ENV["FIREBASE_APP_ID_ANDROID_DEBUG"],        # 🔹 필요하면 debug용 앱 ID 따로
@@ -121,6 +126,11 @@ platform :android do
 
     UI.message("선택 된 aab 경로 : #{aab_path}")
 
+    # 제목 설정
+    version_name = sh("grep versionName app/build.gradle | awk '{print $2}'").strip.gsub('"','')
+    version_code = sh("grep versionCode app/build.gradle | awk '{print $2}'").strip
+    release_title = "v#{version_name} (#{version_code})"
+
     # Play Store 프로덕트 트랙에 업로드
     upload_to_play_store(
         track: "production", # 실제 프로덕트 트랙
@@ -128,6 +138,7 @@ platform :android do
         skip_upload_images: true, # 이미지/스크린샷은 콘솔에서 관리하면 true
         skip_upload_screenshots: true,
         skip_upload_changelogs: false, # changelog 올리면 true/false 선택
+        release_title: release_title,
         release_status: "draft" # 심사 전/검토용이면 draft, 바로 배포면 completed
     )
   end
@@ -149,6 +160,11 @@ platform :android do
 
     UI.message("선택 된 aab 경로 : #{aab_path}")
 
+    # 제목 설정
+    version_name = sh("grep versionName app/build.gradle | awk '{print $2}'").strip.gsub('"','')
+    version_code = sh("grep versionCode app/build.gradle | awk '{print $2}'").strip
+    release_title = "[내부 테스트] v#{version_name} (#{version_code})"
+
     # Play Store 내부 테스트 트랙에 업로드
     upload_to_play_store(
         track: "internal", # 내부 테스트 트랙
@@ -156,6 +172,7 @@ platform :android do
         skip_upload_images: true, # 이미지/스크린샷은 콘솔에서 관리하면 true
         skip_upload_screenshots: true,
         skip_upload_changelogs: false, # changelog 올리면 true/false 선택
+        release_title: release_title,
         release_status: "completed" # internal은 그냥 completed로 바로 배포해도 됨
     )
   end
@@ -174,6 +191,11 @@ platform :android do
 
       UI.message("선택 된 DEBUG APK 경로 : #{apk_path}")
 
+      # 제목 설정
+      version_name = sh("grep versionName app/build.gradle | awk '{print $2}'").strip.gsub('"','')
+      version_code = sh("grep versionCode app/build.gradle | awk '{print $2}'").strip
+      release_title = "[내부 테스트] v#{version_name} (#{version_code})"
+
       # Play Store 내부 테스트 트랙에 업로드
       upload_to_play_store(
         track: "internal", # 내부 테스트 트랙
@@ -181,6 +203,7 @@ platform :android do
         skip_upload_images: true, # 이미지/스크린샷은 콘솔에서 관리하면 true
         skip_upload_screenshots: true,
         skip_upload_changelogs: false, # changelog 올리면 true/false 선택
+        release_title: release_title,
         release_status: "completed" # internal은 그냥 completed로 바로 배포해도 됨
       )
   end
