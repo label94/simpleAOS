@@ -9,7 +9,7 @@ object Routes {
     const val PROFILE = "myPage"         // 마이페이지
 
     // ====== Sub Page ======
-    const val EDITOR = "editor/{body}"          // 작성 (optional entryId)
+    const val EDITOR = "editor"          // 작성 (optional entryId)
     const val DETAIL = "detail/{entryId}" // 상세(entryId 필수)
     const val SEARCH = "search" // 검색
     const val UPDATE = "update/{entryId}" // 수정 (entryId 필수)
@@ -26,5 +26,5 @@ object Routes {
     fun update(entryId: String) = "update/$entryId"
 
     // 작성 화면 경로 생성기
-    fun editor(body: String) = "editor/$body"
+    fun editor(body: String) = "editor?body=$body"
 }

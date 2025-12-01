@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -191,8 +192,14 @@ private fun BottomNavigationGraph(
 
         // 작성
         composable(
-            route = Routes.EDITOR,
-            arguments = listOf(navArgument("body") { nullable = false })
+            // 영감화면에서 body 데이터를 작성 화면 영역에 표시하기 위해 Query Param 형태로 루트 지정
+            route = "${Routes.EDITOR}?body={body}",
+            arguments = listOf(
+                navArgument("body") {
+                    type = NavType.StringType
+                    nullable = true
+                }
+            )
         ) { backStack ->
             val body = backStack.arguments?.getString("body") ?: ""
 
