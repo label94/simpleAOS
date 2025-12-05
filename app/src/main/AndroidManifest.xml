@@ -6,6 +6,9 @@
     <!-- internet 퍼미션 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- 안드로이드 14+에서 미디어 포그라운드 서비스용 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
     <!-- 알람 -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -107,6 +110,17 @@
                 android:resource="@xml/mood_widget_info"
                 />
         </receiver>
+
+        <!-- 미디어 서비스 등록 -->
+        <service android:name="co.aos.media3.service.MusicService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback">
+
+            <!-- MediaSessionService 로 인식시키는 Intent filter -->
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaSessionService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

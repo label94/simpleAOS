@@ -107,6 +107,7 @@ dependencies {
     implementation(project(":feature:splash-feature"))
     implementation(project(":feature:barcode-feature"))
     implementation(project(":feature:widget-feature"))
+    implementation(project(":feature:media3-feature"))
 }
 
 // ./gradlew clean 실행 시 app 모듈 루트의 debug, release 폴더도 함께 삭제
