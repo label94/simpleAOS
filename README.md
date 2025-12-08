@@ -241,5 +241,34 @@ Compose UI 렌더링 → “이 문장으로 작성하기”
   <img src="./screenshots/page_9_mypage.png" width="280"/>
 </p>
 
+## 🏗 모듈 역할 상세 (Module Responsibilities)
+
+**🔸 App**
+- 네비게이션 그래프
+- 전체 Feature 조립
+- DI 추가
+
+**🔸 feature**
+- Compose UI
+- ViewModel(MVI)
+- Domain UseCase 호출
+
+**🔸 domain**
+- Repository 인터페이스 정의
+- UseCase 정의/구현
+- 비즈니스 모델
+
+**🔸 data**
+- Repository 구현체
+- Firebase/Local 연동
+
+**🔸 core**
+- Firebase/Auth/Network/Local
+- Google Login
+- Base / Utilities
+
+**🔸 common-ui**
+- Compose 디자인 시스템
+- 재사용성 높은 공통 UI 구성
 
 
