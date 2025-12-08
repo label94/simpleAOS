@@ -209,35 +209,35 @@ Compose UI 렌더링 → “이 문장으로 작성하기”
 <br><br/>
 
 ## 📸 스크린샷 (Screenshots)
-<p align="center">
+<p align="left">
   <img src="./screenshots/page_1_login.png" width="280"/>
   <img src="./screenshots/page_2_join.png" width="280"/>
 </p>
 
 <br><br/>
 
-<p align="center">
+<p align="left">
   <img src="./screenshots/page_3_home.png" width="280"/>
   <img src="./screenshots/page_4_write.png" width="280"/>
 </p>
 
 <br><br/>
 
-<p align="center">
+<p align="left">
   <img src="./screenshots/page_5_read.png" width="280"/>
   <img src="./screenshots/page_8_calander.png" width="280"/>
 </p>
 
 <br><br/>
 
-<p align="center">
+<p align="left">
   <img src="./screenshots/page_6_ai_write.png" width="280"/>
   <img src="./screenshots/page_7_ai_result.png" width="280"/>
 </p>
 
 <br><br/>
 
-<p align="center">
+<p align="left">
   <img src="./screenshots/page_9_mypage.png" width="280"/>
 </p>
 
