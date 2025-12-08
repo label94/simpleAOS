@@ -273,6 +273,36 @@ Compose UI 렌더링 → “이 문장으로 작성하기”
 
 ## 🛠 설치 및 실행방법(Setup)
 
+**1) Clone**
 
+```bash
+https://github.com/label94/simpleAOS.git
+```
+
+**2) Setting**
+- Android gradle Plugin 8.13.1 이상
+- Gradle 8.14.3-bin.zip 이상
+- kotlin 2.2.21 이상
+- JDK 17
+- Android Studio Hedgehog 이상 권장
+
+## 🔮 향후계획(Roadmap)
+- 프로필 이미지 변경 기능 추가
+- 검색 관련 기능 추가
+- Media3 관련 샘플 코드 고도화
+- 기타 UI 개선 건
+- 신 기술 출시 시 샘플 코드 예제 추가
+
+## 📚 학습 회고 (What I Learned)
+
+이 프로젝트를 통해 다음을 깊이 이해했습니다:
+- UI·상태를 완전히 분리한 MVI의 장점
+- Compose 기반 UI 구조 설계 경험
+- 모듈화를 통한 유지보수성 향상
+- Firebase 인증/DB/AI Logic 적용 경험
+- 협업 없이도 스스로 아키텍처를 설계·검증하는 경험
+
+이 프로젝트는 앞으로도 지속적으로 확장되며
+**“Modern Android 아키텍처 실험실”** 로 남을 예정입니다.
 
 
