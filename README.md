@@ -286,6 +286,7 @@ https://github.com/label94/simpleAOS.git
 - JDK 17
 - Android Studio Hedgehog 이상 권장
 
+
 ## 🔮 향후계획(Roadmap)
 - 프로필 이미지 변경 기능 추가
 - 검색 관련 기능 추가
