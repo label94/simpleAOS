@@ -155,6 +155,10 @@ class SignUpViewModel @Inject constructor(
             setEffect(SignUpContract.Effect.ShowSnackBar("아이디를 입력해주세요"))
             return
         }
+        if (!id.contains("@")) {
+            setEffect(SignUpContract.Effect.ShowSnackBar("이메일 형식으로 작성하세요."))
+            return
+        }
 
         viewModelScope.launch {
             val isAvailable = runCatching {

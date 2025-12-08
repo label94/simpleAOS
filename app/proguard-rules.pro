@@ -148,6 +148,10 @@
 # ▲▲▲ Firebase & Google Play Services (최종 수정본) ▲▲▲
 #==============================================================
 
+# media3 사용하는 서비스 난독화 예외
+-keep class androidx.media3.** { *; }
+-keep class co.aos.media3.service.** { *; }
+
 
 
 

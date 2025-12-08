@@ -223,10 +223,12 @@ fun UserJoinScreen(
                         message = effect.message,
                         coroutineScope = coroutineScope
                     )
+                    focusManager.clearFocus() // 닫기 버튼 클릭 시 ime 숨김
                 }
                 is SignUpContract.Effect.SignUpSuccess -> {
                     viewModel.setEvent(SignUpContract.Event.InitData)
                     isShowDialog = true
+                    focusManager.clearFocus() // 닫기 버튼 클릭 시 ime 숨김
                 }
             }
         }
