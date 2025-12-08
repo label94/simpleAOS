@@ -168,8 +168,7 @@ diary/{uid}/entries/{entryId}
 <br><br/>
 
 **✔ 5) AI 추천 문장 생성 (Firebase AI Logic + Gemini)**
-사용자의 감정 점수 + 키워드를 기반으로
-오늘의 추천 영감(Reflection) 문구를 생성해 주는 기능입니다.
+- 사용자의 감정 점수 + 키워드를 기반으로 오늘의 추천 영감(Reflection) 문구를 생성해 주는 기능입니다.
 
 **AI Processing Flow**
 ```bash
