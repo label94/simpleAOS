@@ -301,6 +301,7 @@ https://github.com/label94/simpleAOS.git
 - Compose 기반 UI 구조 설계 경험
 - 모듈화를 통한 유지보수성 향상
 - Firebase 인증/DB/AI Logic 적용 경험
+- 기타 이슈 수정
 - 협업 없이도 스스로 아키텍처를 설계·검증하는 경험
 
 이 프로젝트는 앞으로도 지속적으로 확장되며
