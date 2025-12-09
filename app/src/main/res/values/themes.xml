@@ -2,5 +2,6 @@
 <resources>
 <!--    <style name="Theme.MyJetpack" parent="android:Theme.Material.Light.NoActionBar" />-->
     <style name="Theme.MyJetpack" parent="Theme.Material3.DayNight.NoActionBar">
+<!--        <item name="android:windowIsTranslucent">true</item> // true => 투명처리-->
     </style>
 </resources>
