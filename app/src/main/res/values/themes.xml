@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <style name="Theme.MyJetpack" parent="android:Theme.Material.Light.NoActionBar" />-->
-    <style name="Theme.MyJetpack" parent="Theme.Material3.DayNight.NoActionBar">
-<!--        <item name="android:windowIsTranslucent">true</item> // true => 투명처리-->
-    </style>
+    <style name="Theme.MyJetpack" parent="android:Theme.Material.Light.NoActionBar" />
+<!--    <style name="Theme.MyJetpack" parent="Theme.Material3.DayNight.NoActionBar">-->
+<!--&lt;!&ndash;        <item name="android:windowIsTranslucent">true</item> // true => 투명처리&ndash;&gt;-->
+<!--    </style>-->
 </resources>
